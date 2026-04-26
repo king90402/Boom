@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<StackPane id="mother" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pruebafx.Controller">
+   <children>
+      <Pane id="paneRegistro" prefHeight="450.0" prefWidth="800.0" style="-fx-background-color: linear-gradient(to bottom, #f6f5f5, #f6daa7);" visible="false">
+         <children>
+            <Pane id="contenedor2" layoutX="54.0" layoutY="61.0" prefHeight="329.0" prefWidth="693.0" style="-fx-background-color: #f6f6f6; -fx-background-radius: 17;">
+               <children>
+                  <ImageView fitHeight="329.0" fitWidth="344.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../Downloads/Media%20Figma/Login.png" />
+                     </image>
+                  </ImageView>
+                  <Text layoutX="362.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="¡Bienvenido!">
+                     <font>
+                        <Font name="Poppins SemiBold" size="31.0" />
+                     </font>
+                  </Text>
+                  <TextField layoutX="362.0" layoutY="98.0" prefHeight="43.0" prefWidth="302.0" promptText="Ingresa usuario o correo" style="-fx-border-color: #eaebee;">
+                     <font>
+                        <Font name="Poppins Regular" size="12.0" />
+                     </font>
+                  </TextField>
+                  <PasswordField layoutX="362.0" layoutY="149.0" prefHeight="43.0" prefWidth="302.0" promptText="Ingresa contraseña" style="-fx-border-color: #eaebee;">
+                     <font>
+                        <Font name="Poppins Regular" size="12.0" />
+                     </font>
+                  </PasswordField>
+                  <Button layoutX="397.0" layoutY="246.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="233.0" style="-fx-background-color: #f6cd85; -fx-background-radius: 7;" text="INICIAR SESIÓN">
+                     <font>
+                        <Font name="Roboto Regular" size="11.0" />
+                     </font>
+                  </Button>
+                  <Text fill="#2f2f2f" layoutX="428.0" layoutY="307.0" strokeType="OUTSIDE" strokeWidth="0.0" text="¿No tienes cuenta?">
+                     <font>
+                        <Font name="Poppins Regular" size="11.0" />
+                     </font>
+                  </Text>
+                  <Button id="btLogin-Sign" layoutX="530.0" layoutY="290.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="75.0" style="-fx-background-color: transparent; -fx-background-radius: 7;" text="Registrate" textFill="#f6dfb5" underline="true">
+                     <font>
+                        <Font name="Poppins Regular" size="11.0" />
+                     </font>
+                  </Button>
+               </children>
+               <effect>
+                  <DropShadow height="15.0" offsetX="0.6" offsetY="3.0" radius="7.0" width="15.0" />
+               </effect>
+            </Pane>
+         </children>
+      </Pane>
+      <Pane id="paneLogin" prefHeight="450.0" prefWidth="800.0" style="-fx-background-color: linear-gradient(to bottom, #f6f5f5, #f6daa7);">
+         <children>
+            <Pane id="contenedor1" layoutX="54.0" layoutY="61.0" prefHeight="329.0" prefWidth="693.0" style="-fx-background-color: #f6f6f6; -fx-background-radius: 17;">
+               <children>
+                  <ImageView id="imageRegistro" fitHeight="329.0" fitWidth="344.0" layoutX="352.0" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../../../../../Downloads/Media%20Figma/Registro.png" />
+                     </image>
+                  </ImageView>
+                  <Text id="lblBienvenido" layoutX="24.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Correo electronico:">
+                     <font>
+                        <Font name="Poppins ExtraLight" size="12.0" />
+                     </font>
+                  </Text>
+                  <TextField id="txtUsuario" layoutX="24.0" layoutY="56.0" prefHeight="34.0" prefWidth="302.0" promptText="user@dominio.com" style="-fx-border-color: #eaebee;">
+                     <font>
+                        <Font name="Poppins Regular" size="12.0" />
+                     </font>
+                  </TextField>
+                  <Button id="btLogin" layoutX="60.0" layoutY="279.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="233.0" style="-fx-background-color: #f6cd85; -fx-background-radius: 7;" text="REGISTRATE">
+                     <font>
+                        <Font name="Roboto Regular" size="11.0" />
+                     </font>
+                  </Button>
+                  <Button id="btLogin-Sign" layoutX="1.0" layoutY="7.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="129.0" style="-fx-background-color: transparent; -fx-background-radius: 7;" text="&lt; Iniciar Sesión">
+                     <font>
+                        <Font name="Poppins Bold" size="13.0" />
+                     </font>
+                  </Button>
+                  <Text id="lblBienvenido" layoutX="26.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Telefono:">
+                     <font>
+                        <Font name="Poppins ExtraLight" size="12.0" />
+                     </font>
+                  </Text>
+                  <TextField id="txtUsuario" layoutX="26.0" layoutY="113.0" prefHeight="34.0" prefWidth="302.0" promptText="+57" style="-fx-border-color: #eaebee;">
+                     <font>
+                        <Font name="Poppins Regular" size="12.0" />
+                     </font>
+                  </TextField>
+                  <Text id="lblBienvenido" layoutX="25.0" layoutY="166.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Usuario:">
+                     <font>
+                        <Font name="Poppins ExtraLight" size="12.0" />
+                     </font>
+                  </Text>
+                  <TextField id="txtUsuario" layoutX="25.0" layoutY="170.0" prefHeight="34.0" prefWidth="302.0" promptText="user" style="-fx-border-color: #eaebee;">
+                     <font>
+                        <Font name="Poppins Regular" size="12.0" />
+                     </font>
+                  </TextField>
+                  <Text id="lblBienvenido" layoutX="27.0" layoutY="226.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Contraseña:">
+                     <font>
+                        <Font name="Poppins ExtraLight" size="12.0" />
+                     </font>
+                  </Text>
+                  <TextField id="txtUsuario" layoutX="27.0" layoutY="230.0" prefHeight="34.0" prefWidth="302.0" promptText="*******" style="-fx-border-color: #eaebee;">
+                     <font>
+                        <Font name="Poppins Regular" size="12.0" />
+                     </font>
+                  </TextField>
+               </children>
+               <effect>
+                  <DropShadow height="15.0" offsetX="-0.6" offsetY="3.0" radius="7.0" width="15.0" />
+               </effect>
+            </Pane>
+         </children>
+      </Pane>
+   </children>
+</StackPane>

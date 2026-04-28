@@ -11,15 +11,15 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane id="mother" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pruebafx.Controller">
+<StackPane id="mother" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="boom.Controladora">
    <children>
-      <Pane id="paneRegistro" prefHeight="450.0" prefWidth="800.0" style="-fx-background-color: linear-gradient(to bottom, #f6f5f5, #f6daa7);" visible="false">
+      <Pane id="paneRegistro" prefHeight="450.0" prefWidth="800.0" style="-fx-background-color: linear-gradient(to bottom, #f6f5f5, #f6daa7);">
          <children>
             <Pane id="contenedor2" layoutX="54.0" layoutY="61.0" prefHeight="329.0" prefWidth="693.0" style="-fx-background-color: #f6f6f6; -fx-background-radius: 17;">
                <children>
                   <ImageView fitHeight="329.0" fitWidth="344.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../Downloads/Media%20Figma/Login.png" />
+                        <Image url="@Media/Login.png" />
                      </image>
                   </ImageView>
                   <Text layoutX="362.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="¡Bienvenido!">
@@ -59,13 +59,13 @@
             </Pane>
          </children>
       </Pane>
-      <Pane id="paneLogin" prefHeight="450.0" prefWidth="800.0" style="-fx-background-color: linear-gradient(to bottom, #f6f5f5, #f6daa7);">
+      <Pane id="paneLogin" prefHeight="450.0" prefWidth="800.0" style="-fx-background-color: linear-gradient(to bottom, #f6f5f5, #f6daa7);" visible="false">
          <children>
             <Pane id="contenedor1" layoutX="54.0" layoutY="61.0" prefHeight="329.0" prefWidth="693.0" style="-fx-background-color: #f6f6f6; -fx-background-radius: 17;">
                <children>
                   <ImageView id="imageRegistro" fitHeight="329.0" fitWidth="344.0" layoutX="352.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../../../../Downloads/Media%20Figma/Registro.png" />
+                        <Image url="@Media/Registro.png" />
                      </image>
                   </ImageView>
                   <Text id="lblBienvenido" layoutX="24.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Correo electronico:">

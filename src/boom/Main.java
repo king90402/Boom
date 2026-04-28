@@ -18,10 +18,10 @@ import javafx.stage.Stage;
     public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("vista.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("Vista_Login-Registro.fxml"));
         Scene scene = new Scene(loader.load());
         stage.setScene(scene);
-        stage.setTitle("Mi App JavaFX");
+        stage.setTitle("Boom");
         stage.show();
     }
     public static void main(String[] args) {

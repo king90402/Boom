@@ -1,0 +1,700 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
+
+<StackPane id="mother" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="981.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="boom.Controladora">
+   <children>
+      <Pane id="paneLogin" prefHeight="450.0" prefWidth="800.0" style="-fx-background-coor: linear-gradient(to bottom, #f6f5f5, #f6daa7);">
+         <children>
+            <Pane prefHeight="450.0" prefWidth="178.0" style="-fx-background-color: #111111;">
+               <children>
+                  <Text id="lblBienvenido" fill="WHITE" layoutX="14.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="B O O M" wrappingWidth="113.55000305175781">
+                     <font>
+                        <Font name="Poppins Bold" size="28.0" />
+                     </font>
+                  </Text>
+                  <Line endX="100.0" layoutX="101.0" layoutY="67.0" startX="-100.0" stroke="WHITE" />
+                  <Button id="btLogin" alignment="BASELINE_LEFT" layoutX="-4.0" layoutY="90.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="186.0" style="-fx-background-color: #F7CD84;" text="Estadisticas">
+                     <font>
+                        <Font name="Poppins SemiBold" size="12.0" />
+                     </font>
+                     <padding>
+                        <Insets left="15.0" />
+                     </padding>
+                  </Button>
+                  <Button id="btLogin" alignment="BASELINE_LEFT" layoutX="-4.0" layoutY="150.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="186.0" style="-fx-background-color: #111111;" text="Restablecer Stock" textFill="WHITE">
+                     <font>
+                        <Font name="Poppins ExtraLight" size="12.0" />
+                     </font>
+                     <padding>
+                        <Insets left="15.0" />
+                     </padding>
+                  </Button>
+                  <Button id="btLogin" alignment="BASELINE_LEFT" layoutX="-4.0" layoutY="210.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="186.0" style="-fx-background-color: #111111;" text="Inventario" textFill="WHITE">
+                     <font>
+                        <Font name="Poppins ExtraLight" size="12.0" />
+                     </font>
+                     <padding>
+                        <Insets left="15.0" />
+                     </padding>
+                  </Button>
+                  <Button id="btLogin" alignment="BASELINE_LEFT" layoutX="-4.0" layoutY="270.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="186.0" style="-fx-background-color: #111111;" text="Pedidos" textFill="WHITE">
+                     <font>
+                        <Font name="Poppins ExtraLight" size="12.0" />
+                     </font>
+                     <padding>
+                        <Insets left="15.0" />
+                     </padding>
+                  </Button>
+                  <Button id="btLogin" alignment="BASELINE_LEFT" layoutX="-4.0" layoutY="330.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="186.0" style="-fx-background-color: #111111;" text="Ingresar Personal" textFill="WHITE">
+                     <font>
+                        <Font name="Poppins ExtraLight" size="12.0" />
+                     </font>
+                     <padding>
+                        <Insets left="15.0" />
+                     </padding>
+                  </Button>
+                  <Button id="btLogin" alignment="BASELINE_LEFT" layoutX="-4.0" layoutY="390.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="186.0" style="-fx-background-color: #111111;" text="Restablecer Stock" textFill="WHITE">
+                     <font>
+                        <Font name="Poppins ExtraLight" size="12.0" />
+                     </font>
+                     <padding>
+                        <Insets left="15.0" />
+                     </padding>
+                  </Button>
+               </children>
+            </Pane>
+            <StackPane layoutX="178.0" prefHeight="450.0" prefWidth="804.0">
+               <children>
+                  <Pane id="contenedor1" prefHeight="450.0" prefWidth="693.0" style="-fx-background-color: #ffffff;" visible="false">
+                     <children>
+                        <Pane layoutX="27.0" layoutY="119.0" prefHeight="73.0" prefWidth="241.0" style="-fx-background-color: #f6f6f6; -fx-background-radius: 8;">
+                           <children>
+                              <Text id="lblBienvenido" layoutX="19.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ventas del mes" wrappingWidth="98.0">
+                                 <font>
+                                    <Font name="Poppins Light" size="11.0" />
+                                 </font>
+                              </Text>
+                              <Text id="lblBienvenido" layoutX="19.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\$11,900,000" wrappingWidth="224.0">
+                                 <font>
+                                    <Font name="Inter 18pt SemiBold" size="22.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                           <effect>
+                              <DropShadow height="5.0" offsetX="0.8" offsetY="1.0" radius="2.0" spread="0.1" width="5.0" />
+                           </effect>
+                        </Pane>
+                        <Pane layoutX="27.0" layoutY="67.0" prefHeight="30.0" prefWidth="164.0" style="-fx-background-color: #222222; -fx-background-radius: 8;">
+                           <children>
+                              <Text id="lblBienvenido" fill="#f7cd84" layoutX="2.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Administrador" textAlignment="CENTER" wrappingWidth="161.0">
+                                 <font>
+                                    <Font name="Poppins Medium" size="14.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                           <effect>
+                              <DropShadow height="12.0" offsetX="1.0" offsetY="1.0" radius="5.5" width="12.0" />
+                           </effect>
+                        </Pane>
+                        <Text id="lblBienvenido" layoutX="27.0" layoutY="55.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bienvenido, Michael Jackson">
+                           <font>
+                              <Font name="Poppins Medium" size="32.0" />
+                           </font>
+                        </Text>
+                        <Pane layoutX="282.0" layoutY="119.0" prefHeight="73.0" prefWidth="247.0" style="-fx-background-color: #f6f6f6; -fx-background-radius: 8;">
+                           <children>
+                              <Text id="lblBienvenido" layoutX="16.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Usuarios activos" wrappingWidth="98.0">
+                                 <font>
+                                    <Font name="Poppins Light" size="11.0" />
+                                 </font>
+                              </Text>
+                              <Text id="lblBienvenido" layoutX="16.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2" wrappingWidth="137.00000000000006">
+                                 <font>
+                                    <Font name="Inter 18pt SemiBold" size="22.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                           <effect>
+                              <DropShadow height="5.0" offsetX="0.8" offsetY="1.0" radius="2.0" spread="0.1" width="5.0" />
+                           </effect>
+                        </Pane>
+                        <Pane layoutX="546.0" layoutY="119.0" prefHeight="73.0" prefWidth="224.0" style="-fx-background-color: #f6f6f6; -fx-background-radius: 8;">
+                           <children>
+                              <Text id="lblBienvenido" layoutX="14.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pedidos pendientes" wrappingWidth="113.55000305175781">
+                                 <font>
+                                    <Font name="Poppins Light" size="11.0" />
+                                 </font>
+                              </Text>
+                              <Text id="lblBienvenido" layoutX="16.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2" wrappingWidth="164.00000000000006">
+                                 <font>
+                                    <Font name="Inter 18pt SemiBold" size="22.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                           <effect>
+                              <DropShadow height="5.0" offsetX="0.8" offsetY="1.0" radius="2.0" spread="0.1" width="5.0" />
+                           </effect>
+                        </Pane>
+                        <Pane layoutX="546.0" layoutY="209.0" prefHeight="133.0" prefWidth="224.0" style="-fx-background-color: #f6f6f6; -fx-background-radius: 8;">
+                           <effect>
+                              <DropShadow height="5.0" offsetX="0.8" offsetY="1.0" radius="2.0" spread="0.1" width="5.0" />
+                           </effect>
+                           <children>
+                              <PieChart layoutX="15.0" layoutY="-8.0" prefHeight="125.0" prefWidth="200.0" />
+                           </children>
+                        </Pane>
+                        <Pane layoutX="546.0" layoutY="354.0" prefHeight="73.0" prefWidth="224.0" style="-fx-background-color: #f6f6f6; -fx-background-radius: 8;">
+                           <children>
+                              <Text id="lblBienvenido" layoutX="14.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Mejor cliente" wrappingWidth="113.55000305175781">
+                                 <font>
+                                    <Font name="Poppins Light" size="11.0" />
+                                 </font>
+                              </Text>
+                              <Text id="lblBienvenido" layoutX="16.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Jose Martinez" wrappingWidth="164.00000000000006">
+                                 <font>
+                                    <Font name="Inter 18pt SemiBold" size="20.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                           <effect>
+                              <DropShadow height="5.0" offsetX="0.8" offsetY="1.0" radius="2.0" spread="0.1" width="5.0" />
+                           </effect>
+                        </Pane>
+                        <Pane layoutX="27.0" layoutY="209.0" prefHeight="218.0" prefWidth="502.0" style="-fx-background-color: #f6f6f6; -fx-background-radius: 8;">
+                           <children>
+                              <Text id="lblBienvenido" layoutX="14.0" layoutY="26.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Flujo de ventas" wrappingWidth="113.55000305175781">
+                                 <font>
+                                    <Font name="Poppins Light" size="11.0" />
+                                 </font>
+                              </Text>
+                              <BarChart layoutX="-1.0" layoutY="33.0" prefHeight="185.0" prefWidth="409.0">
+                                <xAxis>
+                                  <CategoryAxis side="BOTTOM" />
+                                </xAxis>
+                                <yAxis>
+                                  <NumberAxis side="LEFT" />
+                                </yAxis>
+                              </BarChart>
+                           </children>
+                           <effect>
+                              <DropShadow height="5.0" offsetX="0.8" offsetY="1.0" radius="2.0" spread="0.1" width="5.0" />
+                           </effect>
+                        </Pane>
+                     </children>
+                  </Pane>
+                  <Pane id="contenedor1" layoutX="10.0" layoutY="10.0" prefHeight="450.0" prefWidth="693.0" style="-fx-background-color: #ffffff;" visible="false">
+                     <children>
+                        <Pane layoutX="33.0" layoutY="46.0" prefHeight="359.0" prefWidth="726.0" style="-fx-background-color: #f6f6f6; -fx-background-radius: 8;">
+                           <children>
+                              <Text id="lblBienvenido" layoutX="206.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="¿Que quieres hacer hoy?">
+                                 <font>
+                                    <Font name="Poppins SemiBold" size="25.0" />
+                                 </font>
+                              </Text>
+                              <Button layoutX="37.0" layoutY="116.0" mnemonicParsing="false" prefHeight="106.0" prefWidth="298.0" style="-fx-background-color: #111111; -fx-background-radius: 15px;" textFill="WHITE">
+                                 <graphic>
+                                    <TextFlow prefHeight="88.0" prefWidth="340.0" textAlignment="CENTER">
+                                       <children>
+                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Restablecer stock de productos " textAlignment="CENTER">
+                                             <font>
+                                                <Font name="Poppins SemiBold" size="15.0" />
+                                             </font>
+                                          </Text>
+                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Incrementar cantidad del inventario actual">
+                                             <font>
+                                                <Font name="Poppins Light" size="12.0" />
+                                             </font>
+                                          </Text>
+                                       </children>
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" top="32.0" />
+                                       </padding>
+                                    </TextFlow>
+                                 </graphic>
+                              </Button>
+                              <Button layoutX="387.0" layoutY="116.0" mnemonicParsing="false" prefHeight="106.0" prefWidth="298.0" style="-fx-background-color: #111111; -fx-background-radius: 15px;" textFill="WHITE">
+                                 <graphic>
+                                    <TextFlow prefHeight="82.0" prefWidth="274.0" textAlignment="CENTER">
+                                       <children>
+                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Crear un nuevo producto            " textAlignment="CENTER">
+                                             <font>
+                                                <Font name="Poppins SemiBold" size="15.0" />
+                                             </font>
+                                          </Text>
+                                          <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Registrar un articulo nuevo en el catalogo">
+                                             <font>
+                                                <Font name="Poppins Light" size="12.0" />
+                                             </font>
+                                          </Text>
+                                       </children>
+                                       <padding>
+                                          <Insets left="5.0" right="5.0" top="32.0" />
+                                       </padding>
+                                    </TextFlow>
+                                 </graphic>
+                              </Button>
+                              <Button layoutX="263.0" layoutY="257.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="200.0" style="-fx-background-color: #111111; -fx-background-radius: 15px;" textFill="WHITE">
+                                 <graphic>
+                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Visualizar Catalogo" textAlignment="CENTER">
+                                       <font>
+                                          <Font name="Poppins SemiBold" size="15.0" />
+                                       </font>
+                                    </Text>
+                                 </graphic>
+                              </Button>
+                           </children>
+                           <effect>
+                              <DropShadow height="5.0" offsetX="0.8" offsetY="1.0" radius="2.0" spread="0.1" width="5.0" />
+                           </effect>
+                        </Pane>
+                     </children>
+                  </Pane>
+                  <Pane id="contenedor1" prefHeight="450.0" prefWidth="693.0" style="-fx-background-color: #ffffff;">
+                     <children>
+                        <StackPane layoutX="57.0" layoutY="46.0" prefHeight="359.0" prefWidth="688.0">
+                           <children>
+                              <Pane prefHeight="359.0" prefWidth="660.0" style="-fx-background-color: #f0f0f0; -fx-background-radius: 8;" visible="false">
+                                 <children>
+                                    <Text id="lblBienvenido" layoutX="40.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre del producto:">
+                                       <font>
+                                          <Font name="Poppins Regular" size="14.0" />
+                                       </font>
+                                    </Text>
+                                    <Button id="btLogin-Sign" alignment="BOTTOM_LEFT" layoutX="8.0" layoutY="8.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="64.0" style="-fx-background-color: transparent; -fx-background-radius: 7;" text="&lt; Volver">
+                                       <font>
+                                          <Font name="Poppins Light Italic" size="12.0" />
+                                       </font>
+                                    </Button>
+                                    <TextField id="txtUsuario" layoutX="40.0" layoutY="84.0" prefHeight="36.0" prefWidth="589.0" promptText="ej. Samsung Galaxy A35 5gb 125MB WIFI" style="-fx-border-color: #eaebee; -fx-background-color: #ffffff;">
+                                       <font>
+                                          <Font name="Poppins Regular" size="12.0" />
+                                       </font>
+                                    </TextField>
+                                    <Text id="lblBienvenido" layoutX="40.0" layoutY="162.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Marca:">
+                                       <font>
+                                          <Font name="Poppins Regular" size="14.0" />
+                                       </font>
+                                    </Text>
+                                    <TextField id="txtUsuario" layoutX="40.0" layoutY="176.0" prefHeight="36.0" prefWidth="589.0" promptText="ej. Samsung, Iphone, Motorola" style="-fx-border-color: #eaebee; -fx-background-color: #ffffff;">
+                                       <font>
+                                          <Font name="Poppins Regular" size="12.0" />
+                                       </font>
+                                    </TextField>
+                                    <Text id="lblBienvenido" layoutX="40.0" layoutY="255.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Estado del producto:">
+                                       <font>
+                                          <Font name="Poppins Regular" size="14.0" />
+                                       </font>
+                                    </Text>
+                                    <CheckBox graphicTextGap="10.0" layoutX="40.0" layoutY="263.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="82.0" style="-fx-border-color: transparent; -fx-label-padding: 0 0 0 6; -fx-background-radius: 5px;" stylesheets="@estilo.css" text="Nuevo">
+                                       <font>
+                                          <Font name="Poppins ExtraLight" size="12.0" />
+                                       </font>
+                                    </CheckBox>
+                                    <CheckBox graphicTextGap="10.0" layoutX="40.0" layoutY="290.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="82.0" style="-fx-border-color: transparent; -fx-label-padding: 0 0 0 6; -fx-background-radius: 5px;" stylesheets="@estilo.css" text="Usado">
+                                       <font>
+                                          <Font name="Poppins ExtraLight" size="12.0" />
+                                       </font>
+                                    </CheckBox>
+                                    <Button id="btLogin" layoutX="531.0" layoutY="292.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="98.0" style="-fx-background-color: #f6cd85; -fx-background-radius: 20;" text="Seguir →">
+                                       <font>
+                                          <Font name="Poppins ExtraLight" size="12.0" />
+                                       </font>
+                                    </Button>
+                                 </children>
+                                 <effect>
+                                    <DropShadow height="5.0" offsetX="0.8" offsetY="1.0" radius="2.0" spread="0.1" width="5.0" />
+                                 </effect>
+                              </Pane>
+                              <Pane prefHeight="359.0" prefWidth="576.0" style="-fx-background-color: #f0f0f0; -fx-background-radius: 8;" visible="false">
+                                 <children>
+                                    <Text id="lblBienvenido" layoutX="40.0" layoutY="70.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Detalles y caracteristicas:">
+                                       <font>
+                                          <Font name="Poppins Regular" size="14.0" />
+                                       </font>
+                                    </Text>
+                                    <Button id="btLogin-Sign" alignment="BOTTOM_LEFT" layoutX="8.0" layoutY="8.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="64.0" style="-fx-background-color: transparent; -fx-background-radius: 7;" text="&lt; Volver">
+                                       <font>
+                                          <Font name="Poppins Light Italic" size="12.0" />
+                                       </font>
+                                    </Button>
+                                    <TextField id="txtUsuario" alignment="TOP_LEFT" layoutX="40.0" layoutY="84.0" prefHeight="194.0" prefWidth="609.0" promptText="Escribe aqui todas las especificaciones necesarias..." style="-fx-border-color: #eaebee; -fx-background-color: #ffffff;">
+                                       <font>
+                                          <Font name="Poppins Regular" size="12.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                                       </padding>
+                                    </TextField>
+                                    <Button id="btLogin" layoutX="551.0" layoutY="292.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="98.0" style="-fx-background-color: #f6cd85; -fx-background-radius: 20;" text="Seguir →">
+                                       <font>
+                                          <Font name="Poppins ExtraLight" size="12.0" />
+                                       </font>
+                                    </Button>
+                                 </children>
+                                 <effect>
+                                    <DropShadow height="5.0" offsetX="0.8" offsetY="1.0" radius="2.0" spread="0.1" width="5.0" />
+                                 </effect>
+                              </Pane>
+                              <Pane prefHeight="359.0" prefWidth="576.0" style="-fx-background-color: #f6f6f6; -fx-background-radius: 8;">
+                                 <children>
+                                    <Text id="lblBienvenido" layoutX="293.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Precio:">
+                                       <font>
+                                          <Font name="Poppins Regular" size="14.0" />
+                                       </font>
+                                    </Text>
+                                    <Button id="btLogin-Sign" alignment="BOTTOM_LEFT" layoutX="8.0" layoutY="8.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="64.0" style="-fx-background-color: transparent; -fx-background-radius: 7;" text="&lt; Volver">
+                                       <font>
+                                          <Font name="Poppins Light Italic" size="12.0" />
+                                       </font>
+                                    </Button>
+                                    <TextField id="txtUsuario" layoutX="293.0" layoutY="130.0" prefHeight="36.0" prefWidth="350.0" promptText="\$0.00" style="-fx-border-color: #eaebee; -fx-background-color: #ffffff;">
+                                       <font>
+                                          <Font name="Poppins Regular" size="12.0" />
+                                       </font>
+                                    </TextField>
+                                    <Text id="lblBienvenido" layoutX="293.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Imagen:">
+                                       <font>
+                                          <Font name="Poppins Regular" size="14.0" />
+                                       </font>
+                                    </Text>
+                                    <TextField id="txtUsuario" editable="false" layoutX="293.0" layoutY="225.0" prefHeight="36.0" prefWidth="350.0" promptText="No se ha seleccionado ninguna imagen" style="-fx-border-color: #eaebee; -fx-background-color: #ffffff;">
+                                       <font>
+                                          <Font name="Poppins Regular" size="12.0" />
+                                       </font>
+                                       <padding>
+                                          <Insets left="90.0" />
+                                       </padding>
+                                    </TextField>
+                                    <Button id="btLogin" layoutX="545.0" layoutY="288.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="98.0" style="-fx-background-color: #f6cd85; -fx-background-radius: 20;" text="Finalizar">
+                                       <font>
+                                          <Font name="Poppins ExtraLight" size="12.0" />
+                                       </font>
+                                    </Button>
+                                    <ImageView fitHeight="277.0" fitWidth="224.0" layoutX="40.0" layoutY="53.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@Media/Preview%20Image.png" />
+                                       </image>
+                                    </ImageView>
+                                    <Button layoutX="300.0" layoutY="233.0" mnemonicParsing="false" text="Subir archivo">
+                                       <font>
+                                          <Font name="Poppins Regular" size="10.0" />
+                                       </font>
+                                    </Button>
+                                 </children>
+                                 <effect>
+                                    <DropShadow height="5.0" offsetX="0.8" offsetY="1.0" radius="2.0" spread="0.1" width="5.0" />
+                                 </effect>
+                              </Pane>
+                           </children>
+                        </StackPane>
+                     </children>
+                  </Pane>
+                  <Pane id="contenedor1" prefHeight="450.0" prefWidth="693.0" style="-fx-background-color: #ffffff;" visible="false">
+                     <children>
+                        <Text id="lblBienvenido" layoutX="35.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Inventario general">
+                           <font>
+                              <Font name="Poppins SemiBold" size="25.0" />
+                           </font>
+                        </Text>
+                        <TableView layoutX="35.0" layoutY="79.0" prefHeight="296.0" prefWidth="736.0" stylesheets="@estilotabla.css">
+                          <columns>
+                              <TableColumn prefWidth="226.0" text="Producto" />
+                              <TableColumn prefWidth="135.0" text="Marca" />
+                            <TableColumn prefWidth="99.0" text="Stock" />
+                            <TableColumn prefWidth="151.0" text="Precio" />
+                              <TableColumn prefWidth="123.0" text="Condición" />
+                          </columns>
+                        </TableView>
+                        <Button id="btLogin" layoutX="673.0" layoutY="395.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="98.0" style="-fx-background-color: #f6cd85; -fx-background-radius: 20;" text="Borrar">
+                           <font>
+                              <Font name="Poppins ExtraLight" size="14.0" />
+                           </font>
+                        </Button>
+                        <Button id="btLogin" layoutX="561.0" layoutY="395.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="98.0" style="-fx-background-color: #f6cd85; -fx-background-radius: 20;" text="Visualizar">
+                           <font>
+                              <Font name="Poppins ExtraLight" size="14.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </Pane>
+                  <Pane id="contenedor1" prefHeight="450.0" prefWidth="693.0" style="-fx-background-color: #ffffff;" visible="false">
+                     <children>
+                        <Text id="lblBienvenido" layoutX="35.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pedidos">
+                           <font>
+                              <Font name="Poppins SemiBold" size="25.0" />
+                           </font>
+                        </Text>
+                        <TableView layoutX="35.0" layoutY="79.0" prefHeight="296.0" prefWidth="736.0" stylesheets="@estilotabla.css">
+                           <columns>
+                              <TableColumn prefWidth="174.0" text="Cliente" />
+                              <TableColumn prefWidth="166.0" text="Productos" />
+                              <TableColumn prefWidth="120.0" text="Precio Final" />
+                              <TableColumn prefWidth="151.0" text="Fecha de Entrega" />
+                              <TableColumn prefWidth="123.0" text="Condición" />
+                           </columns>
+                        </TableView>
+                        <Button id="btLogin" layoutX="673.0" layoutY="395.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="98.0" style="-fx-background-color: #f6cd85; -fx-background-radius: 20;" text="Borrar">
+                           <font>
+                              <Font name="Poppins ExtraLight" size="14.0" />
+                           </font>
+                        </Button>
+                        <Button id="btLogin" layoutX="561.0" layoutY="395.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="98.0" style="-fx-background-color: #f6cd85; -fx-background-radius: 20;" text="Visualizar">
+                           <font>
+                              <Font name="Poppins ExtraLight" size="14.0" />
+                           </font>
+                        </Button>
+                     </children>
+                  </Pane>
+                  <Pane prefHeight="359.0" prefWidth="660.0" style="-fx-background-color: #f0f0f0; -fx-background-radius: 8;" visible="false">
+                     <children>
+                        <Pane layoutX="53.0" layoutY="44.0" prefHeight="366.0" prefWidth="698.0" style="-fx-background-color: #f6f6f6; -fx-background-radius: 8;">
+                           <effect>
+                              <DropShadow height="5.0" offsetX="0.8" offsetY="1.0" radius="2.0" spread="0.1" width="5.0" />
+                           </effect>
+                           <children>
+                              <Text id="lblBienvenido" layoutX="32.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombres y apellidos:">
+                                 <font>
+                                    <Font name="Poppins Regular" size="14.0" />
+                                 </font>
+                              </Text>
+                              <TextField id="txtUsuario" layoutX="32.0" layoutY="57.0" prefHeight="36.0" prefWidth="286.0" style="-fx-border-color: #eaebee; -fx-background-color: #ffffff;">
+                                 <font>
+                                    <Font name="Poppins Regular" size="12.0" />
+                                 </font>
+                              </TextField>
+                              <Text id="lblBienvenido" layoutX="374.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Email del empleado nuevo:">
+                                 <font>
+                                    <Font name="Poppins Regular" size="14.0" />
+                                 </font>
+                              </Text>
+                              <TextField id="txtUsuario" layoutX="374.0" layoutY="57.0" prefHeight="36.0" prefWidth="298.0" style="-fx-border-color: #eaebee; -fx-background-color: #ffffff;">
+                                 <font>
+                                    <Font name="Poppins Regular" size="12.0" />
+                                 </font>
+                              </TextField>
+                              <Button id="btLogin" layoutX="574.0" layoutY="281.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="98.0" style="-fx-background-color: #f6cd85; -fx-background-radius: 20;" text="Ingresar">
+                                 <font>
+                                    <Font name="Poppins ExtraLight" size="12.0" />
+                                 </font>
+                              </Button>
+                              <Text id="lblBienvenido" layoutX="32.0" layoutY="117.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Número de identificación:">
+                                 <font>
+                                    <Font name="Poppins Regular" size="14.0" />
+                                 </font>
+                              </Text>
+                              <TextField id="txtUsuario" layoutX="32.0" layoutY="130.0" prefHeight="36.0" prefWidth="286.0" style="-fx-border-color: #eaebee; -fx-background-color: #ffffff;">
+                                 <font>
+                                    <Font name="Poppins Regular" size="12.0" />
+                                 </font>
+                              </TextField>
+                              <Text id="lblBienvenido" layoutX="374.0" layoutY="117.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Contraseña:">
+                                 <font>
+                                    <Font name="Poppins Regular" size="14.0" />
+                                 </font>
+                              </Text>
+                              <TextField id="txtUsuario" layoutX="374.0" layoutY="130.0" prefHeight="36.0" prefWidth="298.0" style="-fx-border-color: #eaebee; -fx-background-color: #ffffff;">
+                                 <font>
+                                    <Font name="Poppins Regular" size="12.0" />
+                                 </font>
+                              </TextField>
+                              <Text id="lblBienvenido" layoutX="32.0" layoutY="189.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Número de contacto:">
+                                 <font>
+                                    <Font name="Poppins Regular" size="14.0" />
+                                 </font>
+                              </Text>
+                              <TextField id="txtUsuario" layoutX="32.0" layoutY="202.0" prefHeight="36.0" prefWidth="286.0" style="-fx-border-color: #eaebee; -fx-background-color: #ffffff;">
+                                 <font>
+                                    <Font name="Poppins Regular" size="12.0" />
+                                 </font>
+                              </TextField>
+                              <Text id="lblBienvenido" layoutX="374.0" layoutY="189.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Fecha de contratación:">
+                                 <font>
+                                    <Font name="Poppins Regular" size="14.0" />
+                                 </font>
+                              </Text>
+                              <TextField id="txtUsuario" layoutX="374.0" layoutY="202.0" prefHeight="36.0" prefWidth="298.0" style="-fx-border-color: #eaebee; -fx-background-color: #ffffff;">
+                                 <font>
+                                    <Font name="Poppins Regular" size="12.0" />
+                                 </font>
+                              </TextField>
+                              <Text id="lblBienvenido" layoutX="32.0" layoutY="263.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dirección:">
+                                 <font>
+                                    <Font name="Poppins Regular" size="14.0" />
+                                 </font>
+                              </Text>
+                              <TextField id="txtUsuario" layoutX="32.0" layoutY="276.0" prefHeight="36.0" prefWidth="286.0" style="-fx-border-color: #eaebee; -fx-background-color: #ffffff;">
+                                 <font>
+                                    <Font name="Poppins Regular" size="12.0" />
+                                 </font>
+                              </TextField>
+                              <Text id="lblBienvenido" layoutX="32.0" layoutY="341.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tenga cuidado al ingresar estos datos ya que no podra cambiarlos luego.">
+                                 <font>
+                                    <Font name="Poppins Light" size="10.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </Pane>
+                     </children>
+                     <effect>
+                        <DropShadow height="5.0" offsetX="0.8" offsetY="1.0" radius="2.0" spread="0.1" width="5.0" />
+                     </effect>
+                  </Pane>
+                  <Pane layoutX="10.0" layoutY="10.0" prefHeight="359.0" prefWidth="660.0" style="-fx-background-color: #f0f0f0; -fx-background-radius: 8;" visible="false">
+                     <children>
+                        <ScrollPane hbarPolicy="NEVER" layoutX="24.0" layoutY="36.0" prefHeight="112.0" prefWidth="743.0" style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-background-radius: 15px; -fx-border-radius: 15px;" vbarPolicy="NEVER">
+                          <content>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="108.0" prefWidth="732.0" style="-fx-background-radius: 15px; -fx-background-color: #111111; -fx-border-color: #111111; -fx-background-radius: 15px;">
+                                 <children>
+                                    <Circle fill="#262110" layoutX="684.0" layoutY="54.0" radius="87.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#feb900" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="DD">
+                                       <font>
+                                          <Font name="Inter 18pt SemiBold" size="28.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Diomedes Diaz">
+                                       <font>
+                                          <Font name="Inter 18pt SemiBold" size="20.0" />
+                                       </font>
+                                    </Text>
+                                    <Text fill="#aaaaaa" strokeType="OUTSIDE" strokeWidth="0.0" text="elcaciquedelajunta2013@outlook.es">
+                                       <font>
+                                          <Font name="Inter Regular" size="14.0" />
+                                       </font>
+                                    </Text>
+                                    <Pane prefHeight="27.0" prefWidth="115.0" style="-fx-background-color: #443713; -fx-background-radius: 10px;">
+                                       <children>
+                                          <Text fill="#ffb800" layoutX="13.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Admin Principal" textAlignment="CENTER">
+                                             <font>
+                                                <Font name="Inter 18pt SemiBold" size="12.0" />
+                                             </font>
+                                          </Text>
+                                       </children>
+                                    </Pane>
+                                 </children>
+                              </AnchorPane>
+                          </content>
+                        </ScrollPane>
+                        <Button id="btLogin" layoutX="639.0" layoutY="331.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="131.0" style="-fx-background-color: #f6cd85; -fx-background-radius: 20;" text="Eliminar Cuenta">
+                           <font>
+                              <Font name="Poppins ExtraLight" size="13.0" />
+                           </font>
+                        </Button>
+                        <TextFlow layoutX="42.0" layoutY="179.0" prefHeight="51.0" prefWidth="350.0">
+                           <children>
+                              <Text id="lblBienvenido" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombres: ">
+                                 <font>
+                                    <Font name="Poppins SemiBold" size="14.0" />
+                                 </font>
+                              </Text>
+                              <Text id="lblBienvenido" strokeType="OUTSIDE" strokeWidth="0.0" text="Diomedes Diaz">
+                                 <font>
+                                    <Font name="Poppins Regular" size="14.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </TextFlow>
+                        <TextFlow layoutX="42.0" layoutY="230.0" prefHeight="51.0" prefWidth="350.0">
+                           <children>
+                              <Text id="lblBienvenido" strokeType="OUTSIDE" strokeWidth="0.0" text="Correo: ">
+                                 <font>
+                                    <Font name="Poppins SemiBold" size="14.0" />
+                                 </font>
+                              </Text>
+                              <Text id="lblBienvenido" strokeType="OUTSIDE" strokeWidth="0.0" text="elcaciquedelajunta2013@outlook.es">
+                                 <font>
+                                    <Font name="Poppins Regular" size="14.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </TextFlow>
+                        <TextFlow layoutX="42.0" layoutY="281.0" prefHeight="51.0" prefWidth="350.0">
+                           <children>
+                              <Text id="lblBienvenido" strokeType="OUTSIDE" strokeWidth="0.0" text="Telefono: ">
+                                 <font>
+                                    <Font name="Poppins SemiBold" size="14.0" />
+                                 </font>
+                              </Text>
+                              <Text id="lblBienvenido" strokeType="OUTSIDE" strokeWidth="0.0" text="+57 314 8011595">
+                                 <font>
+                                    <Font name="Poppins Regular" size="14.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </TextFlow>
+                        <TextFlow layoutX="42.0" layoutY="332.0" prefHeight="41.0" prefWidth="361.0">
+                           <children>
+                              <Text id="lblBienvenido" strokeType="OUTSIDE" strokeWidth="0.0" text="Direccion: ">
+                                 <font>
+                                    <Font name="Poppins SemiBold" size="14.0" />
+                                 </font>
+                              </Text>
+                              <Text id="lblBienvenido" strokeType="OUTSIDE" strokeWidth="0.0" text="Cl 26 # 5 - 1957 La Junta - La Guajira">
+                                 <font>
+                                    <Font name="Poppins Regular" size="14.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </TextFlow>
+                        <TextFlow layoutX="392.0" layoutY="179.0" prefHeight="51.0" prefWidth="350.0">
+                           <children>
+                              <Text id="lblBienvenido" strokeType="OUTSIDE" strokeWidth="0.0" text="Rol: ">
+                                 <font>
+                                    <Font name="Poppins SemiBold" size="14.0" />
+                                 </font>
+                              </Text>
+                              <Text id="lblBienvenido" strokeType="OUTSIDE" strokeWidth="0.0" text=" Admin principal">
+                                 <font>
+                                    <Font name="Poppins Regular" size="14.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </TextFlow>
+                        <TextFlow layoutX="392.0" layoutY="230.0" prefHeight="51.0" prefWidth="350.0">
+                           <children>
+                              <Text id="lblBienvenido" strokeType="OUTSIDE" strokeWidth="0.0" text="Numero de personal ingresado:  ">
+                                 <font>
+                                    <Font name="Poppins SemiBold" size="14.0" />
+                                 </font>
+                              </Text>
+                              <Text id="lblBienvenido" strokeType="OUTSIDE" strokeWidth="0.0" text="5">
+                                 <font>
+                                    <Font name="Poppins Regular" size="14.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </TextFlow>
+                        <Pane layoutX="498.0" layoutY="314.0" prefHeight="35.0" prefWidth="86.0" style="-fx-background-color: #3b3527; -fx-background-radius: 10px; -fx-border-color: #4a4436; -fx-border-radius: 10px;" />
+                     </children>
+                     <effect>
+                        <DropShadow height="5.0" offsetX="0.8" offsetY="1.0" radius="2.0" spread="0.1" width="5.0" />
+                     </effect>
+                  </Pane>
+               </children>
+            </StackPane>
+         </children>
+      </Pane>
+   </children>
+</StackPane>

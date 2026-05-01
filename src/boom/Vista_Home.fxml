@@ -1,0 +1,283 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.shape.Line?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="2312.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <ScrollPane hbarPolicy="NEVER" pannable="true" prefHeight="200.0" prefWidth="200.0" stylesheets="@../../../Boom/src/boom/estilo.css">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="2333.0" prefWidth="1280.0">
+               <children>
+                  <Pane prefHeight="2312.0" prefWidth="1280.0">
+                     <children>
+                        <Pane prefHeight="110.0" prefWidth="1280.0" style="-fx-background-color: #111111;" styleClass="dark-toolbar" stylesheets="@estilosbotones.css">
+                           <children>
+                              <Text id="lblBienvenido" fill="WHITE" layoutX="30.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="B O O M" wrappingWidth="153.5500030517578">
+                                 <font>
+                                    <Font name="Poppins Bold" size="38.0" />
+                                 </font>
+                              </Text>
+                              <TextField layoutX="279.0" layoutY="33.0" prefHeight="45.0" prefWidth="690.0" promptText="Laptop Vivabook 15" style="-fx-background-color: #F6F6F6;">
+                                 <font>
+                                    <Font name="Poppins Regular" size="13.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets left="15.0" />
+                                 </padding>
+                              </TextField>
+                              <Line endX="-100.0" endY="32.0" layoutX="1017.0" layoutY="40.0" startX="-100.0" stroke="#2f2f2f" strokeWidth="2.0" />
+                              <Button layoutX="924.0" layoutY="39.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="39.0" style="-fx-background-color: transparent;" styleClass="icon-button">
+                                 <graphic>
+                                    <Region prefHeight="45.0" prefWidth="63.0" style="-fx-background-color: #111111;" styleClass="icon-lupa" />
+                                 </graphic>
+                              </Button>
+                              <Button layoutX="1019.0" layoutY="39.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="39.0" style="-fx-background-color: transparent;" styleClass="icon-button">
+                                 <graphic>
+                                    <Region prefHeight="45.0" prefWidth="63.0" style="-fx-border-color: #ffffff; -fx-border-width: 2;" styleClass="icon-corazon" />
+                                 </graphic>
+                              </Button>
+                              <Button layoutX="1073.0" layoutY="38.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="39.0" style="-fx-background-color: transparent;" styleClass="icon-button">
+                                 <graphic>
+                                    <Region prefHeight="45.0" prefWidth="23.0" style="-fx-border-color: #ffffff; -fx-border-width: 2;" styleClass="icon-carrito" />
+                                 </graphic>
+                              </Button>
+                              <Button layoutX="1130.0" layoutY="38.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="39.0" style="-fx-background-color: transparent;" styleClass="icon-button">
+                                 <graphic>
+                                    <Region prefHeight="45.0" prefWidth="23.0" style="-fx-border-color: #ffffff; -fx-border-width: 2;" styleClass="icon-usuario" />
+                                 </graphic>
+                              </Button>
+                              <MenuButton layoutX="1190.0" layoutY="43.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="33.0" style="-fx-background-color: #ffffff;" styleClass="icon-menu">
+                                <items>
+                                  <MenuItem mnemonicParsing="false" text="Cerrar Sesión  " />
+                                </items>
+                              </MenuButton>
+                           </children>
+                        </Pane>
+                        <Pane layoutY="110.0" prefHeight="45.0" prefWidth="1280.0" style="-fx-background-color: #ffffff;" stylesheets="@estilosbotones.css">
+                           <children>
+                              <Button layoutX="205.0" layoutY="11.0" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Ofertas">
+                                 <font>
+                                    <Font name="Poppins Light" size="13.0" />
+                                 </font>
+                              </Button>
+                              <Button layoutX="387.0" layoutY="11.0" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Tecnologia">
+                                 <font>
+                                    <Font name="Poppins Light" size="13.0" />
+                                 </font>
+                              </Button>
+                              <Button layoutX="626.0" layoutY="11.0" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Hogar">
+                                 <font>
+                                    <Font name="Poppins Light" size="13.0" />
+                                 </font>
+                              </Button>
+                              <Button layoutX="840.0" layoutY="11.0" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Deportes">
+                                 <font>
+                                    <Font name="Poppins Light" size="13.0" />
+                                 </font>
+                              </Button>
+                              <Button layoutX="1074.0" layoutY="9.0" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Moda y Belleza">
+                                 <font>
+                                    <Font name="Poppins Light" size="13.0" />
+                                 </font>
+                              </Button>
+                              <Region layoutX="39.0" layoutY="8.0" prefHeight="25.0" prefWidth="39.0" style="-fx-border-color: #111111; -fx-border-width: 2,5;" styleClass="icon-location" />
+                              <Text layoutX="72.0" layoutY="20.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enviar a...">
+                                 <font>
+                                    <Font name="Poppins Regular" size="10.0" />
+                                 </font>
+                              </Text>
+                              <Text layoutX="69.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Monteria">
+                                 <font>
+                                    <Font name="Poppins SemiBold" size="11.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </Pane>
+                        <Pane layoutY="155.0" prefHeight="400.0" prefWidth="1280.0" style="-fx-background-color: #f6f6f6;">
+                           <children>
+                              <Text layoutX="416.0" layoutY="79.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Compra sin límites y siente el">
+                                 <font>
+                                    <Font name="Poppins SemiBold" size="30.0" />
+                                 </font>
+                              </Text>
+                              <Text layoutX="232.0" layoutY="319.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BOOM">
+                                 <font>
+                                    <Font name="Poppins Black" size="250.0" />
+                                 </font>
+                              </Text>
+                              <ImageView fitHeight="316.0" fitWidth="407.0" layoutX="457.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../Boom/src/boom/Media/Home.png" />
+                                 </image>
+                              </ImageView>
+                              <Region layoutX="-7.0" layoutY="320.0" prefHeight="80.0" prefWidth="1280.0" style="-fx-background-color: linear-gradient(to top, #f6f6f6 0%, rgba(255, 255, 255, 0) 100%);" />
+                           </children>
+                        </Pane>
+                        <Pane layoutX="-6.0" layoutY="555.0" prefHeight="200.0" prefWidth="1280.0" style="-fx-background-color: #f6f6f6;">
+                           <children>
+                              <Button layoutX="109.0" layoutY="14.0" mnemonicParsing="false" prefHeight="173.0" prefWidth="130.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
+                                 <font>
+                                    <Font name="Poppins Light" size="19.0" />
+                                 </font>
+                                 <graphic>
+                                    <Pane prefHeight="200.0" prefWidth="200.0">
+                                       <children>
+                                          <Text layoutX="17.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ofertas">
+                                             <font>
+                                                <Font name="Poppins Light" size="19.0" />
+                                             </font>
+                                          </Text>
+                                          <ImageView fitHeight="122.0" fitWidth="123.0" layoutX="-10.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../../Boom/src/boom/Media/EllipseS.png" />
+                                             </image>
+                                          </ImageView>
+                                          <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="-9.0" layoutY="-17.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../../Boom/src/boom/Media/Ofertas.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </Pane>
+                                 </graphic>
+                              </Button>
+                              <Button layoutX="339.0" layoutY="14.0" mnemonicParsing="false" prefHeight="173.0" prefWidth="130.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
+                                 <font>
+                                    <Font name="Poppins Light" size="19.0" />
+                                 </font>
+                                 <graphic>
+                                    <Pane prefHeight="200.0" prefWidth="200.0">
+                                       <children>
+                                          <Text layoutY="139.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tecnologia">
+                                             <font>
+                                                <Font name="Poppins Light" size="19.0" />
+                                             </font>
+                                          </Text>
+                                          <ImageView fitHeight="122.0" fitWidth="123.0" layoutX="-10.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../../Boom/src/boom/Media/EllipseS.png" />
+                                             </image>
+                                          </ImageView>
+                                          <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="-23.0" layoutY="-18.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../../Boom/src/boom/Media/Tecnologia.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </Pane>
+                                 </graphic>
+                              </Button>
+                              <Button layoutX="564.0" layoutY="14.0" mnemonicParsing="false" prefHeight="173.0" prefWidth="130.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
+                                 <font>
+                                    <Font name="Poppins Light" size="19.0" />
+                                 </font>
+                                 <graphic>
+                                    <Pane prefHeight="200.0" prefWidth="200.0">
+                                       <children>
+                                          <Text layoutX="23.0" layoutY="139.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hogar">
+                                             <font>
+                                                <Font name="Poppins Light" size="19.0" />
+                                             </font>
+                                          </Text>
+                                          <ImageView fitHeight="122.0" fitWidth="123.0" layoutX="-10.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../../Boom/src/boom/Media/EllipseS.png" />
+                                             </image>
+                                          </ImageView>
+                                          <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="-10.0" layoutY="-25.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../../Boom/src/boom/Media/Hogar.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </Pane>
+                                 </graphic>
+                              </Button>
+                              <Button layoutX="801.0" layoutY="14.0" mnemonicParsing="false" prefHeight="173.0" prefWidth="130.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
+                                 <font>
+                                    <Font name="Poppins Light" size="19.0" />
+                                 </font>
+                                 <graphic>
+                                    <Pane prefHeight="200.0" prefWidth="200.0">
+                                       <children>
+                                          <Text layoutX="9.0" layoutY="136.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Deportes">
+                                             <font>
+                                                <Font name="Poppins Light" size="19.0" />
+                                             </font>
+                                          </Text>
+                                          <ImageView fitHeight="122.0" fitWidth="123.0" layoutX="-10.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../../Boom/src/boom/Media/EllipseS.png" />
+                                             </image>
+                                          </ImageView>
+                                          <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="-17.0" layoutY="-18.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../../Boom/src/boom/Media/Deportes.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </Pane>
+                                 </graphic>
+                              </Button>
+                              <Button layoutX="1056.0" layoutY="14.0" mnemonicParsing="false" prefHeight="173.0" prefWidth="130.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
+                                 <font>
+                                    <Font name="Poppins Light" size="19.0" />
+                                 </font>
+                                 <graphic>
+                                    <Pane prefHeight="200.0" prefWidth="200.0">
+                                       <children>
+                                          <Text layoutX="-19.0" layoutY="139.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Moda y Belleza">
+                                             <font>
+                                                <Font name="Poppins Light" size="19.0" />
+                                             </font>
+                                          </Text>
+                                          <ImageView fitHeight="122.0" fitWidth="123.0" layoutX="-10.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../../Boom/src/boom/Media/EllipseS.png" />
+                                             </image>
+                                          </ImageView>
+                                          <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="-6.0" layoutY="-35.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../../Boom/src/boom/Media/Moda.png" />
+                                             </image>
+                                          </ImageView>
+                                       </children>
+                                    </Pane>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </Pane>
+                        <Pane layoutY="755.0" prefHeight="60.0" prefWidth="1280.0">
+                           <children>
+                              <Text layoutX="593.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="- Para ti -">
+                                 <font>
+                                    <Font name="Poppins Medium" size="19.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </Pane>
+                        <FlowPane id="contenedorProductosHome" hgap="90.0" layoutY="815.0" prefHeight="1400.0" prefWidth="1280.0" vgap="60.0" />
+                        <Pane layoutY="2215.0" prefHeight="99.0" prefWidth="1280.0" />
+                     </children>
+                  </Pane>
+               </children>
+            </AnchorPane>
+        </content>
+      </ScrollPane>
+   </children>
+</StackPane>

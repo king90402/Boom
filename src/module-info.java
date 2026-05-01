@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/module-info.java to edit this template
  */
 
-module Boom {
+module boom {
     requires javafx.swt;
     requires javafx.base;
     requires javafx.controls;

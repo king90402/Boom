@@ -114,4 +114,177 @@ public class Controladora {
         return contadorProductos;
     }
 
+// Metodos correspondientes a la lista de clientes
+    
+    // Agregar un cliente
+    public boolean agregarCliente(cliente cliente) {
+        if (contadorClientes < mx) {
+            listaClientes[contadorClientes] = cliente;
+            contadorClientes++;
+            return true;
+        }
+        return false;
+    }
+    
+    // Eliminar un cliente por su posicion 
+    public boolean eliminarCliente(int pos) {
+        if (pos >= 0 && pos < contadorClientes) {
+            for (int i = pos; i < contadorClientes - 1; i++) {
+                listaClientes[i] = listaClientes[i + 1];
+            }
+            listaClientes[contadorClientes - 1] = null;
+            contadorClientes--;
+            return true;
+        }
+        return false;
+    }
+    
+    // Eliminar un cliente por su ID
+    public boolean eliminarClientePorId(String IdCliente) {
+        for (int i = 0; i < contadorClientes; i++) {
+            if (listaClientes[i].getIdCliente().equals(IdCliente)) {
+                return eliminarCliente(i);
+            }
+        }
+        return false;
+    }
+    
+    // Obtener un cliente por su posicion
+    public cliente obtenerCliente(int pos) {
+        if (pos >= 0 && pos < contadorClientes) {
+            return listaClientes[pos];
+        }
+        return null;
+    }
+    
+    // Buscar un cliente por su ID
+    public cliente buscarClientePorId(String IdCliente) {
+        for (int i = 0; i < contadorClientes; i++) {
+            if (listaClientes[i].getIdCliente().equals(IdCliente)) {
+                return listaClientes[i];
+            }
+        }
+        return null;
+    }
+    
+    // Buscar posicion de un cliente por su ID
+    public int buscarIndiceClientePorId(String IdCliente) {
+        for (int i = 0; i < contadorClientes; i++) {
+            if (listaClientes[i].getIdCliente().equals(IdCliente)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    
+    // Verificar si un correo de cliente ya existe
+    public boolean existeCorreoCliente(String correoCliente) {
+        for (int i = 0; i < contadorClientes; i++) {
+            if (listaClientes[i].getCorreoCliente().equals(correoCliente)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    // Obtener la cantidad de clientes
+    public int getCantidadClientes() {
+        return contadorClientes;
+    }
+    
+// Metodos para la lista de admins
+    
+    // Agregar un admin al array
+    public boolean agregarAdmin(admin admin) {
+        if (contadorAdmins < mx) {
+            listaAdmins[contadorAdmins] = admin;
+            contadorAdmins++;
+            return true;
+        }
+        return false;
+    }
+    
+    // Eliminar un admin por su posicion
+    public boolean eliminarAdmin(int pos) {
+        if (pos >= 0 && pos < contadorAdmins) {
+            for (int i = pos; i < contadorAdmins - 1; i++) {
+                listaAdmins[i] = listaAdmins[i + 1];
+            }
+            listaAdmins[contadorAdmins - 1] = null;
+            contadorAdmins--;
+            return true;
+        }
+        return false;
+    }
+    
+    // Eliminar un admin por su ID
+    public boolean eliminarAdminPorId(String IdAdmin) {
+        for (int i = 0; i < contadorAdmins; i++) {
+            if (listaAdmins[i].getIdAdmin().equals(IdAdmin)) {
+                return eliminarAdmin(i);
+            }
+        }
+        return false;
+    }
+    
+    // Obtener un admin por su posicion
+    public admin obtenerAdmin(int pos) {
+        if (pos >= 0 && pos < contadorAdmins) {
+            return listaAdmins[pos];
+        }
+        return null;
+    }
+    
+    // Buscar un admin por su ID
+    public admin buscarAdminPorId(String IdAdmin) {
+        for (int i = 0; i < contadorAdmins; i++) {
+            if (listaAdmins[i].getIdAdmin().equals(IdAdmin)) {
+                return listaAdmins[i];
+            }
+        }
+        return null;
+    }
+    
+    // Buscar posicion de un admin por su ID
+    public int buscarIndiceAdminPorId(String IdAdmin) {
+        for (int i = 0; i < contadorAdmins; i++) {
+            if (listaAdmins[i].getIdAdmin().equals(IdAdmin)) {
+                return i;
+            }
+        }
+        return -1;
+    }
+    
+    // Verificar si un correo de admin ya existe
+    public boolean existeCorreoAdmin(String correoAdmin) {
+        for (int i = 0; i < contadorAdmins; i++) {
+            if (listaAdmins[i].getCorreoAdmin().equals(correoAdmin)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    // Obtener la cantidad de admins
+    public int getCantidadAdmins() {
+        return contadorAdmins;
+    }
+    
+// Metodos auxiliares
+    
+    // Obtener el tamaño máximo
+    public int getTamanoMaximo() {
+        return mx;
+    }
+    
+    // Limpiar todos los datos
+    public void limpiarTodo() {
+        listaProductos = new producto[mx];
+        listaClientes = new cliente[mx];
+        listaAdmins = new admin[mx];
+        contadorProductos = 0;
+        contadorClientes = 0;
+        contadorAdmins = 0;
+    }
+
 }

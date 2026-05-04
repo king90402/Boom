@@ -16,6 +16,7 @@ public class producto {
     public String EstadoProducto;
     public String MarcaProducto;
     public String CategoriaProducto;
+    public String imagenProducto;
 
     public producto() {
         NombreProducto = "";
@@ -25,9 +26,10 @@ public class producto {
         EstadoProducto = "";
         MarcaProducto = "";
         CategoriaProducto = "";
+        imagenProducto= "";
     }
 
-    public producto(String NombreProducto, String IdProducto, int CantidadProducto, double PrecioProducto, String EstadoProducto, String MarcaProducto, String CategoriaProducto) {
+    public producto(String NombreProducto, String IdProducto, int CantidadProducto, double PrecioProducto, String EstadoProducto, String MarcaProducto, String CategoriaProducto, String imagenProducto) {
         this.NombreProducto = NombreProducto;
         this.IdProducto = IdProducto;
         this.CantidadProducto = CantidadProducto;
@@ -35,7 +37,9 @@ public class producto {
         this.EstadoProducto = EstadoProducto;
         this.MarcaProducto = MarcaProducto;
         this.CategoriaProducto = CategoriaProducto;
+      this.imagenProducto = imagenProducto;
     }
+
 
     public String getNombreProducto() { return NombreProducto; }
     public String getIdProducto() { return IdProducto; }
@@ -44,6 +48,8 @@ public class producto {
     public String getEstadoProducto() { return EstadoProducto; }
     public String getMarcaProducto() { return MarcaProducto; }
     public String getCategoriaProducto() { return CategoriaProducto; }
+    public String getImagenProducto() { return imagenProducto;}
+    
 
     public void setNombreProducto(String NombreProducto) { this.NombreProducto = NombreProducto; }
     public void setIdProducto(String IdProducto) { this.IdProducto = IdProducto; }
@@ -52,4 +58,6 @@ public class producto {
     public void setEstadoProducto(String EstadoProducto) { this.EstadoProducto = EstadoProducto; }
     public void setMarcaProducto(String MarcaProducto) { this.MarcaProducto = MarcaProducto; }
     public void setCategoriaProducto(String CategoriaProducto) { this.CategoriaProducto = CategoriaProducto; }
+    public void setImagenProducto(String imagenProducto) { this.imagenProducto = imagenProducto;}
+    
 }

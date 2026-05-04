@@ -3,7 +3,19 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
 package boom;
-
+import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
+import javafx.scene.control.PasswordField;
+import javafx.scene.layout.Pane;
+import javafx.scene.input.MouseEvent;
+import javax.swing.JOptionPane;
+import javax.swing.JOptionPane; 
+import javafx.fxml.FXMLLoader; 
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.scene.Node;
+import javafx.scene.control.TextField;
 /**
  *
  * @author alejo
@@ -18,6 +30,84 @@ public class Controladora {
     private int contadorProductos;
     private int contadorClientes;
     private int contadorAdmins;
+    
+    @FXML
+    private Pane paneLogin;
+    @FXML
+    private Pane paneRegistro;
+    
+    @FXML
+    private TextField correO; // O el nombre que viste en el fx:id de Scene Builder
+
+@FXML
+private PasswordField password;
+
+
+    
+    //Metodo ir a registro
+    @FXML
+    private void irARegistro(MouseEvent event){
+        paneLogin.setVisible(false);
+        paneRegistro.setVisible(true);
+    }
+    
+    //Metodo ir a iniciar seccion
+    @FXML
+    private void irALogin(MouseEvent event){
+        paneLogin.setVisible(true);
+        paneRegistro.setVisible(false);
+    }
+    
+    //Metodo inicio de seccion administrador
+    @FXML
+    private void Inicioseccion_admin(ActionEvent event){
+        String user = correO.getText().trim();
+        String pass = password.getText().trim();
+        
+        System.out.println("Intentando login con: " + user);
+    System.out.println("Contraseña escrita: " + pass);
+    System.out.println("Cantidad de admins en lista: " + contadorAdmins);
+        
+        boolean encontrado = false;
+        
+       for (int i = 0; i < contadorAdmins; i++) {
+        admin a = listaAdmins[i];
+        System.out.println("Comparando con Admin[" + i + "]: [" + a.getCorreoAdmin() + "] / [" + a.getContrasenaAdmin() + "]");
+        
+        // Comparamos correo y contraseña de cada admin guardado
+        if (a.getCorreoAdmin().equals(user) && a.getContrasenaAdmin().equals(pass)) {
+            encontrado = true;
+            
+           try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("Vista_Administracion.fxml"));
+                Parent root = loader.load();
+                
+                
+                Scene scene = new Scene(root);
+                Stage stage = new Stage();
+                stage.setScene(scene);
+                stage.setTitle("Panel de Administración - Sparkle");
+                
+                
+                stage.show();
+                
+               
+                Node source = (Node) event.getSource();
+                Stage currentStage = (Stage) source.getScene().getWindow();
+                currentStage.close();
+                
+            } catch (Exception e) {
+                JOptionPane.showMessageDialog(null, "Error al cargar la vista de administración: " + e.getMessage());
+                e.printStackTrace();
+            }
+            break; 
+        }
+    }
+
+    if (!encontrado) {
+        JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos. Intente de nuevo.");
+    }
+    }
 
     public Controladora() {
         listaProductos = new producto[mx];
@@ -27,6 +117,19 @@ public class Controladora {
         contadorProductos = 0;
         contadorClientes = 0;
         contadorAdmins = 0;
+        
+        //Admin ya preestablecido
+        
+        admin principal = new admin(
+    "Diomedes Díaz",                   
+    "Admin principal",               
+    "+57 3148011595",                 
+    "elcaciquedelajunta2013@outlook.es", 
+    "Diomedes2013",                  
+    "Cl 26 # 5 - 1957 La junta"        
+);
+        listaAdmins[contadorAdmins] = principal;
+        contadorAdmins++;
     }
     
 // Metodos correspondientes a la lista de productos 
@@ -193,7 +296,6 @@ public class Controladora {
     }
     
 // Metodos para la lista de admins
-    
     // Agregar un admin al array
     public boolean agregarAdmin(admin admin) {
         if (contadorAdmins < mx) {
@@ -269,7 +371,7 @@ public class Controladora {
     public int getCantidadAdmins() {
         return contadorAdmins;
     }
-    
+
 // Metodos auxiliares
     
     // Obtener el tamaño máximo

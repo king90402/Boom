@@ -38,7 +38,7 @@ public class admin {
     public String getIdAdmin(){ return IdAdmin; }
     public String getTelefonoAdmin() { return TelefonoAdmin; }
     public String getCorreoAdmin() { return CorreoAdmin; }
-    public String getContraseñaAdmin() { return ContraseñaAdmin; }
+    public String getContrasenaAdmin() { return ContraseñaAdmin; }
     public String getDireccionAdmin () { return DireccionAdmin; }
     
     public void setNombreAdmin(String NombreAdmin){ this.NombreAdmin = NombreAdmin; }

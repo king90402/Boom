@@ -11,9 +11,9 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane id="mother" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="boom.Controladora">
+<StackPane id="mother" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="boom.Controladora">
    <children>
-      <Pane id="paneLogin" fx:id="paneLogin" prefHeight="450.0" prefWidth="800.0" style="-fx-background-color: linear-gradient(to bottom, #f6f5f5, #f6daa7);">
+      <Pane id="paneLogin" fx:id="paneLogin" prefHeight="450.0" prefWidth="800.0" style="-fx-background-color: linear-gradient(to bottom, #f6f5f5, #f6daa7);" visible="false">
          <children>
             <Pane id="contenedor2" layoutX="54.0" layoutY="61.0" prefHeight="329.0" prefWidth="693.0" style="-fx-background-color: #f6f6f6; -fx-background-radius: 17;">
                <children>
@@ -37,7 +37,7 @@
                         <Font name="Poppins Regular" size="12.0" />
                      </font>
                   </PasswordField>
-                  <Button layoutX="397.0" layoutY="246.0" mnemonicParsing="false" onAction="#Inicioseccion_admin" prefHeight="36.0" prefWidth="233.0" style="-fx-background-color: #f6cd85; -fx-background-radius: 7;" text="INICIAR SESIÓN">
+                  <Button layoutX="397.0" layoutY="246.0" mnemonicParsing="false" onAction="#Inicioseccion_admin" prefHeight="36.0" prefWidth="233.0" style="-fx-background-color: #f6cd85; -fx-background-radius: 7; -fx-cursor: hand;" text="INICIAR SESIÓN">
                      <font>
                         <Font name="Roboto Regular" size="11.0" />
                      </font>
@@ -47,7 +47,7 @@
                         <Font name="Poppins Regular" size="11.0" />
                      </font>
                   </Text>
-                  <Button id="btLogin-Sign" layoutX="530.0" layoutY="290.0" mnemonicParsing="false" onMouseClicked="#irARegistro" prefHeight="26.0" prefWidth="75.0" style="-fx-background-color: transparent; -fx-background-radius: 7;" text="Registrate" textFill="#f6dfb5" underline="true">
+                  <Button id="btLogin-Sign" layoutX="530.0" layoutY="290.0" mnemonicParsing="false" onMouseClicked="#irARegistro" prefHeight="26.0" prefWidth="75.0" style="-fx-background-color: transparent; -fx-background-radius: 7; -fx-cursor: hand;" text="Registrate" textFill="#f6dfb5" underline="true">
                      <font>
                         <Font name="Poppins Regular" size="11.0" />
                      </font>
@@ -59,7 +59,7 @@
             </Pane>
          </children>
       </Pane>
-      <Pane id="paneRegistro" fx:id="paneRegistro" prefHeight="450.0" prefWidth="800.0" style="-fx-background-color: linear-gradient(to bottom, #f6f5f5, #f6daa7);" visible="false">
+      <Pane id="paneRegistro" fx:id="paneRegistro" prefHeight="450.0" prefWidth="800.0" style="-fx-background-color: linear-gradient(to bottom, #f6f5f5, #f6daa7);">
          <children>
             <Pane id="contenedor1" layoutX="54.0" layoutY="61.0" prefHeight="329.0" prefWidth="693.0" style="-fx-background-color: #f6f6f6; -fx-background-radius: 17;">
                <children>
@@ -78,12 +78,12 @@
                         <Font name="Poppins Regular" size="12.0" />
                      </font>
                   </TextField>
-                  <Button id="btLogin" layoutX="60.0" layoutY="279.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="233.0" style="-fx-background-color: #f6cd85; -fx-background-radius: 7;" text="REGISTRATE">
+                  <Button id="btLogin" layoutX="60.0" layoutY="279.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="233.0" style="-fx-background-color: #f6cd85; -fx-background-radius: 7; -fx-cursor: hand;" text="REGISTRATE">
                      <font>
                         <Font name="Roboto Regular" size="11.0" />
                      </font>
                   </Button>
-                  <Button id="btLogin-Sign" layoutX="1.0" layoutY="7.0" mnemonicParsing="false" onMouseClicked="#irALogin" prefHeight="27.0" prefWidth="129.0" style="-fx-background-color: transparent; -fx-background-radius: 7;" text="&lt; Iniciar Sesión">
+                  <Button id="btLogin-Sign" layoutX="1.0" layoutY="7.0" mnemonicParsing="false" onMouseClicked="#irALogin" prefHeight="27.0" prefWidth="129.0" style="-fx-background-color: transparent; -fx-background-radius: 7; -fx-cursor: hand;" text="&lt; Iniciar Sesión">
                      <font>
                         <Font name="Poppins Bold" size="13.0" />
                      </font>

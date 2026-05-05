@@ -39,8 +39,8 @@ public class Controladora {
     @FXML
     private TextField correO; // O el nombre que viste en el fx:id de Scene Builder
 
-@FXML
-private PasswordField password;
+    @FXML
+    private PasswordField password;
 
 
     

@@ -29,11 +29,6 @@
          <children>
             <Pane prefHeight="450.0" prefWidth="178.0" style="-fx-background-color: #111111;">
                <children>
-                  <Text id="lblBienvenido" fill="WHITE" layoutX="14.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="B O O M" wrappingWidth="113.55000305175781">
-                     <font>
-                        <Font name="Poppins Bold" size="28.0" />
-                     </font>
-                  </Text>
                   <Line endX="100.0" layoutX="101.0" layoutY="67.0" startX="-100.0" stroke="WHITE" />
                   <Button id="btLogin" alignment="BASELINE_LEFT" layoutX="-4.0" layoutY="90.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="186.0" style="-fx-background-color: #F7CD84;" text="Estadisticas">
                      <font>
@@ -82,6 +77,11 @@
                      <padding>
                         <Insets left="15.0" />
                      </padding>
+                  </Button>
+                  <Button layoutX="-9.0" layoutY="5.0" mnemonicParsing="false" onAction="#irACategoriaOfertas" prefHeight="51.0" prefWidth="144.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="B O O M" textFill="WHITE">
+                     <font>
+                        <Font name="Poppins Bold" size="28.0" />
+                     </font>
                   </Button>
                </children>
             </Pane>

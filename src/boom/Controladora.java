@@ -16,11 +16,34 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.scene.Node;
 import javafx.scene.control.TextField;
+import javafx.fxml.Initializable;
+import java.net.URL;
+import java.util.ResourceBundle;
+import java.util.ArrayList;
+import java.util.List;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+
 /**
  *
  * @author alejo
  */
-public class Controladora {
+public class Controladora implements Initializable { 
+
+    @Override
+    public void initialize(URL url, ResourceBundle rb) {
+        paneLogin.setVisible(true);
+        paneRegistro.setVisible(false);
+        
+        terminarcorreo = new ArrayList<>();
+        terminarcorreo.add("@gmail.com");
+        terminarcorreo.add("@hotmail.com");
+        terminarcorreo.add("@outlook.es");
+        terminarcorreo.add("@yahoo.com");
+        
+        configurarAutoCompletadoCorreo();
+    }
+    
     private static final int mx = 500;
     
     private producto[] listaProductos;
@@ -30,17 +53,26 @@ public class Controladora {
     private int contadorProductos;
     private int contadorClientes;
     private int contadorAdmins;
+    private List<String> terminarcorreo;
+    private int indicecorreo = 0;
     
+    //Paneles Login registro
     @FXML
     private Pane paneLogin;
     @FXML
     private Pane paneRegistro;
     
+    //Iniciar seccion
     @FXML
-    private TextField correO; // O el nombre que viste en el fx:id de Scene Builder
-
+    private TextField correO; 
     @FXML
     private PasswordField password;
+    
+    //Registrarse
+    @FXML private TextField correo_cliente;
+    @FXML private TextField telefono_cliente;
+    @FXML private TextField user;
+    @FXML private TextField contraS;
 
 
     
@@ -57,16 +89,14 @@ public class Controladora {
         paneLogin.setVisible(true);
         paneRegistro.setVisible(false);
     }
+   
     
     //Metodo inicio de seccion administrador
     @FXML
     private void Inicioseccion_admin(ActionEvent event){
         String user = correO.getText().trim();
         String pass = password.getText().trim();
-        
-        System.out.println("Intentando login con: " + user);
-    System.out.println("Contraseña escrita: " + pass);
-    System.out.println("Cantidad de admins en lista: " + contadorAdmins);
+      
         
         boolean encontrado = false;
         
@@ -243,9 +273,9 @@ public class Controladora {
     }
     
     // Eliminar un cliente por su ID
-    public boolean eliminarClientePorId(String IdCliente) {
+    public boolean eliminarClientePoruser(String IdCliente) {
         for (int i = 0; i < contadorClientes; i++) {
-            if (listaClientes[i].getIdCliente().equals(IdCliente)) {
+            if (listaClientes[i].getNombreCliente().equals(IdCliente)) {
                 return eliminarCliente(i);
             }
         }
@@ -260,20 +290,20 @@ public class Controladora {
         return null;
     }
     
-    // Buscar un cliente por su ID
-    public cliente buscarClientePorId(String IdCliente) {
+    // Buscar un cliente por su nombre
+    public cliente buscarClientePoruser(String IdCliente) {
         for (int i = 0; i < contadorClientes; i++) {
-            if (listaClientes[i].getIdCliente().equals(IdCliente)) {
+            if (listaClientes[i].getNombreCliente().equals(IdCliente)) {
                 return listaClientes[i];
             }
         }
         return null;
     }
     
-    // Buscar posicion de un cliente por su ID
-    public int buscarIndiceClientePorId(String IdCliente) {
+    // Buscar posicion de un cliente por su nombre
+    public int buscarIndiceClientePoruser(String IdCliente) {
         for (int i = 0; i < contadorClientes; i++) {
-            if (listaClientes[i].getIdCliente().equals(IdCliente)) {
+            if (listaClientes[i].getNombreCliente().equals(IdCliente)) {
                 return i;
             }
         }
@@ -370,6 +400,72 @@ public class Controladora {
     // Obtener la cantidad de admins
     public int getCantidadAdmins() {
         return contadorAdmins;
+    }
+    
+    //Metodos para registrar clientes
+    
+    //Autocompletar correos electronicos
+    
+    private void configurarAutoCompletadoCorreo(){
+      correo_cliente.addEventFilter(KeyEvent.KEY_PRESSED, event -> {
+        String texto = correo_cliente.getText();
+
+        if (texto.contains("@")) {
+                if(event.getCode() == KeyCode.UP){
+                    indicecorreo = (indicecorreo + 1) % terminarcorreo.size();
+                actualizarSugerenciaCorreo(texto);
+                event.consume();
+                } else if(event.getCode() == KeyCode.DOWN){
+                   indicecorreo = (indicecorreo - 1 + terminarcorreo.size()) % terminarcorreo.size();
+                actualizarSugerenciaCorreo(texto);
+                event.consume();
+                }else if (event.getCode() == KeyCode.ENTER){
+                    actualizarSugerenciaCorreo(texto);
+                correo_cliente.end();
+                }
+            }
+                  
+        });
+    }
+    
+    private void actualizarSugerenciaCorreo (String textO){
+        String base = textO.split("@")[0];
+        correo_cliente.setText(base + terminarcorreo.get(indicecorreo));
+    }
+    
+    //Registrar informacion de un cliente
+    
+    @FXML
+    private void registrarUser(ActionEvent event){
+        String correo = correo_cliente.getText().trim();
+        String tel = telefono_cliente.getText();
+        String usEr = user.getText().trim();
+        String paSs = contraS.getText().trim();
+        
+        if (correo.isEmpty() || !correo.matches("^[A-Za-z0-9+_.-]+@(.+)$")){
+            JOptionPane.showMessageDialog(null, "Hubo un error al registrar el correo. Vuelva a intentarlo.");
+            return;
+        }
+         if (tel.isEmpty() || !tel.startsWith("+57") || tel.length() > 15){
+            JOptionPane.showMessageDialog(null, "Hubo un error al registrar el telefono. Vuelva a intentarlo.");
+            return;
+        }
+          if (usEr.isEmpty() || usEr.length() < 5){
+            JOptionPane.showMessageDialog(null, "Hubo un error al registrar el usuario. Vuelva a intentarlo.");
+            return;
+        }
+           if (paSs.isEmpty()){
+            JOptionPane.showMessageDialog(null, "Hubo un error al registrar el correo. Vuelva a intentarlo.");
+            return;
+        }
+       
+       cliente nuevoC = new cliente(usEr, tel, correo, paSs, "Agregue una direccion por favor.");
+       if (agregarCliente(nuevoC)){
+           JOptionPane.showMessageDialog(null, "Registro exitoso!!");
+           irALogin(null);
+       } else {
+           JOptionPane.showMessageDialog(null, "Error desconocido", "Error", JOptionPane.WARNING_MESSAGE);
+       }
     }
 
 // Metodos auxiliares

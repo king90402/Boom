@@ -23,7 +23,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<StackPane id="mother" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="981.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="boom.Controladora">
+<StackPane id="mother" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="981.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="boom.Controladora">
    <children>
       <Pane id="paneLogin" prefHeight="450.0" prefWidth="800.0" style="-fx-background-coor: linear-gradient(to bottom, #f6f5f5, #f6daa7);">
          <children>
@@ -87,7 +87,7 @@
             </Pane>
             <StackPane layoutX="178.0" prefHeight="450.0" prefWidth="804.0">
                <children>
-                  <Pane id="contenedor1" prefHeight="450.0" prefWidth="693.0" style="-fx-background-color: #ffffff;" visible="false">
+                  <Pane id="Estadisticas" fx:id="Estadisticas" prefHeight="450.0" prefWidth="693.0" style="-fx-background-color: #ffffff;">
                      <children>
                         <Pane layoutX="27.0" layoutY="119.0" prefHeight="73.0" prefWidth="241.0" style="-fx-background-color: #f6f6f6; -fx-background-radius: 8;">
                            <children>
@@ -96,7 +96,7 @@
                                     <Font name="Poppins Light" size="11.0" />
                                  </font>
                               </Text>
-                              <Text id="lblBienvenido" layoutX="19.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\$11,900,000" wrappingWidth="224.0">
+                              <Text id="lblBienvenido" layoutX="19.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\$0" wrappingWidth="224.0">
                                  <font>
                                     <Font name="Inter 18pt SemiBold" size="22.0" />
                                  </font>
@@ -130,7 +130,7 @@
                                     <Font name="Poppins Light" size="11.0" />
                                  </font>
                               </Text>
-                              <Text id="lblBienvenido" layoutX="16.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2" wrappingWidth="137.00000000000006">
+                              <Text id="lblBienvenido" layoutX="16.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" wrappingWidth="137.00000000000006">
                                  <font>
                                     <Font name="Inter 18pt SemiBold" size="22.0" />
                                  </font>
@@ -147,7 +147,7 @@
                                     <Font name="Poppins Light" size="11.0" />
                                  </font>
                               </Text>
-                              <Text id="lblBienvenido" layoutX="16.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2" wrappingWidth="164.00000000000006">
+                              <Text id="lblBienvenido" layoutX="16.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" wrappingWidth="164.00000000000006">
                                  <font>
                                     <Font name="Inter 18pt SemiBold" size="22.0" />
                                  </font>
@@ -172,7 +172,7 @@
                                     <Font name="Poppins Light" size="11.0" />
                                  </font>
                               </Text>
-                              <Text id="lblBienvenido" layoutX="16.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Jose Martinez" wrappingWidth="164.00000000000006">
+                              <Text id="lblBienvenido" layoutX="16.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="164.00000000000006">
                                  <font>
                                     <Font name="Inter 18pt SemiBold" size="20.0" />
                                  </font>
@@ -271,7 +271,7 @@
                         </Pane>
                      </children>
                   </Pane>
-                  <Pane id="contenedor1" prefHeight="450.0" prefWidth="693.0" style="-fx-background-color: #ffffff;">
+                  <Pane id="contenedor1" prefHeight="450.0" prefWidth="693.0" style="-fx-background-color: #ffffff;" visible="false">
                      <children>
                         <StackPane layoutX="57.0" layoutY="46.0" prefHeight="359.0" prefWidth="688.0">
                            <children>

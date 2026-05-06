@@ -9,6 +9,11 @@ package boom;
  * @author EQUIPO
  */
 public class cliente {
+    @Override
+public String toString() {
+    //archivos de texto
+    return NombreCliente + ";" + TelefonoCliente + ";" + CorreoCliente + ";" + ContraseñaCliente + ";" + DireccionCliente;
+}
     public String NombreCliente;
     public String TelefonoCliente;
     public String CorreoCliente;

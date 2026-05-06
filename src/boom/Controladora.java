@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import java.io.*;
+import java.util.Scanner;
 
 /**
  *
@@ -34,6 +36,7 @@ public class Controladora implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         paneLogin.setVisible(true);
         paneRegistro.setVisible(false);
+        cargarClientesDesdeArchivo();
         
         terminarcorreo = new ArrayList<>();
         terminarcorreo.add("@gmail.com");
@@ -42,6 +45,10 @@ public class Controladora implements Initializable {
         terminarcorreo.add("@yahoo.com");
         
         configurarAutoCompletadoCorreo();
+        
+        if (Estadisticas != null) {
+        Estadisticas.setVisible(true);
+    }
     }
     
     private static final int mx = 500;
@@ -56,17 +63,20 @@ public class Controladora implements Initializable {
     private List<String> terminarcorreo;
     private int indicecorreo = 0;
     
-    //Paneles Login registro
+    //Paneles 
     @FXML
     private Pane paneLogin;
     @FXML
     private Pane paneRegistro;
+    @FXML private Pane Estadisticas;
+  
     
     //Iniciar seccion
     @FXML
     private TextField correO; 
     @FXML
     private PasswordField password;
+    @FXML private TextField passwordVisible;
     
     //Registrarse
     @FXML private TextField correo_cliente;
@@ -91,53 +101,62 @@ public class Controladora implements Initializable {
     }
    
     
-    //Metodo inicio de seccion administrador
+    //Metodos de inicio de seccion usuarios (ambos roles)
     @FXML
-    private void Inicioseccion_admin(ActionEvent event){
+    private void Inicioseccion_usuario(ActionEvent event){
         String user = correO.getText().trim();
         String pass = password.getText().trim();
       
         
-        boolean encontrado = false;
+        boolean esAdmin = false;
+        boolean esCliente = false;
         
        for (int i = 0; i < contadorAdmins; i++) {
         admin a = listaAdmins[i];
-        System.out.println("Comparando con Admin[" + i + "]: [" + a.getCorreoAdmin() + "] / [" + a.getContrasenaAdmin() + "]");
-        
-        // Comparamos correo y contraseña de cada admin guardado
-        if (a.getCorreoAdmin().equals(user) && a.getContrasenaAdmin().equals(pass)) {
-            encontrado = true;
-            
-           try {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("Vista_Administracion.fxml"));
-                Parent root = loader.load();
-                
-                
-                Scene scene = new Scene(root);
-                Stage stage = new Stage();
-                stage.setScene(scene);
-                stage.setTitle("Panel de Administración - Sparkle");
-                
-                
-                stage.show();
-                
-               
-                Node source = (Node) event.getSource();
-                Stage currentStage = (Stage) source.getScene().getWindow();
-                currentStage.close();
-                
-            } catch (Exception e) {
-                JOptionPane.showMessageDialog(null, "Error al cargar la vista de administración: " + e.getMessage());
-                e.printStackTrace();
-            }
-            break; 
+
+        // verificamos correo y contraseña de cada admin guardado
+       if (a.getCorreoAdmin().equals(user) && a.getContrasenaAdmin().equals(pass)) {
+            esAdmin = true;
+            cargarVista("Vista_Administracion.fxml", "Panel de Administración - BOOM", event);
+            break;
         }
     }
+       
+       // verificamos correo y contraseña de cada cliente guardado
+           if (!esAdmin) {
+        for (int i = 0; i < contadorClientes; i++) {
+            cliente c = listaClientes[i];
+            if (c.getCorreoCliente().equals(user) && c.getContraseñaCliente().equals(pass)) {
+                esCliente = true;
+                cargarVista("Vista_Home.fxml", "Tienda BOOM", event);
+                break;
+            }
+        }
+    }
+           
+           if (!esAdmin && !esCliente) {
+        JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos.");
+    }
+    }
+    
+    // Mostrar contraseña al mantener precionado
+    @FXML
+private void mostrarContrasena(MouseEvent event) {
+    passwordVisible.setText(contraS.getText());
+    passwordVisible.setVisible(true);
+    contraS.setVisible(false);
+    passwordVisible.requestFocus(); 
+    passwordVisible.positionCaret(passwordVisible.getText().length()); 
+}
 
-    if (!encontrado) {
-        JOptionPane.showMessageDialog(null, "Usuario o contraseña incorrectos. Intente de nuevo.");
-    }
-    }
+@FXML
+private void ocultarContrasena(MouseEvent event) {
+    contraS.setText(passwordVisible.getText());
+    contraS.setVisible(true);
+    passwordVisible.setVisible(false);
+    contraS.requestFocus(); 
+    contraS.positionCaret(contraS.getText().length());
+}
 
     public Controladora() {
         listaProductos = new producto[mx];
@@ -258,6 +277,37 @@ public class Controladora implements Initializable {
         }
         return false;
     }
+    
+    // Guardar un cliente
+    private void guardarClientesEnArchivo() {
+    try (PrintWriter writer = new PrintWriter(new FileWriter("clientes.txt"))) {
+        for (int i = 0; i < contadorClientes; i++) {
+            writer.println(listaClientes[i].toString());
+        }
+    } catch (IOException e) {
+        System.err.println("Error al guardar clientes: " + e.getMessage());
+    }
+}
+    
+    // Cargar clientes en archivos
+    private void cargarClientesDesdeArchivo() {
+    File archivo = new File("clientes.txt");
+    if (!archivo.exists()) return;
+
+    try (Scanner scanner = new Scanner(archivo)) {
+        while (scanner.hasNextLine() && contadorClientes < mx) {
+            String linea = scanner.nextLine();
+            String[] datos = linea.split(";");
+            if (datos.length == 5) {
+                cliente c = new cliente(datos[0], datos[1], datos[2], datos[3], datos[4]);
+                listaClientes[contadorClientes] = c;
+                contadorClientes++;
+            }
+        }
+    } catch (FileNotFoundException e) {
+        System.err.println("Archivo no encontrado: " + e.getMessage());
+    }
+}
     
     // Eliminar un cliente por su posicion 
     public boolean eliminarCliente(int pos) {
@@ -419,9 +469,10 @@ public class Controladora implements Initializable {
                    indicecorreo = (indicecorreo - 1 + terminarcorreo.size()) % terminarcorreo.size();
                 actualizarSugerenciaCorreo(texto);
                 event.consume();
-                }else if (event.getCode() == KeyCode.ENTER){
-                    actualizarSugerenciaCorreo(texto);
-                correo_cliente.end();
+                }else if (event.getCode() == KeyCode.ENTER) {
+    actualizarSugerenciaCorreo(texto);
+    correo_cliente.end();
+    event.consume();
                 }
             }
                   
@@ -429,8 +480,17 @@ public class Controladora implements Initializable {
     }
     
     private void actualizarSugerenciaCorreo (String textO){
-        String base = textO.split("@")[0];
-        correo_cliente.setText(base + terminarcorreo.get(indicecorreo));
+        if (textO == null || !textO.contains("@")) return;
+    
+    String base = textO.split("@")[0];
+    String nuevoCorreo = base + terminarcorreo.get(indicecorreo);
+    
+    correo_cliente.setText(nuevoCorreo);
+    
+    // IMPORTANTE: Mueve el cursor al final para evitar errores de selección
+    javafx.application.Platform.runLater(() -> {
+        correo_cliente.positionCaret(nuevoCorreo.length());
+    });
     }
     
     //Registrar informacion de un cliente
@@ -461,6 +521,7 @@ public class Controladora implements Initializable {
        
        cliente nuevoC = new cliente(usEr, tel, correo, paSs, "Agregue una direccion por favor.");
        if (agregarCliente(nuevoC)){
+           guardarClientesEnArchivo();
            JOptionPane.showMessageDialog(null, "Registro exitoso!!");
            irALogin(null);
        } else {
@@ -484,5 +545,21 @@ public class Controladora implements Initializable {
         contadorClientes = 0;
         contadorAdmins = 0;
     }
+    
+    //cambiar de paneles
+    private void cargarVista(String fxml, String titulo, ActionEvent event) {
+    try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
+        Parent root = loader.load();
+        Stage stage = new Stage();
+        stage.setScene(new Scene(root));
+        stage.setTitle(titulo);
+        stage.show();
+
+        ((Node) event.getSource()).getScene().getWindow().hide();
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
+}
 
 }

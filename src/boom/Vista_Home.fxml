@@ -1,37 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
+<?import javafx.scene.text.TextFlow?>
 
 <StackPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="2312.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <ScrollPane hbarPolicy="NEVER" pannable="true" prefHeight="200.0" prefWidth="200.0" stylesheets="@../../../Boom/src/boom/estilo.css">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="2333.0" prefWidth="1280.0">
+      <ScrollPane hbarPolicy="NEVER" pannable="true" prefHeight="200.0" prefWidth="200.0" stylesheets="@estilo.css">
+         <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="2333.0" prefWidth="1280.0">
                <children>
                   <Pane prefHeight="2312.0" prefWidth="1280.0">
                      <children>
-                        <Pane prefHeight="110.0" prefWidth="1280.0" style="-fx-background-color: #111111;" styleClass="dark-toolbar" stylesheets="@estilosbotones.css">
+                        <Pane prefHeight="110.0" prefWidth="1280.0" style="-fx-background-color: #111111;" styleClass="dark-toolbar" stylesheets="@../../../Boom/src/boom/estilosbotones.css">
                            <children>
-                              <Text id="lblBienvenido" fill="WHITE" layoutX="30.0" layoutY="68.0" strokeType="OUTSIDE" strokeWidth="0.0" text="B O O M" wrappingWidth="153.5500030517578">
-                                 <font>
-                                    <Font name="Poppins Bold" size="38.0" />
-                                 </font>
-                              </Text>
                               <TextField layoutX="279.0" layoutY="33.0" prefHeight="45.0" prefWidth="690.0" promptText="Laptop Vivabook 15" style="-fx-background-color: #F6F6F6;">
                                  <font>
                                     <Font name="Poppins Regular" size="13.0" />
@@ -62,35 +65,40 @@
                                  </graphic>
                               </Button>
                               <MenuButton layoutX="1190.0" layoutY="43.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="33.0" style="-fx-background-color: #ffffff;" styleClass="icon-menu">
-                                <items>
-                                  <MenuItem mnemonicParsing="false" text="Cerrar Sesión  " />
-                                </items>
+                                 <items>
+                                    <MenuItem mnemonicParsing="false" text="Cerrar Sesión  " />
+                                 </items>
                               </MenuButton>
+                              <Button layoutX="13.0" layoutY="15.0" mnemonicParsing="false" onAction="#irACategoriaOfertas" prefHeight="81.0" prefWidth="195.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="B O O M" textFill="WHITE">
+                                 <font>
+                                    <Font name="Poppins Bold" size="38.0" />
+                                 </font>
+                              </Button>
                            </children>
                         </Pane>
                         <Pane layoutY="110.0" prefHeight="45.0" prefWidth="1280.0" style="-fx-background-color: #ffffff;" stylesheets="@estilosbotones.css">
                            <children>
-                              <Button layoutX="205.0" layoutY="11.0" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Ofertas">
+                              <Button layoutX="205.0" layoutY="11.0" mnemonicParsing="false" onAction="#irACategoriaOfertas" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Ofertas">
                                  <font>
                                     <Font name="Poppins Light" size="13.0" />
                                  </font>
                               </Button>
-                              <Button layoutX="387.0" layoutY="11.0" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Tecnologia">
+                              <Button layoutX="387.0" layoutY="11.0" mnemonicParsing="false" onAction="#irACategoriaTecnologia" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Tecnologia">
                                  <font>
                                     <Font name="Poppins Light" size="13.0" />
                                  </font>
                               </Button>
-                              <Button layoutX="626.0" layoutY="11.0" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Hogar">
+                              <Button layoutX="626.0" layoutY="11.0" mnemonicParsing="false" onAction="#irACategoriaHogar" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Hogar">
                                  <font>
                                     <Font name="Poppins Light" size="13.0" />
                                  </font>
                               </Button>
-                              <Button layoutX="840.0" layoutY="11.0" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Deportes">
+                              <Button layoutX="840.0" layoutY="11.0" mnemonicParsing="false" onAction="#irACategoriaDeportes" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Deportes">
                                  <font>
                                     <Font name="Poppins Light" size="13.0" />
                                  </font>
                               </Button>
-                              <Button layoutX="1074.0" layoutY="9.0" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Moda y Belleza">
+                              <Button layoutX="1074.0" layoutY="9.0" mnemonicParsing="false" onAction="#irACategoriaModa" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Moda y Belleza">
                                  <font>
                                     <Font name="Poppins Light" size="13.0" />
                                  </font>
@@ -108,176 +116,647 @@
                               </Text>
                            </children>
                         </Pane>
-                        <Pane layoutY="155.0" prefHeight="400.0" prefWidth="1280.0" style="-fx-background-color: #f6f6f6;">
+                        <StackPane layoutY="155.0" prefHeight="2178.0" prefWidth="1280.0">
                            <children>
-                              <Text layoutX="416.0" layoutY="79.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Compra sin límites y siente el">
-                                 <font>
-                                    <Font name="Poppins SemiBold" size="30.0" />
-                                 </font>
-                              </Text>
-                              <Text layoutX="232.0" layoutY="319.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BOOM">
-                                 <font>
-                                    <Font name="Poppins Black" size="250.0" />
-                                 </font>
-                              </Text>
-                              <ImageView fitHeight="316.0" fitWidth="407.0" layoutX="457.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../../Boom/src/boom/Media/Home.png" />
-                                 </image>
-                              </ImageView>
-                              <Region layoutX="-7.0" layoutY="320.0" prefHeight="80.0" prefWidth="1280.0" style="-fx-background-color: linear-gradient(to top, #f6f6f6 0%, rgba(255, 255, 255, 0) 100%);" />
+                              <Pane prefHeight="2178.0" prefWidth="1280.0">
+                                 <children>
+                                    <Pane prefHeight="400.0" prefWidth="1280.0" style="-fx-background-color: #f6f6f6;">
+                                       <children>
+                                          <Text layoutX="416.0" layoutY="79.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Compra sin límites y siente el">
+                                             <font>
+                                                <Font name="Poppins SemiBold" size="30.0" />
+                                             </font>
+                                          </Text>
+                                          <Text layoutX="232.0" layoutY="319.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BOOM">
+                                             <font>
+                                                <Font name="Poppins Black" size="250.0" />
+                                             </font>
+                                          </Text>
+                                          <ImageView fitHeight="316.0" fitWidth="407.0" layoutX="457.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../../Boom/src/boom/Media/Home.png" />
+                                             </image>
+                                          </ImageView>
+                                          <Region layoutY="320.0" prefHeight="80.0" prefWidth="1280.0" style="-fx-background-color: linear-gradient(to top, #f6f6f6 0%, rgba(255, 255, 255, 0) 100%);" />
+                                       </children>
+                                    </Pane>
+                                    <Pane layoutY="400.0" prefHeight="200.0" prefWidth="1280.0" style="-fx-background-color: #f6f6f6;">
+                                       <children>
+                                          <Button layoutX="109.0" layoutY="14.0" mnemonicParsing="false" prefHeight="173.0" prefWidth="130.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
+                                             <font>
+                                                <Font name="Poppins Light" size="19.0" />
+                                             </font>
+                                             <graphic>
+                                                <Pane prefHeight="200.0" prefWidth="200.0">
+                                                   <children>
+                                                      <Text layoutX="17.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ofertas">
+                                                         <font>
+                                                            <Font name="Poppins Light" size="19.0" />
+                                                         </font>
+                                                      </Text>
+                                                      <ImageView fitHeight="122.0" fitWidth="123.0" layoutX="-10.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../../../Boom/src/boom/Media/EllipseS.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="-9.0" layoutY="-17.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../../../Boom/src/boom/Media/Ofertas.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </children>
+                                                </Pane>
+                                             </graphic>
+                                          </Button>
+                                          <Button layoutX="339.0" layoutY="14.0" mnemonicParsing="false" prefHeight="173.0" prefWidth="130.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
+                                             <font>
+                                                <Font name="Poppins Light" size="19.0" />
+                                             </font>
+                                             <graphic>
+                                                <Pane prefHeight="200.0" prefWidth="200.0">
+                                                   <children>
+                                                      <Text layoutY="139.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tecnologia">
+                                                         <font>
+                                                            <Font name="Poppins Light" size="19.0" />
+                                                         </font>
+                                                      </Text>
+                                                      <ImageView fitHeight="122.0" fitWidth="123.0" layoutX="-10.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../../../Boom/src/boom/Media/EllipseS.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="-23.0" layoutY="-18.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../../../Boom/src/boom/Media/Tecnologia.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </children>
+                                                </Pane>
+                                             </graphic>
+                                          </Button>
+                                          <Button layoutX="564.0" layoutY="14.0" mnemonicParsing="false" prefHeight="173.0" prefWidth="130.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
+                                             <font>
+                                                <Font name="Poppins Light" size="19.0" />
+                                             </font>
+                                             <graphic>
+                                                <Pane prefHeight="200.0" prefWidth="200.0">
+                                                   <children>
+                                                      <Text layoutX="23.0" layoutY="139.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hogar">
+                                                         <font>
+                                                            <Font name="Poppins Light" size="19.0" />
+                                                         </font>
+                                                      </Text>
+                                                      <ImageView fitHeight="122.0" fitWidth="123.0" layoutX="-10.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../../../Boom/src/boom/Media/EllipseS.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="-10.0" layoutY="-25.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../../../Boom/src/boom/Media/Hogar.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </children>
+                                                </Pane>
+                                             </graphic>
+                                          </Button>
+                                          <Button layoutX="801.0" layoutY="14.0" mnemonicParsing="false" prefHeight="173.0" prefWidth="130.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
+                                             <font>
+                                                <Font name="Poppins Light" size="19.0" />
+                                             </font>
+                                             <graphic>
+                                                <Pane prefHeight="200.0" prefWidth="200.0">
+                                                   <children>
+                                                      <Text layoutX="9.0" layoutY="136.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Deportes">
+                                                         <font>
+                                                            <Font name="Poppins Light" size="19.0" />
+                                                         </font>
+                                                      </Text>
+                                                      <ImageView fitHeight="122.0" fitWidth="123.0" layoutX="-10.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../../../Boom/src/boom/Media/EllipseS.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="-17.0" layoutY="-18.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../../../Boom/src/boom/Media/Deportes.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </children>
+                                                </Pane>
+                                             </graphic>
+                                          </Button>
+                                          <Button layoutX="1056.0" layoutY="14.0" mnemonicParsing="false" prefHeight="173.0" prefWidth="130.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
+                                             <font>
+                                                <Font name="Poppins Light" size="19.0" />
+                                             </font>
+                                             <graphic>
+                                                <Pane prefHeight="200.0" prefWidth="200.0">
+                                                   <children>
+                                                      <Text layoutX="-19.0" layoutY="139.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Moda y Belleza">
+                                                         <font>
+                                                            <Font name="Poppins Light" size="19.0" />
+                                                         </font>
+                                                      </Text>
+                                                      <ImageView fitHeight="122.0" fitWidth="123.0" layoutX="-10.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../../../Boom/src/boom/Media/EllipseS.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="-6.0" layoutY="-35.0" pickOnBounds="true" preserveRatio="true">
+                                                         <image>
+                                                            <Image url="@../../../Boom/src/boom/Media/Moda.png" />
+                                                         </image>
+                                                      </ImageView>
+                                                   </children>
+                                                </Pane>
+                                             </graphic>
+                                          </Button>
+                                       </children>
+                                    </Pane>
+                                    <Pane layoutY="596.0" prefHeight="60.0" prefWidth="1280.0">
+                                       <children>
+                                          <Text layoutX="593.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="- Para ti -">
+                                             <font>
+                                                <Font name="Poppins Medium" size="19.0" />
+                                             </font>
+                                          </Text>
+                                       </children>
+                                    </Pane>
+                                    <FlowPane id="contenedorProductosHome" fx:id="contenedorProductosHome" hgap="90.0" layoutY="656.0" prefHeight="1400.0" prefWidth="1280.0" vgap="60.0" />
+                                    <Pane layoutY="2056.0" prefHeight="99.0" prefWidth="1280.0" />
+                                 </children>
+                              </Pane>
+                              <Pane prefHeight="2178.0" prefWidth="1280.0" visible="false">
+                                 <children>
+                                    <Pane layoutX="33.0" layoutY="33.0" prefHeight="60.0" prefWidth="800.0" style="-fx-background-color: #ffffff; -fx-background-radius: 10px;">
+                                       <children>
+                                          <CheckBox graphicTextGap="10.0" layoutX="20.0" layoutY="15.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="302.0" style="-fx-border-color: transparent; -fx-label-padding: 0 0 0 6; -fx-background-radius: 5px;" text="   Todos los productos">
+                                             <font>
+                                                <Font name="Poppins Regular" size="19.0" />
+                                             </font>
+                                          </CheckBox>
+                                       </children>
+                                    </Pane>
+                                    <Pane layoutY="1604.0" prefHeight="60.0" prefWidth="1280.0" />
+                                    <Pane layoutY="1636.0" prefHeight="420.0" prefWidth="1280.0" />
+                                    <Pane layoutY="2056.0" prefHeight="99.0" prefWidth="1280.0" />
+                                    <Pane layoutX="855.0" layoutY="33.0" prefHeight="440.0" prefWidth="368.0" style="-fx-background-color: #ffffff; -fx-background-radius: 10px;">
+                                       <children>
+                                          <Text layoutX="22.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Resumen del pedido">
+                                             <font>
+                                                <Font name="Poppins SemiBold" size="28.0" />
+                                             </font>
+                                          </Text>
+                                          <VBox layoutX="22.0" layoutY="59.0" prefHeight="250.0" prefWidth="323.0">
+                                             <children>
+                                                <HBox alignment="CENTER" prefHeight="33.0" prefWidth="323.0">
+                                                   <children>
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Precio aproximado:" wrappingWidth="171.05999755859375">
+                                                         <font>
+                                                            <Font name="Poppins Regular" size="14.0" />
+                                                         </font>
+                                                      </Text>
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="\$0" textAlignment="RIGHT" wrappingWidth="152.20000076293945">
+                                                         <font>
+                                                            <Font name="Poppins SemiBold" size="14.0" />
+                                                         </font>
+                                                      </Text>
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                          </VBox>
+                                          <Button id="btLogin" layoutX="20.0" layoutY="374.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="329.0" style="-fx-background-color: #f6cd85; -fx-background-radius: 3;" text="Pagar ahora!!">
+                                             <font>
+                                                <Font name="Poppins SemiBold" size="22.0" />
+                                             </font>
+                                          </Button>
+                                          <Text layoutX="22.0" layoutY="360.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ingresar codigo de descuento:">
+                                             <font>
+                                                <Font name="Poppins SemiBold" size="11.0" />
+                                             </font>
+                                          </Text>
+                                          <TextField layoutX="197.0" layoutY="346.0" prefHeight="21.0" prefWidth="152.0">
+                                             <font>
+                                                <Font name="Poppins Light" size="10.0" />
+                                             </font>
+                                          </TextField>
+                                       </children>
+                                    </Pane>
+                                    <VBox layoutX="33.0" layoutY="114.0" prefHeight="1490.0" prefWidth="800.0" />
+                                 </children>
+                              </Pane>
+                              <Pane prefHeight="2178.0" prefWidth="1280.0" stylesheets="@estilosbotones.css" visible="false">
+                                 <children>
+                                    <ScrollPane hbarPolicy="NEVER" layoutX="38.0" layoutY="31.0" prefHeight="112.0" prefWidth="1185.0" style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-background-radius: 15px; -fx-border-radius: 15px;" vbarPolicy="NEVER">
+                                       <content>
+                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="108.0" prefWidth="1185.0" style="-fx-background-radius: 15px; -fx-background-color: #111111;" stylesheets="@estilosbotones.css">
+                                             <children>
+                                                <Circle fill="#262110" layoutX="1130.0" layoutY="55.0" radius="87.0" stroke="BLACK" strokeType="INSIDE" />
+                                                <Circle fill="#feb900" layoutX="56.0" layoutY="54.0" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                                <Text layoutX="36.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DD">
+                                                   <font>
+                                                      <Font name="Inter 18pt SemiBold" size="28.0" />
+                                                   </font>
+                                                </Text>
+                                                <Text fill="WHITE" layoutX="106.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Diomedes Diaz">
+                                                   <font>
+                                                      <Font name="Inter 18pt SemiBold" size="20.0" />
+                                                   </font>
+                                                </Text>
+                                                <Text fill="#aaaaaa" layoutX="106.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="elcaciquedelajunta2013@outlook.es">
+                                                   <font>
+                                                      <Font name="Inter Regular" size="14.0" />
+                                                   </font>
+                                                </Text>
+                                                <Pane layoutX="106.0" layoutY="71.0" prefHeight="27.0" prefWidth="115.0" style="-fx-background-color: #443713; -fx-background-radius: 10px;">
+                                                   <children>
+                                                      <Text fill="#ffb800" layoutX="13.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Admin Principal" textAlignment="CENTER">
+                                                         <font>
+                                                            <Font name="Inter 18pt SemiBold" size="12.0" />
+                                                         </font>
+                                                      </Text>
+                                                   </children>
+                                                </Pane>
+                                                <Button layoutX="1065.0" layoutY="38.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="86.0" style="-fx-background-color: #3b3527; -fx-border-color: #4a4436; -fx-border-radius: 8px; -fx-cursor: hand;" text="Button">
+                                                   <graphic>
+                                                      <Pane prefHeight="35.0" prefWidth="75.0">
+                                                         <children>
+                                                            <Region layoutX="6.0" layoutY="10.0" prefHeight="27.0" prefWidth="29.0" style="-fx-border-color: #ffffff;" styleClass="icon-edit" />
+                                                            <Text fill="WHITE" layoutX="27.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Editar">
+                                                               <font>
+                                                                  <Font name="Inter 18pt SemiBold" size="13.0" />
+                                                               </font>
+                                                            </Text>
+                                                         </children>
+                                                      </Pane>
+                                                   </graphic>
+                                                </Button>
+                                             </children>
+                                          </AnchorPane>
+                                       </content>
+                                    </ScrollPane>
+                                    <Pane layoutX="38.0" layoutY="160.0" prefHeight="108.0" prefWidth="385.0" style="-fx-background-color: #ffffff; -fx-border-color: #eeeeee; -fx-border-radius: 10px; -fx-background-radius: 10px;">
+                                       <children>
+                                          <Text layoutX="184.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3">
+                                             <font>
+                                                <Font name="Inter 18pt SemiBold" size="30.0" />
+                                             </font>
+                                          </Text>
+                                          <Text fill="#999999" layoutX="170.0" layoutY="79.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pedidos">
+                                             <font>
+                                                <Font name="Inter Regular" size="12.0" />
+                                             </font>
+                                          </Text>
+                                       </children>
+                                    </Pane>
+                                    <Pane layoutX="438.0" layoutY="160.0" prefHeight="108.0" prefWidth="385.0" style="-fx-background-color: #ffffff; -fx-border-color: #eeeeee; -fx-border-radius: 10px; -fx-background-radius: 10px;">
+                                       <children>
+                                          <Text layoutX="184.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3">
+                                             <font>
+                                                <Font name="Inter 18pt SemiBold" size="30.0" />
+                                             </font>
+                                          </Text>
+                                          <Text fill="#999999" layoutX="166.0" layoutY="79.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Favoritos">
+                                             <font>
+                                                <Font name="Inter Regular" size="12.0" />
+                                             </font>
+                                          </Text>
+                                       </children>
+                                    </Pane>
+                                    <Pane layoutX="838.0" layoutY="160.0" prefHeight="108.0" prefWidth="385.0" style="-fx-background-color: #ffffff; -fx-border-color: #eeeeee; -fx-border-radius: 10px; -fx-background-radius: 10px;">
+                                       <children>
+                                          <Text layoutX="184.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
+                                             <font>
+                                                <Font name="Inter 18pt SemiBold" size="30.0" />
+                                             </font>
+                                          </Text>
+                                          <Text fill="#999999" layoutX="165.0" layoutY="79.0" strokeType="OUTSIDE" strokeWidth="0.0" text="En carrito">
+                                             <font>
+                                                <Font name="Inter Regular" size="12.0" />
+                                             </font>
+                                          </Text>
+                                       </children>
+                                    </Pane>
+                                    <HBox layoutX="38.0" layoutY="283.0" prefHeight="40.0" prefWidth="1185.0" styleClass="menu-container">
+                                       <children>
+                                          <ToggleButton maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" selected="true" text="Pedidos" HBox.hgrow="ALWAYS">
+                                             <toggleGroup>
+                                                <ToggleGroup fx:id="BarraUsuario" />
+                                             </toggleGroup>
+                                             <styleClass>
+                                                <String fx:value="menu-btn" />
+                                                <String fx:value="menu-btn-izq" />
+                                             </styleClass>
+                                          </ToggleButton>
+                                          <ToggleButton maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="menu-btn" text="Favoritos" toggleGroup="$BarraUsuario" HBox.hgrow="ALWAYS" />
+                                          <ToggleButton maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Mi Cuenta" toggleGroup="$BarraUsuario" HBox.hgrow="ALWAYS">
+                                             <styleClass>
+                                                <String fx:value="menu-btn-der" />
+                                                <String fx:value="menu-btn" />
+                                             </styleClass>
+                                          </ToggleButton>
+                                       </children>
+                                    </HBox>
+                                    <StackPane layoutX="38.0" layoutY="343.0" prefHeight="1708.0" prefWidth="1185.0">
+                                       <children>
+                                          <VBox prefHeight="200.0" prefWidth="100.0" visible="false" />
+                                          <VBox prefHeight="200.0" prefWidth="100.0" visible="false" />
+                                          <VBox prefHeight="200.0" prefWidth="100.0" visible="false">
+                                             <children>
+                                                <Pane prefHeight="45.0" prefWidth="1185.0" style="-fx-border-color: #f5f4f4; -fx-background-color: #fafafa;">
+                                                   <children>
+                                                      <Text fill="#888888" layoutX="14.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="INFORMACIÓN PERSONAL">
+                                                         <font>
+                                                            <Font name="Inter 18pt SemiBold" size="12.0" />
+                                                         </font>
+                                                      </Text>
+                                                   </children>
+                                                </Pane>
+                                                <Pane prefHeight="45.0" prefWidth="1185.0" style="-fx-border-color: #f5f4f4; -fx-background-color: #fefffe;">
+                                                   <children>
+                                                      <TextFlow prefHeight="45.0" prefWidth="1185.0">
+                                                         <children>
+                                                            <Text fill="#888888" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre: ">
+                                                               <font>
+                                                                  <Font name="Inter 18pt Regular" size="12.0" />
+                                                               </font>
+                                                            </Text>
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Carlos Rodríguez">
+                                                               <font>
+                                                                  <Font name="Inter 18pt SemiBold" size="12.0" />
+                                                               </font>
+                                                            </Text>
+                                                         </children>
+                                                         <padding>
+                                                            <Insets left="15.0" top="15.0" />
+                                                         </padding>
+                                                      </TextFlow>
+                                                   </children>
+                                                </Pane>
+                                                <Pane prefHeight="45.0" prefWidth="1185.0" style="-fx-border-color: #f5f4f4; -fx-background-color: #fefffe;">
+                                                   <children>
+                                                      <TextFlow prefHeight="45.0" prefWidth="1185.0">
+                                                         <children>
+                                                            <Text fill="#888888" strokeType="OUTSIDE" strokeWidth="0.0" text="Correo: ">
+                                                               <font>
+                                                                  <Font name="Inter 18pt Regular" size="12.0" />
+                                                               </font>
+                                                            </Text>
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="carlos@email.com">
+                                                               <font>
+                                                                  <Font name="Inter 18pt SemiBold" size="12.0" />
+                                                               </font>
+                                                            </Text>
+                                                         </children>
+                                                         <padding>
+                                                            <Insets left="15.0" top="15.0" />
+                                                         </padding>
+                                                      </TextFlow>
+                                                   </children>
+                                                </Pane>
+                                                <Pane prefHeight="45.0" prefWidth="1185.0" style="-fx-border-color: #f5f4f4; -fx-background-color: #fefffe;">
+                                                   <children>
+                                                      <TextFlow prefHeight="45.0" prefWidth="1185.0">
+                                                         <children>
+                                                            <Text fill="#888888" strokeType="OUTSIDE" strokeWidth="0.0" text="Teléfono: ">
+                                                               <font>
+                                                                  <Font name="Inter 18pt Regular" size="12.0" />
+                                                               </font>
+                                                            </Text>
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="+57 300 123 4567">
+                                                               <font>
+                                                                  <Font name="Inter 18pt SemiBold" size="12.0" />
+                                                               </font>
+                                                            </Text>
+                                                         </children>
+                                                         <padding>
+                                                            <Insets left="15.0" top="15.0" />
+                                                         </padding>
+                                                      </TextFlow>
+                                                   </children>
+                                                </Pane>
+                                                <Pane prefHeight="45.0" prefWidth="1185.0" style="-fx-border-color: #f5f4f4; -fx-background-color: #fefffe;">
+                                                   <children>
+                                                      <TextFlow prefHeight="45.0" prefWidth="1185.0">
+                                                         <children>
+                                                            <Text fill="#888888" strokeType="OUTSIDE" strokeWidth="0.0" text="Documento: ">
+                                                               <font>
+                                                                  <Font name="Inter 18pt Regular" size="12.0" />
+                                                               </font>
+                                                            </Text>
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="1.234.567.890">
+                                                               <font>
+                                                                  <Font name="Inter 18pt SemiBold" size="12.0" />
+                                                               </font>
+                                                            </Text>
+                                                         </children>
+                                                         <padding>
+                                                            <Insets left="15.0" top="15.0" />
+                                                         </padding>
+                                                      </TextFlow>
+                                                   </children>
+                                                </Pane>
+                                                <Pane prefHeight="45.0" prefWidth="1185.0" style="-fx-border-color: #f5f4f4; -fx-background-color: #fefffe;">
+                                                   <children>
+                                                      <TextFlow prefHeight="45.0" prefWidth="1185.0">
+                                                         <children>
+                                                            <Text fill="#888888" strokeType="OUTSIDE" strokeWidth="0.0" text="Nacimiento: ">
+                                                               <font>
+                                                                  <Font name="Inter 18pt Regular" size="12.0" />
+                                                               </font>
+                                                            </Text>
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="15/06/1992">
+                                                               <font>
+                                                                  <Font name="Inter 18pt SemiBold" size="12.0" />
+                                                               </font>
+                                                            </Text>
+                                                         </children>
+                                                         <padding>
+                                                            <Insets left="15.0" top="15.0" />
+                                                         </padding>
+                                                      </TextFlow>
+                                                   </children>
+                                                </Pane>
+                                                <Pane prefHeight="45.0" prefWidth="1185.0" style="-fx-border-color: #f5f4f4; -fx-background-color: #fefffe;">
+                                                   <children>
+                                                      <TextFlow prefHeight="45.0" prefWidth="1185.0">
+                                                         <children>
+                                                            <Text fill="#888888" strokeType="OUTSIDE" strokeWidth="0.0" text="Dirección: ">
+                                                               <font>
+                                                                  <Font name="Inter 18pt Regular" size="12.0" />
+                                                               </font>
+                                                            </Text>
+                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Cl 100 # 205 - 54C Barrio La Celestial">
+                                                               <font>
+                                                                  <Font name="Inter 18pt SemiBold" size="12.0" />
+                                                               </font>
+                                                            </Text>
+                                                         </children>
+                                                         <padding>
+                                                            <Insets left="15.0" top="15.0" />
+                                                         </padding>
+                                                      </TextFlow>
+                                                   </children>
+                                                </Pane>
+                                             </children>
+                                          </VBox>
+                                          <VBox prefHeight="200.0" prefWidth="100.0">
+                                             <children>
+                                                <Pane prefHeight="45.0" prefWidth="1185.0" style="-fx-border-color: #f5f4f4; -fx-background-color: #fafafa;">
+                                                   <children>
+                                                      <Text fill="#888888" layoutX="14.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="EDITAR INFORMACIÓN">
+                                                         <font>
+                                                            <Font name="Inter 18pt SemiBold" size="12.0" />
+                                                         </font>
+                                                      </Text>
+                                                   </children>
+                                                </Pane>
+                                                <Pane prefHeight="45.0" prefWidth="1185.0" style="-fx-border-color: #f5f4f4; -fx-background-color: #fefffe;">
+                                                   <children>
+                                                      <TextFlow prefHeight="45.0" prefWidth="1185.0">
+                                                         <children>
+                                                            <Text fill="#888888" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre: ">
+                                                               <font>
+                                                                  <Font name="Inter 18pt Regular" size="12.0" />
+                                                               </font>
+                                                            </Text>
+                                                            <TextField />
+                                                         </children>
+                                                         <padding>
+                                                            <Insets left="15.0" top="10.0" />
+                                                         </padding>
+                                                      </TextFlow>
+                                                   </children>
+                                                </Pane>
+                                                <Pane prefHeight="45.0" prefWidth="1185.0" style="-fx-border-color: #f5f4f4; -fx-background-color: #fefffe;">
+                                                   <children>
+                                                      <TextFlow prefHeight="45.0" prefWidth="1185.0">
+                                                         <children>
+                                                            <Text fill="#888888" strokeType="OUTSIDE" strokeWidth="0.0" text="Correo: ">
+                                                               <font>
+                                                                  <Font name="Inter 18pt Regular" size="12.0" />
+                                                               </font>
+                                                            </Text>
+                                                            <TextField />
+                                                         </children>
+                                                         <padding>
+                                                            <Insets left="15.0" top="10.0" />
+                                                         </padding>
+                                                      </TextFlow>
+                                                   </children>
+                                                </Pane>
+                                                <Pane prefHeight="45.0" prefWidth="1185.0" style="-fx-border-color: #f5f4f4; -fx-background-color: #fefffe;">
+                                                   <children>
+                                                      <TextFlow prefHeight="45.0" prefWidth="1185.0">
+                                                         <children>
+                                                            <Text fill="#888888" strokeType="OUTSIDE" strokeWidth="0.0" text="Teléfono: ">
+                                                               <font>
+                                                                  <Font name="Inter 18pt Regular" size="12.0" />
+                                                               </font>
+                                                            </Text>
+                                                            <TextField />
+                                                         </children>
+                                                         <padding>
+                                                            <Insets left="15.0" top="10.0" />
+                                                         </padding>
+                                                      </TextFlow>
+                                                   </children>
+                                                </Pane>
+                                                <Pane prefHeight="45.0" prefWidth="1185.0" style="-fx-border-color: #f5f4f4; -fx-background-color: #fefffe;">
+                                                   <children>
+                                                      <TextFlow prefHeight="45.0" prefWidth="1185.0">
+                                                         <children>
+                                                            <Text fill="#888888" strokeType="OUTSIDE" strokeWidth="0.0" text="Documento: ">
+                                                               <font>
+                                                                  <Font name="Inter 18pt Regular" size="12.0" />
+                                                               </font>
+                                                            </Text>
+                                                            <TextField />
+                                                         </children>
+                                                         <padding>
+                                                            <Insets left="15.0" top="10.0" />
+                                                         </padding>
+                                                      </TextFlow>
+                                                   </children>
+                                                </Pane>
+                                                <Pane prefHeight="45.0" prefWidth="1185.0" style="-fx-border-color: #f5f4f4; -fx-background-color: #fefffe;">
+                                                   <children>
+                                                      <TextFlow prefHeight="45.0" prefWidth="1185.0">
+                                                         <children>
+                                                            <Text fill="#888888" strokeType="OUTSIDE" strokeWidth="0.0" text="Nacimiento: ">
+                                                               <font>
+                                                                  <Font name="Inter 18pt Regular" size="12.0" />
+                                                               </font>
+                                                            </Text>
+                                                            <TextField />
+                                                         </children>
+                                                         <padding>
+                                                            <Insets left="15.0" top="10.0" />
+                                                         </padding>
+                                                      </TextFlow>
+                                                   </children>
+                                                </Pane>
+                                                <Pane prefHeight="45.0" prefWidth="1185.0" style="-fx-border-color: #f5f4f4; -fx-background-color: #fefffe;">
+                                                   <children>
+                                                      <TextFlow prefHeight="45.0" prefWidth="1185.0">
+                                                         <children>
+                                                            <Text fill="#888888" strokeType="OUTSIDE" strokeWidth="0.0" text="Dirección: ">
+                                                               <font>
+                                                                  <Font name="Inter 18pt Regular" size="12.0" />
+                                                               </font>
+                                                            </Text>
+                                                            <TextField />
+                                                         </children>
+                                                         <padding>
+                                                            <Insets left="15.0" top="10.0" />
+                                                         </padding>
+                                                      </TextFlow>
+                                                   </children>
+                                                </Pane>
+                                                <Line endX="1085.0" startX="-100.0" stroke="#979797" strokeWidth="3.0">
+                                                   <VBox.margin>
+                                                      <Insets bottom="12.0" top="12.0" />
+                                                   </VBox.margin>
+                                                </Line>
+                                                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="40.0" prefWidth="1188.0" style="-fx-border-color: #974747; -fx-border-width: 2px; -fx-background-color: #fefffe; -fx-background-radius: 8px; -fx-border-radius: 8px;" text="Eliminar Cuenta Permanente" textFill="#974747">
+                                                   <font>
+                                                      <Font name="Poppins Regular" size="12.0" />
+                                                   </font>
+                                                   <VBox.margin>
+                                                      <Insets bottom="12.0" />
+                                                   </VBox.margin>
+                                                </Button>
+                                                <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="200.0">
+                                                   <children>
+                                                      <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" prefHeight="40.0" prefWidth="78.0" style="-fx-background-color: #fefffe; -fx-border-color: #f5f4f4; -fx-background-radius: 5px; -fx-border-radius: 5px;" text="Cancelar">
+                                                         <font>
+                                                            <Font name="Poppins Bold" size="11.0" />
+                                                         </font>
+                                                      </Button>
+                                                      <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" prefHeight="40.0" prefWidth="128.0" style="-fx-background-color: FFCB74; -fx-background-radius: 5px; -fx-border-color: #f5f4f4; -fx-border-radius: 5px;" text="Guardar Cambios">
+                                                         <HBox.margin>
+                                                            <Insets left="12.0" />
+                                                         </HBox.margin>
+                                                         <font>
+                                                            <Font name="Poppins Bold" size="11.0" />
+                                                         </font>
+                                                      </Button>
+                                                   </children>
+                                                </HBox>
+                                             </children>
+                                          </VBox>
+                                       </children>
+                                    </StackPane>
+                                 </children>
+                              </Pane>
                            </children>
-                        </Pane>
-                        <Pane layoutX="-6.0" layoutY="555.0" prefHeight="200.0" prefWidth="1280.0" style="-fx-background-color: #f6f6f6;">
-                           <children>
-                              <Button layoutX="109.0" layoutY="14.0" mnemonicParsing="false" prefHeight="173.0" prefWidth="130.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
-                                 <font>
-                                    <Font name="Poppins Light" size="19.0" />
-                                 </font>
-                                 <graphic>
-                                    <Pane prefHeight="200.0" prefWidth="200.0">
-                                       <children>
-                                          <Text layoutX="17.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Ofertas">
-                                             <font>
-                                                <Font name="Poppins Light" size="19.0" />
-                                             </font>
-                                          </Text>
-                                          <ImageView fitHeight="122.0" fitWidth="123.0" layoutX="-10.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../../Boom/src/boom/Media/EllipseS.png" />
-                                             </image>
-                                          </ImageView>
-                                          <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="-9.0" layoutY="-17.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../../Boom/src/boom/Media/Ofertas.png" />
-                                             </image>
-                                          </ImageView>
-                                       </children>
-                                    </Pane>
-                                 </graphic>
-                              </Button>
-                              <Button layoutX="339.0" layoutY="14.0" mnemonicParsing="false" prefHeight="173.0" prefWidth="130.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
-                                 <font>
-                                    <Font name="Poppins Light" size="19.0" />
-                                 </font>
-                                 <graphic>
-                                    <Pane prefHeight="200.0" prefWidth="200.0">
-                                       <children>
-                                          <Text layoutY="139.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Tecnologia">
-                                             <font>
-                                                <Font name="Poppins Light" size="19.0" />
-                                             </font>
-                                          </Text>
-                                          <ImageView fitHeight="122.0" fitWidth="123.0" layoutX="-10.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../../Boom/src/boom/Media/EllipseS.png" />
-                                             </image>
-                                          </ImageView>
-                                          <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="-23.0" layoutY="-18.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../../Boom/src/boom/Media/Tecnologia.png" />
-                                             </image>
-                                          </ImageView>
-                                       </children>
-                                    </Pane>
-                                 </graphic>
-                              </Button>
-                              <Button layoutX="564.0" layoutY="14.0" mnemonicParsing="false" prefHeight="173.0" prefWidth="130.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
-                                 <font>
-                                    <Font name="Poppins Light" size="19.0" />
-                                 </font>
-                                 <graphic>
-                                    <Pane prefHeight="200.0" prefWidth="200.0">
-                                       <children>
-                                          <Text layoutX="23.0" layoutY="139.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Hogar">
-                                             <font>
-                                                <Font name="Poppins Light" size="19.0" />
-                                             </font>
-                                          </Text>
-                                          <ImageView fitHeight="122.0" fitWidth="123.0" layoutX="-10.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../../Boom/src/boom/Media/EllipseS.png" />
-                                             </image>
-                                          </ImageView>
-                                          <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="-10.0" layoutY="-25.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../../Boom/src/boom/Media/Hogar.png" />
-                                             </image>
-                                          </ImageView>
-                                       </children>
-                                    </Pane>
-                                 </graphic>
-                              </Button>
-                              <Button layoutX="801.0" layoutY="14.0" mnemonicParsing="false" prefHeight="173.0" prefWidth="130.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
-                                 <font>
-                                    <Font name="Poppins Light" size="19.0" />
-                                 </font>
-                                 <graphic>
-                                    <Pane prefHeight="200.0" prefWidth="200.0">
-                                       <children>
-                                          <Text layoutX="9.0" layoutY="136.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Deportes">
-                                             <font>
-                                                <Font name="Poppins Light" size="19.0" />
-                                             </font>
-                                          </Text>
-                                          <ImageView fitHeight="122.0" fitWidth="123.0" layoutX="-10.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../../Boom/src/boom/Media/EllipseS.png" />
-                                             </image>
-                                          </ImageView>
-                                          <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="-17.0" layoutY="-18.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../../Boom/src/boom/Media/Deportes.png" />
-                                             </image>
-                                          </ImageView>
-                                       </children>
-                                    </Pane>
-                                 </graphic>
-                              </Button>
-                              <Button layoutX="1056.0" layoutY="14.0" mnemonicParsing="false" prefHeight="173.0" prefWidth="130.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
-                                 <font>
-                                    <Font name="Poppins Light" size="19.0" />
-                                 </font>
-                                 <graphic>
-                                    <Pane prefHeight="200.0" prefWidth="200.0">
-                                       <children>
-                                          <Text layoutX="-19.0" layoutY="139.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Moda y Belleza">
-                                             <font>
-                                                <Font name="Poppins Light" size="19.0" />
-                                             </font>
-                                          </Text>
-                                          <ImageView fitHeight="122.0" fitWidth="123.0" layoutX="-10.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../../Boom/src/boom/Media/EllipseS.png" />
-                                             </image>
-                                          </ImageView>
-                                          <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="-6.0" layoutY="-35.0" pickOnBounds="true" preserveRatio="true">
-                                             <image>
-                                                <Image url="@../../../Boom/src/boom/Media/Moda.png" />
-                                             </image>
-                                          </ImageView>
-                                       </children>
-                                    </Pane>
-                                 </graphic>
-                              </Button>
-                           </children>
-                        </Pane>
-                        <Pane layoutY="755.0" prefHeight="60.0" prefWidth="1280.0">
-                           <children>
-                              <Text layoutX="593.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="- Para ti -">
-                                 <font>
-                                    <Font name="Poppins Medium" size="19.0" />
-                                 </font>
-                              </Text>
-                           </children>
-                        </Pane>
-                        <FlowPane id="contenedorProductosHome" hgap="90.0" layoutY="815.0" prefHeight="1400.0" prefWidth="1280.0" vgap="60.0" />
-                        <Pane layoutY="2215.0" prefHeight="99.0" prefWidth="1280.0" />
+                        </StackPane>
                      </children>
                   </Pane>
                </children>
             </AnchorPane>
-        </content>
+         </content>
       </ScrollPane>
    </children>
 </StackPane>

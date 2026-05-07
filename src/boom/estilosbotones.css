@@ -53,7 +53,7 @@
 .icon-menu {
     -fx-shape: "M4 18h16c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1s.45 1 1 1zm0-5h16c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1s.45 1 1 1zM3 7c0 .55.45 1 1 1h16c.55 0 1-.45 1-1s-.45-1-1-1H4c-.55 0-1 .45-1 1z";
     -fx-pref-width: 22px;
-    -fx-pref-height: 22px;
+    -fx-pref-height: 18px;
 }
 
 .menu-button .arrow-button .arrow {
@@ -71,3 +71,62 @@
     -fx-pref-width: 26px;
     -fx-pref-height: 30px;
 }
+
+.icon-edit {
+    -fx-shape: "M19.045 7.401c.378-.378.586-.88.586-1.414s-.208-1.036-.586-1.414l-1.586-1.586c-.378-.378-.88-.586-1.414-.586s-1.036.208-1.414.586l-1.5 1.5-4.135 4.135a3.001 3.001 0 0 0-.819 1.464l-.45 1.802a.5.5 0 0 0 .606.606l1.802-.45a3 3 0 0 0 1.464-.819l4.135-4.135 1.5-1.5zm-2.121-2.121 1.586 1.586-1.121 1.121-1.586-1.586 1.121-1.121zm-2.536 1.121 1.586 1.586-3.882 3.882a2 2 0 0 1-.976.546l-1.202.3.3-1.202a2 2 0 0 1 .546-.976l3.628-3.628z M4.5 4C3.12 4 2 5.12 2 6.5v11C2 18.88 3.12 20 4.5 20h11c1.38 0 2.5-1.12 2.5-2.5v-6.5a.5.5 0 0 0-1 0v6.5c0 .827-.673 1.5-1.5 1.5h-11C3.673 19 3 18.327 3 17.5v-11C3 5.673 3.673 5 4.5 5h6.5a.5.5 0 0 0 0-1h-6.5z";
+    
+    -fx-pref-width: 15px;
+    -fx-pref-height: 15px;
+}
+
+.menu-container {
+    -fx-border-color: #E0E0E0;
+    -fx-border-radius: 8;
+    -fx-background-color: white;
+    -fx-background-radius: 8;
+}
+
+.menu-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #808080; 
+    -fx-font-size: 13px;
+    -fx-cursor: hand;
+    -fx-border-color: transparent #E0E0E0 transparent transparent;
+}
+
+.menu-btn:selected {
+    -fx-background-color: #1A1A1A; 
+    -fx-text-fill: #EBB624; 
+    -fx-font-weight: bold;
+    -fx-border-color: transparent; 
+}
+
+.menu-btn-izq {
+    -fx-background-radius: 7 0 0 7;
+}
+
+.menu-btn-der {
+    -fx-background-radius: 0 7 7 0;
+    -fx-border-color: transparent;
+}
+
+
+.menu-containerC {
+    -fx-background-color: #111111;
+}
+
+.menu-btnC {
+    -fx-background-color: transparent;
+    -fx-text-fill: #ffffff; 
+    -fx-font-size: 13px;
+    -fx-cursor: hand;
+    -fx-border-color: transparent #E0E0E0 transparent transparent; 
+}
+
+.menu-btnC:selected {
+    -fx-background-color: #F7CD84; 
+    -fx-text-fill: #111111; 
+    -fx-font-weight: bold;
+    -fx-border-color: transparent;
+}
+

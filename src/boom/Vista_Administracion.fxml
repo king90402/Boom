@@ -11,83 +11,97 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleButton?>
+<?import javafx.scene.control.ToggleGroup?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.shape.Circle?>
 <?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<StackPane id="mother" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="981.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="boom.Controladora">
+<StackPane id="mother" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="981.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="boom.Controladora">
    <children>
       <Pane id="paneLogin" prefHeight="450.0" prefWidth="800.0" style="-fx-background-coor: linear-gradient(to bottom, #f6f5f5, #f6daa7);">
          <children>
-            <Pane prefHeight="450.0" prefWidth="178.0" style="-fx-background-color: #111111;">
+            <Pane prefHeight="450.0" prefWidth="178.0" style="-fx-background-color: #111111;" stylesheets="@estilosbotones.css">
                <children>
                   <Line endX="100.0" layoutX="101.0" layoutY="67.0" startX="-100.0" stroke="WHITE" />
-                  <Button id="btLogin" alignment="BASELINE_LEFT" layoutX="-4.0" layoutY="90.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="186.0" style="-fx-background-color: #F7CD84;" text="Estadisticas">
-                     <font>
-                        <Font name="Poppins SemiBold" size="12.0" />
-                     </font>
-                     <padding>
-                        <Insets left="15.0" />
-                     </padding>
-                  </Button>
-                  <Button id="btLogin" alignment="BASELINE_LEFT" layoutX="-4.0" layoutY="150.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="186.0" style="-fx-background-color: #111111;" text="Restablecer Stock" textFill="WHITE">
-                     <font>
-                        <Font name="Poppins ExtraLight" size="12.0" />
-                     </font>
-                     <padding>
-                        <Insets left="15.0" />
-                     </padding>
-                  </Button>
-                  <Button id="btLogin" alignment="BASELINE_LEFT" layoutX="-4.0" layoutY="210.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="186.0" style="-fx-background-color: #111111;" text="Inventario" textFill="WHITE">
-                     <font>
-                        <Font name="Poppins ExtraLight" size="12.0" />
-                     </font>
-                     <padding>
-                        <Insets left="15.0" />
-                     </padding>
-                  </Button>
-                  <Button id="btLogin" alignment="BASELINE_LEFT" layoutX="-4.0" layoutY="270.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="186.0" style="-fx-background-color: #111111;" text="Pedidos" textFill="WHITE">
-                     <font>
-                        <Font name="Poppins ExtraLight" size="12.0" />
-                     </font>
-                     <padding>
-                        <Insets left="15.0" />
-                     </padding>
-                  </Button>
-                  <Button id="btLogin" alignment="BASELINE_LEFT" layoutX="-4.0" layoutY="330.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="186.0" style="-fx-background-color: #111111;" text="Ingresar Personal" textFill="WHITE">
-                     <font>
-                        <Font name="Poppins ExtraLight" size="12.0" />
-                     </font>
-                     <padding>
-                        <Insets left="15.0" />
-                     </padding>
-                  </Button>
-                  <Button id="btLogin" alignment="BASELINE_LEFT" layoutX="-4.0" layoutY="390.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="186.0" style="-fx-background-color: #111111;" text="Restablecer Stock" textFill="WHITE">
-                     <font>
-                        <Font name="Poppins ExtraLight" size="12.0" />
-                     </font>
-                     <padding>
-                        <Insets left="15.0" />
-                     </padding>
-                  </Button>
                   <Button layoutX="-9.0" layoutY="5.0" mnemonicParsing="false" onAction="#irACategoriaOfertas" prefHeight="51.0" prefWidth="144.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="B O O M" textFill="WHITE">
                      <font>
                         <Font name="Poppins Bold" size="28.0" />
                      </font>
                   </Button>
+                  <VBox layoutY="84.0" prefHeight="366.0" prefWidth="178.0" styleClass="menu-containerC">
+                     <children>
+                        <ToggleButton alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="54.0" prefWidth="178.0" selected="true" styleClass="menu-btnC" text="Estadisticas" VBox.vgrow="ALWAYS">
+                           <font>
+                              <Font name="Poppins SemiBold" size="12.0" />
+                           </font>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                           <padding>
+                              <Insets left="15.0" />
+                           </padding>
+                           <toggleGroup>
+                              <ToggleGroup fx:id="MenuConfig" />
+                           </toggleGroup>
+                        </ToggleButton>
+                        <ToggleButton alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="54.0" prefWidth="178.0" styleClass="menu-btnC" text="Restablecer Stock" toggleGroup="$MenuConfig" VBox.vgrow="ALWAYS">
+                           <font>
+                              <Font name="Poppins SemiBold" size="12.0" />
+                           </font>
+                           <padding>
+                              <Insets left="15.0" />
+                           </padding>
+                        </ToggleButton>
+                        <ToggleButton alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="54.0" prefWidth="178.0" styleClass="menu-btnC" text="Inventario" toggleGroup="$MenuConfig" VBox.vgrow="ALWAYS">
+                           <font>
+                              <Font name="Poppins SemiBold" size="12.0" />
+                           </font>
+                           <padding>
+                              <Insets left="15.0" />
+                           </padding>
+                        </ToggleButton>
+                        <ToggleButton alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="54.0" prefWidth="178.0" styleClass="menu-btnC" text="Pedidos" toggleGroup="$MenuConfig" VBox.vgrow="ALWAYS">
+                           <font>
+                              <Font name="Poppins SemiBold" size="12.0" />
+                           </font>
+                           <padding>
+                              <Insets left="15.0" />
+                           </padding>
+                        </ToggleButton>
+                        <ToggleButton alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="54.0" prefWidth="178.0" styleClass="menu-btnC" text="Ingresar Personal" toggleGroup="$MenuConfig" VBox.vgrow="ALWAYS">
+                           <font>
+                              <Font name="Poppins SemiBold" size="12.0" />
+                           </font>
+                           <padding>
+                              <Insets left="15.0" />
+                           </padding>
+                        </ToggleButton>
+                        <ToggleButton alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="54.0" prefWidth="178.0" styleClass="menu-btnC" text="Restablecer Stock" toggleGroup="$MenuConfig" VBox.vgrow="ALWAYS">
+                           <font>
+                              <Font name="Poppins SemiBold" size="12.0" />
+                           </font>
+                           <padding>
+                              <Insets left="15.0" />
+                           </padding>
+                        </ToggleButton>
+                     </children>
+                  </VBox>
                </children>
             </Pane>
             <StackPane layoutX="178.0" prefHeight="450.0" prefWidth="804.0">
                <children>
-                  <Pane id="Estadisticas" fx:id="Estadisticas" prefHeight="450.0" prefWidth="693.0" style="-fx-background-color: #ffffff;">
+                  <Pane id="contenedor1" prefHeight="450.0" prefWidth="693.0" style="-fx-background-color: #ffffff;" visible="false">
                      <children>
                         <Pane layoutX="27.0" layoutY="119.0" prefHeight="73.0" prefWidth="241.0" style="-fx-background-color: #f6f6f6; -fx-background-radius: 8;">
                            <children>
@@ -96,7 +110,7 @@
                                     <Font name="Poppins Light" size="11.0" />
                                  </font>
                               </Text>
-                              <Text id="lblBienvenido" layoutX="19.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\$0" wrappingWidth="224.0">
+                              <Text id="lblBienvenido" layoutX="19.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="\$11,900,000" wrappingWidth="224.0">
                                  <font>
                                     <Font name="Inter 18pt SemiBold" size="22.0" />
                                  </font>
@@ -130,7 +144,7 @@
                                     <Font name="Poppins Light" size="11.0" />
                                  </font>
                               </Text>
-                              <Text id="lblBienvenido" layoutX="16.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" wrappingWidth="137.00000000000006">
+                              <Text id="lblBienvenido" layoutX="16.0" layoutY="52.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2" wrappingWidth="137.00000000000006">
                                  <font>
                                     <Font name="Inter 18pt SemiBold" size="22.0" />
                                  </font>
@@ -147,7 +161,7 @@
                                     <Font name="Poppins Light" size="11.0" />
                                  </font>
                               </Text>
-                              <Text id="lblBienvenido" layoutX="16.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0" wrappingWidth="164.00000000000006">
+                              <Text id="lblBienvenido" layoutX="16.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2" wrappingWidth="164.00000000000006">
                                  <font>
                                     <Font name="Inter 18pt SemiBold" size="22.0" />
                                  </font>
@@ -172,7 +186,7 @@
                                     <Font name="Poppins Light" size="11.0" />
                                  </font>
                               </Text>
-                              <Text id="lblBienvenido" layoutX="16.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="164.00000000000006">
+                              <Text id="lblBienvenido" layoutX="16.0" layoutY="51.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Jose Martinez" wrappingWidth="164.00000000000006">
                                  <font>
                                     <Font name="Inter 18pt SemiBold" size="20.0" />
                                  </font>
@@ -561,30 +575,30 @@
                         <DropShadow height="5.0" offsetX="0.8" offsetY="1.0" radius="2.0" spread="0.1" width="5.0" />
                      </effect>
                   </Pane>
-                  <Pane layoutX="10.0" layoutY="10.0" prefHeight="359.0" prefWidth="660.0" style="-fx-background-color: #f0f0f0; -fx-background-radius: 8;" visible="false">
+                  <Pane layoutX="10.0" layoutY="10.0" prefHeight="359.0" prefWidth="660.0" style="-fx-background-color: #f0f0f0; -fx-background-radius: 8;">
                      <children>
                         <ScrollPane hbarPolicy="NEVER" layoutX="24.0" layoutY="36.0" prefHeight="112.0" prefWidth="743.0" style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-background-radius: 15px; -fx-border-radius: 15px;" vbarPolicy="NEVER">
                           <content>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="108.0" prefWidth="732.0" style="-fx-background-radius: 15px; -fx-background-color: #111111; -fx-border-color: #111111; -fx-background-radius: 15px;">
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="108.0" prefWidth="732.0" style="-fx-background-radius: 15px; -fx-background-color: #111111;" stylesheets="@estilosbotones.css">
                                  <children>
                                     <Circle fill="#262110" layoutX="684.0" layoutY="54.0" radius="87.0" stroke="BLACK" strokeType="INSIDE" />
-                                    <Circle fill="#feb900" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
-                                    <Text strokeType="OUTSIDE" strokeWidth="0.0" text="DD">
+                                    <Circle fill="#feb900" layoutX="56.0" layoutY="54.0" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Text layoutX="36.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DD">
                                        <font>
                                           <Font name="Inter 18pt SemiBold" size="28.0" />
                                        </font>
                                     </Text>
-                                    <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Diomedes Diaz">
+                                    <Text fill="WHITE" layoutX="106.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Diomedes Diaz">
                                        <font>
                                           <Font name="Inter 18pt SemiBold" size="20.0" />
                                        </font>
                                     </Text>
-                                    <Text fill="#aaaaaa" strokeType="OUTSIDE" strokeWidth="0.0" text="elcaciquedelajunta2013@outlook.es">
+                                    <Text fill="#aaaaaa" layoutX="106.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="elcaciquedelajunta2013@outlook.es">
                                        <font>
                                           <Font name="Inter Regular" size="14.0" />
                                        </font>
                                     </Text>
-                                    <Pane prefHeight="27.0" prefWidth="115.0" style="-fx-background-color: #443713; -fx-background-radius: 10px;">
+                                    <Pane layoutX="106.0" layoutY="71.0" prefHeight="27.0" prefWidth="115.0" style="-fx-background-color: #443713; -fx-background-radius: 10px;">
                                        <children>
                                           <Text fill="#ffb800" layoutX="13.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Admin Principal" textAlignment="CENTER">
                                              <font>
@@ -593,11 +607,25 @@
                                           </Text>
                                        </children>
                                     </Pane>
+                                    <Button layoutX="619.0" layoutY="37.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="86.0" style="-fx-background-color: #3b3527; -fx-border-color: #4a4436; -fx-border-radius: 8px; -fx-cursor: hand;" text="Button">
+                                       <graphic>
+                                          <Pane prefHeight="35.0" prefWidth="75.0">
+                                             <children>
+                                                <Region layoutX="6.0" layoutY="10.0" prefHeight="27.0" prefWidth="29.0" style="-fx-border-color: #ffffff;" styleClass="icon-edit" />
+                                                <Text fill="WHITE" layoutX="27.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Editar">
+                                                   <font>
+                                                      <Font name="Inter 18pt SemiBold" size="13.0" />
+                                                   </font>
+                                                </Text>
+                                             </children>
+                                          </Pane>
+                                       </graphic>
+                                    </Button>
                                  </children>
                               </AnchorPane>
                           </content>
                         </ScrollPane>
-                        <Button id="btLogin" layoutX="639.0" layoutY="331.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="131.0" style="-fx-background-color: #f6cd85; -fx-background-radius: 20;" text="Eliminar Cuenta">
+                        <Button id="btLogin" layoutX="636.0" layoutY="318.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="131.0" style="-fx-background-color: #f6cd85; -fx-background-radius: 20; -fx-cursor: hand;" text="Eliminar Cuenta">
                            <font>
                               <Font name="Poppins ExtraLight" size="13.0" />
                            </font>
@@ -686,7 +714,6 @@
                               </Text>
                            </children>
                         </TextFlow>
-                        <Pane layoutX="498.0" layoutY="314.0" prefHeight="35.0" prefWidth="86.0" style="-fx-background-color: #3b3527; -fx-background-radius: 10px; -fx-border-color: #4a4436; -fx-border-radius: 10px;" />
                      </children>
                      <effect>
                         <DropShadow height="5.0" offsetX="0.8" offsetY="1.0" radius="2.0" spread="0.1" width="5.0" />

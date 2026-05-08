@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane id="mother" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="boom.Controladora">
+<StackPane id="mother" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="boom.Controladora">
    <children>
       <Pane id="paneLogin" fx:id="paneLogin" prefHeight="450.0" prefWidth="800.0" style="-fx-background-color: linear-gradient(to bottom, #f6f5f5, #f6daa7);" visible="false">
          <children>
@@ -37,7 +37,7 @@
                         <Font name="Poppins Regular" size="12.0" />
                      </font>
                   </PasswordField>
-                  <Button layoutX="397.0" layoutY="246.0" mnemonicParsing="false" onAction="#Inicioseccion_admin" prefHeight="36.0" prefWidth="233.0" style="-fx-background-color: #f6cd85; -fx-background-radius: 7; -fx-cursor: hand;" text="INICIAR SESIÓN">
+                  <Button layoutX="397.0" layoutY="246.0" mnemonicParsing="false" onAction="#iniciarSesion" prefHeight="36.0" prefWidth="233.0" style="-fx-background-color: #f6cd85; -fx-background-radius: 7; -fx-cursor: hand;" text="INICIAR SESIÓN">
                      <font>
                         <Font name="Roboto Regular" size="11.0" />
                      </font>
@@ -61,9 +61,9 @@
       </Pane>
       <Pane id="paneRegistro" fx:id="paneRegistro" prefHeight="450.0" prefWidth="800.0" style="-fx-background-color: linear-gradient(to bottom, #f6f5f5, #f6daa7);">
          <children>
-            <Pane id="contenedor1" layoutX="54.0" layoutY="61.0" prefHeight="329.0" prefWidth="693.0" style="-fx-background-color: #f6f6f6; -fx-background-radius: 17;">
+            <Pane id="contenedor1" layoutX="22.0" layoutY="24.0" prefHeight="403.0" prefWidth="756.0" style="-fx-background-color: #f6f6f6; -fx-background-radius: 17;">
                <children>
-                  <ImageView id="imageRegistro" fitHeight="329.0" fitWidth="344.0" layoutX="352.0" pickOnBounds="true" preserveRatio="true">
+                  <ImageView id="imageRegistro" fitHeight="403.0" fitWidth="415.0" layoutX="341.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
                      <image>
                         <Image url="@Media/Registro.png" />
                      </image>
@@ -73,12 +73,12 @@
                         <Font name="Poppins ExtraLight" size="12.0" />
                      </font>
                   </Text>
-                  <TextField id="txtUsuario" layoutX="24.0" layoutY="56.0" prefHeight="34.0" prefWidth="302.0" promptText="user@dominio.com" style="-fx-border-color: #eaebee;">
+                  <TextField fx:id="txtCorreoRegistro" layoutX="24.0" layoutY="56.0" prefHeight="34.0" prefWidth="302.0" promptText="user@dominio.com" style="-fx-border-color: #eaebee;">
                      <font>
                         <Font name="Poppins Regular" size="12.0" />
                      </font>
                   </TextField>
-                  <Button id="btLogin" layoutX="60.0" layoutY="279.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="233.0" style="-fx-background-color: #f6cd85; -fx-background-radius: 7; -fx-cursor: hand;" text="REGISTRATE">
+                  <Button id="btLogin" layoutX="61.0" layoutY="342.0" mnemonicParsing="false" onAction="#registrarCliente" prefHeight="36.0" prefWidth="233.0" style="-fx-background-color: #f6cd85; -fx-background-radius: 7; -fx-cursor: hand;" text="REGISTRATE">
                      <font>
                         <Font name="Roboto Regular" size="11.0" />
                      </font>
@@ -93,31 +93,33 @@
                         <Font name="Poppins ExtraLight" size="12.0" />
                      </font>
                   </Text>
-                  <TextField id="txtUsuario" layoutX="26.0" layoutY="113.0" prefHeight="34.0" prefWidth="302.0" promptText="+57" style="-fx-border-color: #eaebee;">
+                  <TextField fx:id="txtTelefonoRegistro" layoutX="26.0" layoutY="113.0" prefHeight="34.0" prefWidth="302.0" promptText="+57" style="-fx-border-color: #eaebee;">
                      <font>
                         <Font name="Poppins Regular" size="12.0" />
                      </font>
                   </TextField>
-                  <Text id="lblBienvenido" layoutX="25.0" layoutY="166.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Usuario:">
+                  <Text id="lblBienvenido" layoutX="29.0" layoutY="166.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre completo:">
                      <font>
                         <Font name="Poppins ExtraLight" size="12.0" />
                      </font>
                   </Text>
-                  <TextField id="txtUsuario" layoutX="25.0" layoutY="170.0" prefHeight="34.0" prefWidth="302.0" promptText="user" style="-fx-border-color: #eaebee;">
+                  <TextField fx:id="txtUsuarioRegistro" layoutX="25.0" layoutY="170.0" prefHeight="34.0" prefWidth="302.0" promptText="user" style="-fx-border-color: #eaebee;">
                      <font>
                         <Font name="Poppins Regular" size="12.0" />
                      </font>
                   </TextField>
-                  <Text id="lblBienvenido" layoutX="27.0" layoutY="226.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Contraseña:">
+                  <Text id="lblBienvenido" layoutX="29.0" layoutY="289.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Contraseña:" wrappingWidth="63.26092529296875">
                      <font>
                         <Font name="Poppins ExtraLight" size="12.0" />
                      </font>
                   </Text>
-                  <TextField id="txtUsuario" layoutX="27.0" layoutY="230.0" prefHeight="34.0" prefWidth="302.0" promptText="*******" style="-fx-border-color: #eaebee;">
+                  <PasswordField fx:id="txtPasswordRegistro" layoutX="27.0" layoutY="293.0" prefHeight="34.0" prefWidth="302.0" promptText="*******" style="-fx-border-color: #eaebee;">
                      <font>
                         <Font name="Poppins Regular" size="12.0" />
                      </font>
-                  </TextField>
+                  </PasswordField>
+                  <Text layoutX="29.0" layoutY="227.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Numero de identificación:" />
+                  <TextField fx:id="txtIdClienteRegistro" layoutX="27.0" layoutY="231.0" prefHeight="34.0" prefWidth="302.0" promptText="TI - CC" />
                </children>
                <effect>
                   <DropShadow height="15.0" offsetX="-0.6" offsetY="3.0" radius="7.0" width="15.0" />

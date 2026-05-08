@@ -34,7 +34,7 @@
             <Pane prefHeight="450.0" prefWidth="178.0" style="-fx-background-color: #111111;" stylesheets="@estilosbotones.css">
                <children>
                   <Line endX="100.0" layoutX="101.0" layoutY="67.0" startX="-100.0" stroke="WHITE" />
-                  <Button layoutX="-9.0" layoutY="5.0" mnemonicParsing="false" onAction="#irACategoriaOfertas" prefHeight="51.0" prefWidth="144.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="B O O M" textFill="WHITE">
+                  <Button layoutX="-9.0" layoutY="5.0" mnemonicParsing="false" onAction="#irAPanelAdmin" prefHeight="51.0" prefWidth="144.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="B O O M" textFill="WHITE">
                      <font>
                         <Font name="Poppins Bold" size="28.0" />
                      </font>

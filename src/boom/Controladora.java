@@ -141,7 +141,7 @@ public class Controladora {
         }
 
         String userNormalizado = user.toLowerCase();
-        // verificacion de admin
+        // Verificacion de admin
         for (int i = 0; i < contadorAdmins; i++) {
             admin a = listaAdmins[i];
             if ((a.getCorreoAdmin().equalsIgnoreCase(userNormalizado) || 
@@ -151,7 +151,7 @@ public class Controladora {
                 return;
             }
         }
-        //inicio con cliente
+        // Inicio con cliente
         for (int i = 0; i < contadorClientes; i++) {
             cliente c = listaClientes[i];
             if ((c.getCorreoCliente().equalsIgnoreCase(userNormalizado) || 
@@ -369,8 +369,7 @@ public class Controladora {
             return;
         }
         
-        // ============ VALIDACION DE CORREO MEJORADA ============
-        // Forma del correo (validacion completa)
+        // Forma del correo 
         if (!validarCorreoCompleto(correo)) {
             JOptionPane.showMessageDialog(null, 
                 "Error: El formato del correo electronico no es valido.\nPor favor ingrese un correo valido.\nEjemplo: usuario@gmail.com\n\nNo se permiten:\n- Caracteres especiales consecutivos\n- Dominios invalidos\n- Correos muy cortos o muy largos", 
@@ -393,7 +392,6 @@ public class Controladora {
             return;
         }
         
-        // ============ VALIDACION DE NOMBRE COMPLETO (simplificada) ============
         // Validar longitud del nombre
         if (nombreCompleto.length() < MIN_NAME_LENGTH || nombreCompleto.length() > MAX_NAME_LENGTH) {
             JOptionPane.showMessageDialog(null, 

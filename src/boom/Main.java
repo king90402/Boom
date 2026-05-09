@@ -22,6 +22,10 @@ import javafx.stage.Stage;
         Scene scene = new Scene(loader.load());
         stage.setScene(scene);
         stage.setTitle("Boom");
+        stage.setMinWidth(800);
+        stage.setMinHeight(450);
+        stage.setResizable(false);  
+        stage.centerOnScreen();
         stage.show();
     }
     public static void main(String[] args) {

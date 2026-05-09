@@ -33,9 +33,9 @@
                <children>
                   <Pane prefHeight="2312.0" prefWidth="1280.0">
                      <children>
-                        <Pane prefHeight="110.0" prefWidth="1280.0" style="-fx-background-color: #111111;" styleClass="dark-toolbar" stylesheets="@../../../Boom/src/boom/estilosbotones.css">
+                        <Pane id="paneControl" prefHeight="110.0" prefWidth="1280.0" style="-fx-background-color: #111111;" styleClass="dark-toolbar" stylesheets="@../../../Boom/src/boom/estilosbotones.css">
                            <children>
-                              <TextField layoutX="279.0" layoutY="33.0" prefHeight="45.0" prefWidth="690.0" promptText="Laptop Vivabook 15" style="-fx-background-color: #F6F6F6;">
+                              <TextField id="txtBuscar" layoutX="279.0" layoutY="33.0" prefHeight="45.0" prefWidth="690.0" promptText="Laptop Vivabook 15" style="-fx-background-color: #F6F6F6;">
                                  <font>
                                     <Font name="Poppins Regular" size="13.0" />
                                  </font>
@@ -44,61 +44,57 @@
                                  </padding>
                               </TextField>
                               <Line endX="-100.0" endY="32.0" layoutX="1017.0" layoutY="40.0" startX="-100.0" stroke="#2f2f2f" strokeWidth="2.0" />
-                              <Button layoutX="924.0" layoutY="39.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="39.0" style="-fx-background-color: transparent;" styleClass="icon-button">
+                              <Button id="btnBuscar" layoutX="917.0" layoutY="31.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="54.0" style="-fx-background-color: transparent;" styleClass="icon-button" text="🔍">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Button>
+                              <Button id="btnFavoritos" layoutX="1019.0" layoutY="32.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="50.0" style="-fx-background-color: transparent;" styleClass="icon-button">
                                  <graphic>
-                                    <Region prefHeight="45.0" prefWidth="63.0" style="-fx-background-color: #111111;" styleClass="icon-lupa" />
+                                    <Region prefHeight="45.0" prefWidth="63.0" style="-fx-border-color: #ffffff; -fx-border-width: 3;" styleClass="icon-corazon" />
                                  </graphic>
                               </Button>
-                              <Button layoutX="1019.0" layoutY="39.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="39.0" style="-fx-background-color: transparent;" styleClass="icon-button">
-                                 <graphic>
-                                    <Region prefHeight="45.0" prefWidth="63.0" style="-fx-border-color: #ffffff; -fx-border-width: 2;" styleClass="icon-corazon" />
-                                 </graphic>
-                              </Button>
-                              <Button layoutX="1073.0" layoutY="38.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="39.0" style="-fx-background-color: transparent;" styleClass="icon-button">
+                              <Button id="btnCarrito" layoutX="1102.0" layoutY="33.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="48.0" style="-fx-background-color: transparent;" styleClass="icon-button">
                                  <graphic>
                                     <Region prefHeight="45.0" prefWidth="23.0" style="-fx-border-color: #ffffff; -fx-border-width: 2;" styleClass="icon-carrito" />
                                  </graphic>
                               </Button>
-                              <Button layoutX="1130.0" layoutY="38.0" mnemonicParsing="false" prefHeight="34.0" prefWidth="39.0" style="-fx-background-color: transparent;" styleClass="icon-button">
-                                 <graphic>
-                                    <Region prefHeight="45.0" prefWidth="23.0" style="-fx-border-color: #ffffff; -fx-border-width: 2;" styleClass="icon-usuario" />
-                                 </graphic>
-                              </Button>
-                              <MenuButton layoutX="1190.0" layoutY="43.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="33.0" style="-fx-background-color: #ffffff;" styleClass="icon-menu">
+                              <MenuButton id="menuUsuario" layoutX="1197.0" layoutY="40.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="33.0" style="-fx-background-color: #ffffff;" styleClass="icon-usuario">
                                  <items>
-                                    <MenuItem mnemonicParsing="false" text="Cerrar Sesión  " />
+                                    <MenuItem id="menubtnPerfil" mnemonicParsing="false" text="Mi Perfil" />
+                                    <MenuItem id="menubtnCerrarSesion" mnemonicParsing="false" text="Cerrar Sesión  " />
                                  </items>
                               </MenuButton>
-                              <Button layoutX="13.0" layoutY="15.0" mnemonicParsing="false" onAction="#irACategoriaOfertas" prefHeight="81.0" prefWidth="195.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="B O O M" textFill="WHITE">
+                              <Button id="btnInicio" layoutX="13.0" layoutY="15.0" mnemonicParsing="false" onAction="#irACategoriaOfertas" prefHeight="81.0" prefWidth="195.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="B O O M" textFill="WHITE">
                                  <font>
                                     <Font name="Poppins Bold" size="38.0" />
                                  </font>
                               </Button>
                            </children>
                         </Pane>
-                        <Pane layoutY="110.0" prefHeight="45.0" prefWidth="1280.0" style="-fx-background-color: #ffffff;" stylesheets="@estilosbotones.css">
+                        <Pane id="paneCategorias" layoutY="110.0" prefHeight="45.0" prefWidth="1280.0" style="-fx-background-color: #ffffff;" stylesheets="@estilosbotones.css">
                            <children>
-                              <Button layoutX="205.0" layoutY="11.0" mnemonicParsing="false" onAction="#irACategoriaOfertas" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Ofertas">
+                              <Button id="btnOfertas" layoutX="205.0" layoutY="11.0" mnemonicParsing="false" onAction="#irACategoriaOfertas" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Ofertas">
                                  <font>
                                     <Font name="Poppins Light" size="13.0" />
                                  </font>
                               </Button>
-                              <Button layoutX="387.0" layoutY="11.0" mnemonicParsing="false" onAction="#irACategoriaTecnologia" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Tecnologia">
+                              <Button id="btnTecnologia" layoutX="387.0" layoutY="11.0" mnemonicParsing="false" onAction="#irACategoriaTecnologia" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Tecnologia">
                                  <font>
                                     <Font name="Poppins Light" size="13.0" />
                                  </font>
                               </Button>
-                              <Button layoutX="626.0" layoutY="11.0" mnemonicParsing="false" onAction="#irACategoriaHogar" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Hogar">
+                              <Button id="btnHogar" layoutX="626.0" layoutY="11.0" mnemonicParsing="false" onAction="#irACategoriaHogar" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Hogar">
                                  <font>
                                     <Font name="Poppins Light" size="13.0" />
                                  </font>
                               </Button>
-                              <Button layoutX="840.0" layoutY="11.0" mnemonicParsing="false" onAction="#irACategoriaDeportes" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Deportes">
+                              <Button id="btnDeportes" layoutX="840.0" layoutY="11.0" mnemonicParsing="false" onAction="#irACategoriaDeportes" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Deportes">
                                  <font>
                                     <Font name="Poppins Light" size="13.0" />
                                  </font>
                               </Button>
-                              <Button layoutX="1074.0" layoutY="9.0" mnemonicParsing="false" onAction="#irACategoriaModa" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Moda y Belleza">
+                              <Button id="btnModaBelleza" layoutX="1074.0" layoutY="9.0" mnemonicParsing="false" onAction="#irACategoriaModa" style="-fx-background-color: transparent; -fx-cursor: hand;" text="Moda y Belleza">
                                  <font>
                                     <Font name="Poppins Light" size="13.0" />
                                  </font>
@@ -116,11 +112,11 @@
                               </Text>
                            </children>
                         </Pane>
-                        <StackPane layoutY="155.0" prefHeight="2178.0" prefWidth="1280.0">
+                        <StackPane layoutY="155.0" prefHeight="2082.0" prefWidth="1280.0">
                            <children>
-                              <Pane prefHeight="2178.0" prefWidth="1280.0">
+                              <Pane prefHeight="2082.0" prefWidth="1280.0" visible="false">
                                  <children>
-                                    <Pane prefHeight="400.0" prefWidth="1280.0" style="-fx-background-color: #f6f6f6;">
+                                    <Pane id="paneImagen" prefHeight="400.0" prefWidth="1280.0" style="-fx-background-color: #f6f6f6;">
                                        <children>
                                           <Text layoutX="416.0" layoutY="79.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Compra sin límites y siente el">
                                              <font>
@@ -140,9 +136,9 @@
                                           <Region layoutY="320.0" prefHeight="80.0" prefWidth="1280.0" style="-fx-background-color: linear-gradient(to top, #f6f6f6 0%, rgba(255, 255, 255, 0) 100%);" />
                                        </children>
                                     </Pane>
-                                    <Pane layoutY="400.0" prefHeight="200.0" prefWidth="1280.0" style="-fx-background-color: #f6f6f6;">
+                                    <Pane id="paneCategoriasImg" layoutY="400.0" prefHeight="200.0" prefWidth="1280.0" style="-fx-background-color: #f6f6f6;">
                                        <children>
-                                          <Button layoutX="109.0" layoutY="14.0" mnemonicParsing="false" prefHeight="173.0" prefWidth="130.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
+                                          <Button id="btnOfertasImg" layoutX="109.0" layoutY="14.0" mnemonicParsing="false" prefHeight="173.0" prefWidth="130.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
                                              <font>
                                                 <Font name="Poppins Light" size="19.0" />
                                              </font>
@@ -168,7 +164,7 @@
                                                 </Pane>
                                              </graphic>
                                           </Button>
-                                          <Button layoutX="339.0" layoutY="14.0" mnemonicParsing="false" prefHeight="173.0" prefWidth="130.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
+                                          <Button id="btnTecnologiaImg" layoutX="339.0" layoutY="14.0" mnemonicParsing="false" prefHeight="173.0" prefWidth="130.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
                                              <font>
                                                 <Font name="Poppins Light" size="19.0" />
                                              </font>
@@ -194,7 +190,7 @@
                                                 </Pane>
                                              </graphic>
                                           </Button>
-                                          <Button layoutX="564.0" layoutY="14.0" mnemonicParsing="false" prefHeight="173.0" prefWidth="130.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
+                                          <Button id="btnHogarImg" layoutX="564.0" layoutY="14.0" mnemonicParsing="false" prefHeight="173.0" prefWidth="130.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
                                              <font>
                                                 <Font name="Poppins Light" size="19.0" />
                                              </font>
@@ -220,7 +216,7 @@
                                                 </Pane>
                                              </graphic>
                                           </Button>
-                                          <Button layoutX="801.0" layoutY="14.0" mnemonicParsing="false" prefHeight="173.0" prefWidth="130.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
+                                          <Button id="btnDeportesImg" layoutX="801.0" layoutY="14.0" mnemonicParsing="false" prefHeight="173.0" prefWidth="130.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
                                              <font>
                                                 <Font name="Poppins Light" size="19.0" />
                                              </font>
@@ -246,7 +242,7 @@
                                                 </Pane>
                                              </graphic>
                                           </Button>
-                                          <Button layoutX="1056.0" layoutY="14.0" mnemonicParsing="false" prefHeight="173.0" prefWidth="130.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
+                                          <Button id="btnModaBellezaImg" layoutX="1056.0" layoutY="14.0" mnemonicParsing="false" prefHeight="173.0" prefWidth="130.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
                                              <font>
                                                 <Font name="Poppins Light" size="19.0" />
                                              </font>
@@ -274,7 +270,7 @@
                                           </Button>
                                        </children>
                                     </Pane>
-                                    <Pane layoutY="596.0" prefHeight="60.0" prefWidth="1280.0">
+                                    <Pane id="paneParaTi" layoutY="596.0" prefHeight="60.0" prefWidth="1280.0">
                                        <children>
                                           <Text layoutX="593.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="- Para ti -">
                                              <font>
@@ -283,24 +279,29 @@
                                           </Text>
                                        </children>
                                     </Pane>
-                                    <FlowPane id="contenedorProductosHome" fx:id="contenedorProductosHome" hgap="90.0" layoutY="656.0" prefHeight="1400.0" prefWidth="1280.0" vgap="60.0" />
-                                    <Pane layoutY="2056.0" prefHeight="99.0" prefWidth="1280.0" />
+                                    <FlowPane id="contenedorProductosHome" fx:id="contenedorProductosHome" hgap="90.0" layoutY="656.0" prefHeight="1417.0" prefWidth="1280.0" vgap="60.0" />
                                  </children>
                               </Pane>
-                              <Pane prefHeight="2178.0" prefWidth="1280.0" visible="false">
+                              <Pane prefHeight="2082.0" prefWidth="1280.0" visible="false">
                                  <children>
                                     <Pane layoutX="33.0" layoutY="33.0" prefHeight="60.0" prefWidth="800.0" style="-fx-background-color: #ffffff; -fx-background-radius: 10px;">
                                        <children>
-                                          <CheckBox graphicTextGap="10.0" layoutX="20.0" layoutY="15.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="302.0" style="-fx-border-color: transparent; -fx-label-padding: 0 0 0 6; -fx-background-radius: 5px;" text="   Todos los productos">
+                                          <CheckBox id="checkTodosCarrito" graphicTextGap="10.0" layoutX="20.0" layoutY="15.0" mnemonicParsing="false" prefHeight="31.0" prefWidth="302.0" style="-fx-border-color: transparent; -fx-label-padding: 0 0 0 6; -fx-background-radius: 5px;" text="   Todos los productos">
                                              <font>
                                                 <Font name="Poppins Regular" size="19.0" />
                                              </font>
                                           </CheckBox>
                                        </children>
                                     </Pane>
-                                    <Pane layoutY="1604.0" prefHeight="60.0" prefWidth="1280.0" />
-                                    <Pane layoutY="1636.0" prefHeight="420.0" prefWidth="1280.0" />
-                                    <Pane layoutY="2056.0" prefHeight="99.0" prefWidth="1280.0" />
+                                    <Pane id="paneExtra" layoutY="1604.0" prefHeight="60.0" prefWidth="1280.0">
+                                       <children>
+                                          <Text layoutX="503.0" layoutY="37.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Te gustaria llenar la bolsa con...">
+                                             <font>
+                                                <Font name="Poppins Medium" size="19.0" />
+                                             </font>
+                                          </Text>
+                                       </children></Pane>
+                                    <HBox id="hboxProductosExtra" layoutY="1664.0" prefHeight="395.0" prefWidth="1280.0" />
                                     <Pane layoutX="855.0" layoutY="33.0" prefHeight="440.0" prefWidth="368.0" style="-fx-background-color: #ffffff; -fx-background-radius: 10px;">
                                        <children>
                                           <Text layoutX="22.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Resumen del pedido">
@@ -308,7 +309,7 @@
                                                 <Font name="Poppins SemiBold" size="28.0" />
                                              </font>
                                           </Text>
-                                          <VBox layoutX="22.0" layoutY="59.0" prefHeight="250.0" prefWidth="323.0">
+                                          <VBox id="vboxCarritoSelecciondados" layoutX="22.0" layoutY="59.0" prefHeight="250.0" prefWidth="323.0">
                                              <children>
                                                 <HBox alignment="CENTER" prefHeight="33.0" prefWidth="323.0">
                                                    <children>
@@ -326,7 +327,7 @@
                                                 </HBox>
                                              </children>
                                           </VBox>
-                                          <Button id="btLogin" layoutX="20.0" layoutY="374.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="329.0" style="-fx-background-color: #f6cd85; -fx-background-radius: 3;" text="Pagar ahora!!">
+                                          <Button id="btnPagarCarrito" layoutX="20.0" layoutY="374.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="329.0" style="-fx-background-color: #f6cd85; -fx-background-radius: 3;" text="Pagar ahora!!">
                                              <font>
                                                 <Font name="Poppins SemiBold" size="22.0" />
                                              </font>
@@ -336,49 +337,49 @@
                                                 <Font name="Poppins SemiBold" size="11.0" />
                                              </font>
                                           </Text>
-                                          <TextField layoutX="197.0" layoutY="346.0" prefHeight="21.0" prefWidth="152.0">
+                                          <TextField id="txtCodigo" layoutX="197.0" layoutY="346.0" prefHeight="21.0" prefWidth="152.0">
                                              <font>
                                                 <Font name="Poppins Light" size="10.0" />
                                              </font>
                                           </TextField>
                                        </children>
                                     </Pane>
-                                    <VBox layoutX="33.0" layoutY="114.0" prefHeight="1490.0" prefWidth="800.0" />
+                                    <VBox id="vboxCarrito" layoutX="33.0" layoutY="114.0" prefHeight="1490.0" prefWidth="800.0" />
                                  </children>
                               </Pane>
-                              <Pane prefHeight="2178.0" prefWidth="1280.0" stylesheets="@estilosbotones.css" visible="false">
+                              <Pane prefHeight="2082.0" prefWidth="1280.0" stylesheets="@estilosbotones.css">
                                  <children>
                                     <ScrollPane hbarPolicy="NEVER" layoutX="38.0" layoutY="31.0" prefHeight="112.0" prefWidth="1185.0" style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-background-radius: 15px; -fx-border-radius: 15px;" vbarPolicy="NEVER">
                                        <content>
-                                          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="108.0" prefWidth="1185.0" style="-fx-background-radius: 15px; -fx-background-color: #111111;" stylesheets="@estilosbotones.css">
+                                          <AnchorPane id="paneInfoPerfil" minHeight="0.0" minWidth="0.0" prefHeight="108.0" prefWidth="1185.0" style="-fx-background-radius: 15px; -fx-background-color: #111111;" stylesheets="@estilosbotones.css">
                                              <children>
                                                 <Circle fill="#262110" layoutX="1130.0" layoutY="55.0" radius="87.0" stroke="BLACK" strokeType="INSIDE" />
                                                 <Circle fill="#feb900" layoutX="56.0" layoutY="54.0" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
-                                                <Text layoutX="36.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DD">
+                                                <Text id="lblAbreviaturaNombrePerfil" layoutX="36.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DD">
                                                    <font>
                                                       <Font name="Inter 18pt SemiBold" size="28.0" />
                                                    </font>
                                                 </Text>
-                                                <Text fill="WHITE" layoutX="106.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Diomedes Diaz">
+                                                <Text id="lblNombrePerfil" fill="WHITE" layoutX="106.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Diomedes Diaz">
                                                    <font>
                                                       <Font name="Inter 18pt SemiBold" size="20.0" />
                                                    </font>
                                                 </Text>
-                                                <Text fill="#aaaaaa" layoutX="106.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="elcaciquedelajunta2013@outlook.es">
+                                                <Text id="lblCorreoPerfil" fill="#aaaaaa" layoutX="106.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="elcaciquedelajunta2013@outlook.es">
                                                    <font>
                                                       <Font name="Inter Regular" size="14.0" />
                                                    </font>
                                                 </Text>
                                                 <Pane layoutX="106.0" layoutY="71.0" prefHeight="27.0" prefWidth="115.0" style="-fx-background-color: #443713; -fx-background-radius: 10px;">
                                                    <children>
-                                                      <Text fill="#ffb800" layoutX="13.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Admin Principal" textAlignment="CENTER">
+                                                      <Text id="lblRolPerfil" fill="#ffb800" layoutX="13.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Admin Principal" textAlignment="CENTER">
                                                          <font>
                                                             <Font name="Inter 18pt SemiBold" size="12.0" />
                                                          </font>
                                                       </Text>
                                                    </children>
                                                 </Pane>
-                                                <Button layoutX="1065.0" layoutY="38.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="86.0" style="-fx-background-color: #3b3527; -fx-border-color: #4a4436; -fx-border-radius: 8px; -fx-cursor: hand;" text="Button">
+                                                <Button id="btnEditarPerfil" layoutX="1065.0" layoutY="38.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="86.0" style="-fx-background-color: #3b3527; -fx-border-color: #4a4436; -fx-border-radius: 8px; -fx-cursor: hand;" text="Button">
                                                    <graphic>
                                                       <Pane prefHeight="35.0" prefWidth="75.0">
                                                          <children>
@@ -398,7 +399,7 @@
                                     </ScrollPane>
                                     <Pane layoutX="38.0" layoutY="160.0" prefHeight="108.0" prefWidth="385.0" style="-fx-background-color: #ffffff; -fx-border-color: #eeeeee; -fx-border-radius: 10px; -fx-background-radius: 10px;">
                                        <children>
-                                          <Text layoutX="184.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3">
+                                          <Text id="lblNoPedidosPerfil" layoutX="184.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3">
                                              <font>
                                                 <Font name="Inter 18pt SemiBold" size="30.0" />
                                              </font>
@@ -412,7 +413,7 @@
                                     </Pane>
                                     <Pane layoutX="438.0" layoutY="160.0" prefHeight="108.0" prefWidth="385.0" style="-fx-background-color: #ffffff; -fx-border-color: #eeeeee; -fx-border-radius: 10px; -fx-background-radius: 10px;">
                                        <children>
-                                          <Text layoutX="184.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3">
+                                          <Text id="lblNoFavoritosPerfil" layoutX="184.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3">
                                              <font>
                                                 <Font name="Inter 18pt SemiBold" size="30.0" />
                                              </font>
@@ -426,7 +427,7 @@
                                     </Pane>
                                     <Pane layoutX="838.0" layoutY="160.0" prefHeight="108.0" prefWidth="385.0" style="-fx-background-color: #ffffff; -fx-border-color: #eeeeee; -fx-border-radius: 10px; -fx-background-radius: 10px;">
                                        <children>
-                                          <Text layoutX="184.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
+                                          <Text id="lblNoCarritoPerfil" layoutX="184.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="0">
                                              <font>
                                                 <Font name="Inter 18pt SemiBold" size="30.0" />
                                              </font>
@@ -440,7 +441,7 @@
                                     </Pane>
                                     <HBox layoutX="38.0" layoutY="283.0" prefHeight="40.0" prefWidth="1185.0" styleClass="menu-container">
                                        <children>
-                                          <ToggleButton maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" selected="true" text="Pedidos" HBox.hgrow="ALWAYS">
+                                          <ToggleButton id="btnPedidosPerfil" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" selected="true" text="Pedidos" HBox.hgrow="ALWAYS">
                                              <toggleGroup>
                                                 <ToggleGroup fx:id="BarraUsuario" />
                                              </toggleGroup>
@@ -449,8 +450,8 @@
                                                 <String fx:value="menu-btn-izq" />
                                              </styleClass>
                                           </ToggleButton>
-                                          <ToggleButton maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="menu-btn" text="Favoritos" toggleGroup="$BarraUsuario" HBox.hgrow="ALWAYS" />
-                                          <ToggleButton maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Mi Cuenta" toggleGroup="$BarraUsuario" HBox.hgrow="ALWAYS">
+                                          <ToggleButton id="btnFavoritosPerfil" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="menu-btn" text="Favoritos" toggleGroup="$BarraUsuario" HBox.hgrow="ALWAYS" />
+                                          <ToggleButton id="btnMiCuentaPerfil" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Mi Cuenta" toggleGroup="$BarraUsuario" HBox.hgrow="ALWAYS">
                                              <styleClass>
                                                 <String fx:value="menu-btn-der" />
                                                 <String fx:value="menu-btn" />
@@ -460,8 +461,8 @@
                                     </HBox>
                                     <StackPane layoutX="38.0" layoutY="343.0" prefHeight="1708.0" prefWidth="1185.0">
                                        <children>
-                                          <VBox prefHeight="200.0" prefWidth="100.0" visible="false" />
-                                          <VBox prefHeight="200.0" prefWidth="100.0" visible="false" />
+                                          <VBox id="vboxPedidosPerfil" prefHeight="200.0" prefWidth="100.0" visible="false" />
+                                          <VBox id="vboxFavoritosPerfil" prefHeight="200.0" prefWidth="100.0" visible="false" />
                                           <VBox prefHeight="200.0" prefWidth="100.0" visible="false">
                                              <children>
                                                 <Pane prefHeight="45.0" prefWidth="1185.0" style="-fx-border-color: #f5f4f4; -fx-background-color: #fafafa;">
@@ -482,7 +483,7 @@
                                                                   <Font name="Inter 18pt Regular" size="12.0" />
                                                                </font>
                                                             </Text>
-                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Carlos Rodríguez">
+                                                            <Text id="lblNombrePerfil" strokeType="OUTSIDE" strokeWidth="0.0" text="Carlos Rodríguez">
                                                                <font>
                                                                   <Font name="Inter 18pt SemiBold" size="12.0" />
                                                                </font>
@@ -503,7 +504,7 @@
                                                                   <Font name="Inter 18pt Regular" size="12.0" />
                                                                </font>
                                                             </Text>
-                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="carlos@email.com">
+                                                            <Text id="lblCorreoPerfil" strokeType="OUTSIDE" strokeWidth="0.0" text="carlos@email.com">
                                                                <font>
                                                                   <Font name="Inter 18pt SemiBold" size="12.0" />
                                                                </font>
@@ -524,7 +525,7 @@
                                                                   <Font name="Inter 18pt Regular" size="12.0" />
                                                                </font>
                                                             </Text>
-                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="+57 300 123 4567">
+                                                            <Text id="lblTelefonoPerfil" strokeType="OUTSIDE" strokeWidth="0.0" text="+57 300 123 4567">
                                                                <font>
                                                                   <Font name="Inter 18pt SemiBold" size="12.0" />
                                                                </font>
@@ -545,7 +546,7 @@
                                                                   <Font name="Inter 18pt Regular" size="12.0" />
                                                                </font>
                                                             </Text>
-                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="1.234.567.890">
+                                                            <Text id="lblDocumentoPerfil" strokeType="OUTSIDE" strokeWidth="0.0" text="1.234.567.890">
                                                                <font>
                                                                   <Font name="Inter 18pt SemiBold" size="12.0" />
                                                                </font>
@@ -566,7 +567,7 @@
                                                                   <Font name="Inter 18pt Regular" size="12.0" />
                                                                </font>
                                                             </Text>
-                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="15/06/1992">
+                                                            <Text id="lblNacimientoPerfil" strokeType="OUTSIDE" strokeWidth="0.0" text="15/06/1992">
                                                                <font>
                                                                   <Font name="Inter 18pt SemiBold" size="12.0" />
                                                                </font>
@@ -587,7 +588,7 @@
                                                                   <Font name="Inter 18pt Regular" size="12.0" />
                                                                </font>
                                                             </Text>
-                                                            <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Cl 100 # 205 - 54C Barrio La Celestial">
+                                                            <Text id="lblDireccionPerfil" strokeType="OUTSIDE" strokeWidth="0.0" text="Cl 100 # 205 - 54C Barrio La Celestial">
                                                                <font>
                                                                   <Font name="Inter 18pt SemiBold" size="12.0" />
                                                                </font>
@@ -621,7 +622,7 @@
                                                                   <Font name="Inter 18pt Regular" size="12.0" />
                                                                </font>
                                                             </Text>
-                                                            <TextField />
+                                                            <TextField id="txtNombrePerfil" />
                                                          </children>
                                                          <padding>
                                                             <Insets left="15.0" top="10.0" />
@@ -638,7 +639,7 @@
                                                                   <Font name="Inter 18pt Regular" size="12.0" />
                                                                </font>
                                                             </Text>
-                                                            <TextField />
+                                                            <TextField id="txtCorreoPerfil" />
                                                          </children>
                                                          <padding>
                                                             <Insets left="15.0" top="10.0" />
@@ -655,7 +656,7 @@
                                                                   <Font name="Inter 18pt Regular" size="12.0" />
                                                                </font>
                                                             </Text>
-                                                            <TextField />
+                                                            <TextField id="txtTelefonoPerfil" />
                                                          </children>
                                                          <padding>
                                                             <Insets left="15.0" top="10.0" />
@@ -672,7 +673,7 @@
                                                                   <Font name="Inter 18pt Regular" size="12.0" />
                                                                </font>
                                                             </Text>
-                                                            <TextField />
+                                                            <TextField id="txtDocumentoPerfil" />
                                                          </children>
                                                          <padding>
                                                             <Insets left="15.0" top="10.0" />
@@ -689,7 +690,7 @@
                                                                   <Font name="Inter 18pt Regular" size="12.0" />
                                                                </font>
                                                             </Text>
-                                                            <TextField />
+                                                            <TextField id="txtNacimientoPerfil" />
                                                          </children>
                                                          <padding>
                                                             <Insets left="15.0" top="10.0" />
@@ -706,7 +707,7 @@
                                                                   <Font name="Inter 18pt Regular" size="12.0" />
                                                                </font>
                                                             </Text>
-                                                            <TextField />
+                                                            <TextField id="txtDireccionPerfil" />
                                                          </children>
                                                          <padding>
                                                             <Insets left="15.0" top="10.0" />
@@ -719,7 +720,7 @@
                                                       <Insets bottom="12.0" top="12.0" />
                                                    </VBox.margin>
                                                 </Line>
-                                                <Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="40.0" prefWidth="1188.0" style="-fx-border-color: #974747; -fx-border-width: 2px; -fx-background-color: #fefffe; -fx-background-radius: 8px; -fx-border-radius: 8px;" text="Eliminar Cuenta Permanente" textFill="#974747">
+                                                <Button id="btnEliminarCuenta" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="40.0" prefWidth="1188.0" style="-fx-border-color: #974747; -fx-border-width: 2px; -fx-background-color: #fefffe; -fx-background-radius: 8px; -fx-border-radius: 8px;" text="Eliminar Cuenta Permanente" textFill="#974747">
                                                    <font>
                                                       <Font name="Poppins Regular" size="12.0" />
                                                    </font>
@@ -729,12 +730,12 @@
                                                 </Button>
                                                 <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="200.0">
                                                    <children>
-                                                      <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" prefHeight="40.0" prefWidth="78.0" style="-fx-background-color: #fefffe; -fx-border-color: #f5f4f4; -fx-background-radius: 5px; -fx-border-radius: 5px;" text="Cancelar">
+                                                      <Button id="btnCancelarPerfil" maxHeight="1.7976931348623157E308" mnemonicParsing="false" prefHeight="40.0" prefWidth="78.0" style="-fx-background-color: #fefffe; -fx-border-color: #f5f4f4; -fx-background-radius: 5px; -fx-border-radius: 5px;" text="Cancelar">
                                                          <font>
                                                             <Font name="Poppins Bold" size="11.0" />
                                                          </font>
                                                       </Button>
-                                                      <Button maxHeight="1.7976931348623157E308" mnemonicParsing="false" prefHeight="40.0" prefWidth="128.0" style="-fx-background-color: FFCB74; -fx-background-radius: 5px; -fx-border-color: #f5f4f4; -fx-border-radius: 5px;" text="Guardar Cambios">
+                                                      <Button id="btnGuardarPerfil" maxHeight="1.7976931348623157E308" mnemonicParsing="false" prefHeight="40.0" prefWidth="128.0" style="-fx-background-color: FFCB74; -fx-background-radius: 5px; -fx-border-color: #f5f4f4; -fx-border-radius: 5px;" text="Guardar Cambios">
                                                          <HBox.margin>
                                                             <Insets left="12.0" />
                                                          </HBox.margin>
@@ -752,6 +753,11 @@
                               </Pane>
                            </children>
                         </StackPane>
+                        <Pane id="panePiePagina" layoutY="2239.0" prefHeight="73.0" prefWidth="1280.0" style="-fx-background-color: #111111;">
+                           <children>
+                              <Text layoutX="456.0" layoutY="41.0" style="-fx-fill:#555555; -fx-font-size:11px;" text="© 2026 BOOM ·  Universidad de Córdoba  ·  Todos los derechos reservados." />
+                           </children>
+                        </Pane>
                      </children>
                   </Pane>
                </children>

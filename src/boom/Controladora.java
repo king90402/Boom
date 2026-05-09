@@ -27,9 +27,9 @@ public class Controladora {
     private static final int mx = 500;
     
     // Constantes para validaciones
-    private static final int MIN_PASSWORD_LENGTH = 4;
+    private static final int MIN_PASSWORD_LENGTH = 8;
     private static final int MAX_PASSWORD_LENGTH = 30;
-    private static final int MIN_NAME_LENGTH = 3;
+    private static final int MIN_NAME_LENGTH = 8;
     private static final int MAX_NAME_LENGTH = 100;
     private static final String CLIENTES_FILE = "clientes.txt";
     
@@ -41,18 +41,17 @@ public class Controladora {
     // dominios validos
     private static final String[] DOMINIOS_VALIDOS = {
         "gmail.com", "hotmail.com", "outlook.com", "outlook.es", "yahoo.com", 
-        "yahoo.es", "icloud.com", "live.com", "msn.com", "protonmail.com",
-        "mail.com", "aol.com", "zoho.com", "gmx.com", "yandex.com"
+        "yahoo.es", "icloud.com", "mail.com", "correo.unicordoba.edu.co" 
     };
     
     // Patron de validacion para ID
     private static final Pattern ID_PATTERN = Pattern.compile(
-        "^[0-9]{6,12}$"
+        "^[0-9]{7,12}$"
     );
     
     // Patron de validacion para telefono
     private static final Pattern PHONE_PATTERN = Pattern.compile(
-        "^\\+?[0-9]{7,15}$"
+        "^\\+?[0-9]{10,15}$"
     );
     
     private producto[] listaProductos;

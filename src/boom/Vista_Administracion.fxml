@@ -17,6 +17,7 @@
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
@@ -41,7 +42,7 @@
                   </Button>
                   <VBox layoutY="84.0" prefHeight="366.0" prefWidth="178.0" styleClass="menu-containerC">
                      <children>
-                        <ToggleButton alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="54.0" prefWidth="178.0" selected="true" styleClass="menu-btnC" text="Estadisticas" VBox.vgrow="ALWAYS">
+                        <ToggleButton alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="54.0" prefWidth="178.0" selected="true" styleClass="menu-btnC" text="Perfil" VBox.vgrow="ALWAYS">
                            <font>
                               <Font name="Poppins SemiBold" size="12.0" />
                            </font>
@@ -54,6 +55,17 @@
                            <toggleGroup>
                               <ToggleGroup fx:id="MenuConfig" />
                            </toggleGroup>
+                        </ToggleButton>
+                        <ToggleButton alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="54.0" prefWidth="178.0" styleClass="menu-btnC" text="Estadisticas">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="MenuConfig1" />
+                           </toggleGroup>
+                           <font>
+                              <Font name="Poppins SemiBold" size="12.0" />
+                           </font>
+                           <padding>
+                              <Insets left="15.0" />
+                           </padding>
                         </ToggleButton>
                         <ToggleButton alignment="CENTER_LEFT" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="54.0" prefWidth="178.0" styleClass="menu-btnC" text="Restablecer Stock" toggleGroup="$MenuConfig" VBox.vgrow="ALWAYS">
                            <font>
@@ -575,7 +587,7 @@
                         <DropShadow height="5.0" offsetX="0.8" offsetY="1.0" radius="2.0" spread="0.1" width="5.0" />
                      </effect>
                   </Pane>
-                  <Pane layoutX="10.0" layoutY="10.0" prefHeight="359.0" prefWidth="660.0" style="-fx-background-color: #f0f0f0; -fx-background-radius: 8;">
+                  <Pane layoutX="10.0" layoutY="10.0" prefHeight="359.0" prefWidth="660.0" style="-fx-background-color: #f0f0f0; -fx-background-radius: 8;" visible="false">
                      <children>
                         <ScrollPane hbarPolicy="NEVER" layoutX="24.0" layoutY="36.0" prefHeight="112.0" prefWidth="743.0" style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-background-radius: 15px; -fx-border-radius: 15px;" vbarPolicy="NEVER">
                           <content>
@@ -583,24 +595,24 @@
                                  <children>
                                     <Circle fill="#262110" layoutX="684.0" layoutY="54.0" radius="87.0" stroke="BLACK" strokeType="INSIDE" />
                                     <Circle fill="#feb900" layoutX="56.0" layoutY="54.0" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
-                                    <Text layoutX="36.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DD">
+                                    <Text id="lblAbreviaturaNombreAdmin" layoutX="36.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DD">
                                        <font>
                                           <Font name="Inter 18pt SemiBold" size="28.0" />
                                        </font>
                                     </Text>
-                                    <Text fill="WHITE" layoutX="106.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Diomedes Diaz">
+                                    <Text id="lblNombreAdmin" fill="WHITE" layoutX="106.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Diomedes Diaz">
                                        <font>
                                           <Font name="Inter 18pt SemiBold" size="20.0" />
                                        </font>
                                     </Text>
-                                    <Text fill="#aaaaaa" layoutX="106.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="elcaciquedelajunta2013@outlook.es">
+                                    <Text id="lblCorreoAdmin" fill="#aaaaaa" layoutX="106.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="elcaciquedelajunta2013@outlook.es">
                                        <font>
                                           <Font name="Inter Regular" size="14.0" />
                                        </font>
                                     </Text>
                                     <Pane layoutX="106.0" layoutY="71.0" prefHeight="27.0" prefWidth="115.0" style="-fx-background-color: #443713; -fx-background-radius: 10px;">
                                        <children>
-                                          <Text fill="#ffb800" layoutX="13.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Admin Principal" textAlignment="CENTER">
+                                          <Text id="lblRolAdmin" fill="#ffb800" layoutX="13.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Admin Principal" textAlignment="CENTER">
                                              <font>
                                                 <Font name="Inter 18pt SemiBold" size="12.0" />
                                              </font>
@@ -609,7 +621,7 @@
                                     </Pane>
                                     <Button layoutX="619.0" layoutY="37.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="86.0" style="-fx-background-color: #3b3527; -fx-border-color: #4a4436; -fx-border-radius: 8px; -fx-cursor: hand;" text="Button">
                                        <graphic>
-                                          <Pane prefHeight="35.0" prefWidth="75.0">
+                                          <Pane id="btnEditarAdmin" prefHeight="35.0" prefWidth="75.0">
                                              <children>
                                                 <Region layoutX="6.0" layoutY="10.0" prefHeight="27.0" prefWidth="29.0" style="-fx-border-color: #ffffff;" styleClass="icon-edit" />
                                                 <Text fill="WHITE" layoutX="27.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Editar">
@@ -718,6 +730,158 @@
                      <effect>
                         <DropShadow height="5.0" offsetX="0.8" offsetY="1.0" radius="2.0" spread="0.1" width="5.0" />
                      </effect>
+                  </Pane>
+                  <Pane prefHeight="359.0" prefWidth="804.0" style="-fx-background-color: #f0f0f0; -fx-background-radius: 8;">
+                     <effect>
+                        <DropShadow height="5.0" offsetX="0.8" offsetY="1.0" radius="2.0" spread="0.1" width="5.0" />
+                     </effect>
+                     <children>
+                        <VBox layoutX="18.0" layoutY="14.0" prefHeight="428.0" prefWidth="768.0">
+                           <children>
+                              <Pane prefHeight="45.0" prefWidth="600.0" style="-fx-border-color: #f5f4f4; -fx-background-color: #fafafa;">
+                                 <children>
+                                    <Text fill="#888888" layoutX="14.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" text="EDITAR INFORMACIÓN">
+                                       <font>
+                                          <Font name="Inter 18pt SemiBold" size="12.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </Pane>
+                              <Pane prefHeight="45.0" prefWidth="600.0" style="-fx-border-color: #f5f4f4; -fx-background-color: #fefffe;">
+                                 <children>
+                                    <TextFlow prefHeight="45.0" prefWidth="600.0">
+                                       <children>
+                                          <Text fill="#888888" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombre: ">
+                                             <font>
+                                                <Font name="Inter 18pt Regular" size="12.0" />
+                                             </font>
+                                          </Text>
+                                          <TextField id="txtNombrePerfil" />
+                                       </children>
+                                       <padding>
+                                          <Insets left="15.0" top="10.0" />
+                                       </padding>
+                                    </TextFlow>
+                                 </children>
+                              </Pane>
+                              <Pane prefHeight="45.0" prefWidth="600.0" style="-fx-border-color: #f5f4f4; -fx-background-color: #fefffe;">
+                                 <children>
+                                    <TextFlow prefHeight="45.0" prefWidth="600.0">
+                                       <children>
+                                          <Text fill="#888888" strokeType="OUTSIDE" strokeWidth="0.0" text="Correo: ">
+                                             <font>
+                                                <Font name="Inter 18pt Regular" size="12.0" />
+                                             </font>
+                                          </Text>
+                                          <TextField id="txtCorreoPerfil" />
+                                       </children>
+                                       <padding>
+                                          <Insets left="15.0" top="10.0" />
+                                       </padding>
+                                    </TextFlow>
+                                 </children>
+                              </Pane>
+                              <Pane prefHeight="45.0" prefWidth="600.0" style="-fx-border-color: #f5f4f4; -fx-background-color: #fefffe;">
+                                 <children>
+                                    <TextFlow prefHeight="45.0" prefWidth="600.0">
+                                       <children>
+                                          <Text fill="#888888" strokeType="OUTSIDE" strokeWidth="0.0" text="Teléfono: ">
+                                             <font>
+                                                <Font name="Inter 18pt Regular" size="12.0" />
+                                             </font>
+                                          </Text>
+                                          <TextField id="txtTelefonoPerfil" />
+                                       </children>
+                                       <padding>
+                                          <Insets left="15.0" top="10.0" />
+                                       </padding>
+                                    </TextFlow>
+                                 </children>
+                              </Pane>
+                              <Pane prefHeight="45.0" prefWidth="600.0" style="-fx-border-color: #f5f4f4; -fx-background-color: #fefffe;">
+                                 <children>
+                                    <TextFlow prefHeight="45.0" prefWidth="600.0">
+                                       <children>
+                                          <Text fill="#888888" strokeType="OUTSIDE" strokeWidth="0.0" text="Documento: ">
+                                             <font>
+                                                <Font name="Inter 18pt Regular" size="12.0" />
+                                             </font>
+                                          </Text>
+                                          <TextField id="txtDocumentoPerfil" />
+                                       </children>
+                                       <padding>
+                                          <Insets left="15.0" top="10.0" />
+                                       </padding>
+                                    </TextFlow>
+                                 </children>
+                              </Pane>
+                              <Pane prefHeight="45.0" prefWidth="600.0" style="-fx-border-color: #f5f4f4; -fx-background-color: #fefffe;">
+                                 <children>
+                                    <TextFlow prefHeight="45.0" prefWidth="600.0">
+                                       <children>
+                                          <Text fill="#888888" strokeType="OUTSIDE" strokeWidth="0.0" text="Nacimiento: ">
+                                             <font>
+                                                <Font name="Inter 18pt Regular" size="12.0" />
+                                             </font>
+                                          </Text>
+                                          <TextField id="txtNacimientoPerfil" />
+                                       </children>
+                                       <padding>
+                                          <Insets left="15.0" top="10.0" />
+                                       </padding>
+                                    </TextFlow>
+                                 </children>
+                              </Pane>
+                              <Pane prefHeight="45.0" prefWidth="600.0" style="-fx-border-color: #f5f4f4; -fx-background-color: #fefffe;">
+                                 <children>
+                                    <TextFlow prefHeight="45.0" prefWidth="600.0">
+                                       <children>
+                                          <Text fill="#888888" strokeType="OUTSIDE" strokeWidth="0.0" text="Dirección: ">
+                                             <font>
+                                                <Font name="Inter 18pt Regular" size="12.0" />
+                                             </font>
+                                          </Text>
+                                          <TextField id="txtDireccionPerfil" />
+                                       </children>
+                                       <padding>
+                                          <Insets left="15.0" top="10.0" />
+                                       </padding>
+                                    </TextFlow>
+                                 </children>
+                              </Pane>
+                              <Line endX="664.5" startX="-100.0" stroke="#979797" strokeWidth="3.0">
+                                 <VBox.margin>
+                                    <Insets bottom="12.0" top="12.0" />
+                                 </VBox.margin>
+                              </Line>
+                              <Button id="btnEliminarCuenta" maxWidth="-Infinity" mnemonicParsing="false" prefHeight="29.0" prefWidth="204.0" style="-fx-border-color: #974747; -fx-border-width: 2px; -fx-background-color: #fefffe; -fx-background-radius: 8px; -fx-border-radius: 8px;" text="Eliminar Cuenta Permanente" textFill="#974747">
+                                 <font>
+                                    <Font name="Poppins Regular" size="12.0" />
+                                 </font>
+                                 <VBox.margin>
+                                    <Insets />
+                                 </VBox.margin>
+                              </Button>
+                              <HBox alignment="CENTER_RIGHT" prefHeight="47.0" prefWidth="768.0">
+                                 <children>
+                                    <Button id="btnCancelarPerfil" maxHeight="1.7976931348623157E308" mnemonicParsing="false" prefHeight="35.0" prefWidth="78.0" style="-fx-background-color: #fefffe; -fx-border-color: #f5f4f4; -fx-background-radius: 5px; -fx-border-radius: 5px;" text="Cancelar">
+                                       <font>
+                                          <Font name="Poppins Bold" size="11.0" />
+                                       </font>
+                                    </Button>
+                                    <Button id="btnGuardarPerfil" maxHeight="1.7976931348623157E308" mnemonicParsing="false" prefHeight="40.0" prefWidth="128.0" style="-fx-background-color: FFCB74; -fx-background-radius: 5px; -fx-border-color: #f5f4f4; -fx-border-radius: 5px;" text="Guardar Cambios">
+                                       <HBox.margin>
+                                          <Insets left="12.0" />
+                                       </HBox.margin>
+                                       <font>
+                                          <Font name="Poppins Bold" size="11.0" />
+                                       </font>
+                                    </Button>
+                                 </children>
+                              </HBox>
+                           </children>
+                        </VBox>
+                     </children>
                   </Pane>
                </children>
             </StackPane>

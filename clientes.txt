@@ -1,2 +1,3 @@
 Alejandro Salgado Coronado;1034567808;3006002020;alejandrosalgado@gmail.com;0987654321;Agregue una direccion por favor.
 Carlos;1098232;3093232212;asd@ds.com;12345678;Agregue una direccion por favor.
+alejandro@gmail.com;Alejandro;Salgado;02/10/2007;3001199090;3001199090;Córdoba;Pueblo Nuevo;Cr 3 # 5 - 1;123123123

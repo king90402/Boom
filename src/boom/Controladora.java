@@ -15,8 +15,10 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.io.*;
+import java.util.LinkedHashMap;
 import java.util.regex.Pattern;
 import javafx.scene.Node;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 /**
  *
@@ -28,17 +30,28 @@ public class Controladora {
     
     // Constantes para validaciones
     private static final int MIN_PASSWORD_LENGTH = 8;
-    private static final int MAX_PASSWORD_LENGTH = 30;
-    private static final int MIN_NAME_LENGTH = 8;
-    private static final int MAX_NAME_LENGTH = 100;
+    private static final int MAX_PASSWORD_LENGTH = 32;
     private static final String CLIENTES_FILE = "clientes.txt";
     
     // Patron de validacion para correo (mejorado)
     private static final Pattern EMAIL_PATTERN = Pattern.compile(
-        "^[a-zA-Z0-9]([a-zA-Z0-9._-]*[a-zA-Z0-9])?@[a-zA-Z0-9]([a-zA-Z0-9-]*[a-zA-Z0-9])?(\\.[a-zA-Z]{2,})+$"
+        "^(?=.{6,254}$)" +                    
+        "(?=.{1,64}@)" +                    
+        "(?!.*\\.\\.)" +                     
+        "(?!.*__)" +                         
+        "(?!.*--)" +                         
+        "[A-Za-z0-9]" +                      
+        "[A-Za-z0-9._%+-]{0,62}" +           
+        "[A-Za-z0-9]" +                      
+        "@" +
+        "(?=.{1,255}$)" +
+        "(?:[A-Za-z0-9]" +                  
+        "(?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?" +
+        "\\.)+" +
+        "[A-Za-z]{2,63}$" 
     );
     
-    // dominios validos
+    // Dominios validos
     private static final String[] DOMINIOS_VALIDOS = {
         "gmail.com", "hotmail.com", "outlook.com", "outlook.es", "yahoo.com", 
         "yahoo.es", "icloud.com", "mail.com", "correo.unicordoba.edu.co" 
@@ -54,82 +67,189 @@ public class Controladora {
         "^\\+?[0-9]{10,15}$"
     );
     
+    //Datos para los ComboBox: Departamento y Ciudad
+    private static final LinkedHashMap<String, String[]> DEPTOS = new LinkedHashMap<>();
+    static {
+        DEPTOS.put("Amazonas",
+    new String[]{"Leticia","Puerto Nariño"});
+
+        DEPTOS.put("Antioquia",
+    new String[]{"Medellín","Abejorral","Abriaquí","Alejandría","Amagá","Amalfi","Andes","Angelópolis","Angostura","Anorí","Anza","Apartadó","Arboletes","Argelia","Armenia","Barbosa","Belmira","Bello","Betania","Betulia","Briceño","Buriticá","Cáceres","Caicedo","Caldas","Campamento","Cañasgordas","Caracolí","Caramanta","Carepa","Carolina","Caucasia","Chigorodó","Cisneros","Ciudad Bolívar","Cocorná","Concepción","Concordia","Copacabana","Dabeiba","Donmatías","Ebéjico","El Bagre","El Carmen de Viboral","El Peñol","El Retiro","El Santuario","Entrerríos","Envigado","Fredonia","Frontino","Giraldo","Girardota","Gómez Plata","Granada","Guadalupe","Guarne","Guatapé","Heliconia","Hispania","Itagüí","Ituango","Jardín","Jericó","La Ceja","La Estrella","La Pintada","La Unión","Liborina","Maceo","Marinilla","Medellín","Montebello","Murindó","Mutatá","Nariño","Necoclí","Nechí","Olaya","Peque","Pueblorrico","Puerto Berrío","Puerto Nare","Puerto Triunfo","Remedios","Retiro","Rionegro","Sabanalarga","Sabaneta","Salgar","San Andrés de Cuerquia","San Carlos","San Francisco","San Jerónimo","San José de la Montaña","San Juan de Urabá","San Luis","San Pedro","San Pedro de Urabá","San Rafael","San Roque","San Vicente","Santa Bárbara","Santa Fe de Antioquia","Santa Rosa de Osos","Santo Domingo","Segovia","Sonsón","Sopetrán","Támesis","Tarazá","Tarso","Titiribí","Toledo","Turbo","Uramita","Urrao","Valdivia","Valparaíso","Vegachí","Venecia","Vigía del Fuerte","Yalí","Yarumal","Yolombó","Yondó","Zaragoza"});
+
+        DEPTOS.put("Arauca",
+    new String[]{"Arauca","Arauquita","Cravo Norte","Fortul","Puerto Rondón","Saravena","Tame"});
+
+        DEPTOS.put("Atlántico",
+    new String[]{"Barranquilla","Baranoa","Campo de la Cruz","Candelaria","Galapa","Juan de Acosta","Luruaco","Malambo","Manatí","Palmar de Varela","Piojó","Polonuevo","Ponedera","Puerto Colombia","Repelón","Sabanagrande","Sabanalarga","Santa Lucía","Santo Tomás","Soledad","Suan","Tubará","Usiacurí"});
+
+        DEPTOS.put("Bogotá D.C.",
+    new String[]{"Bogotá"});
+
+        DEPTOS.put("Bolívar",
+    new String[]{"Cartagena","Achí","Altos del Rosario","Arenal","Arjona","Arroyohondo","Barranco de Loba","Calamar","Cantagallo","Cicuco","Clemencia","Córdoba","El Carmen de Bolívar","El Guamo","El Peñón","Hatillo de Loba","Magangué","Mahates","Margarita","María la Baja","Montecristo","Mompós","Morales","Pinillos","Regidor","Río Viejo","San Cristóbal","San Estanislao","San Fernando","San Jacinto","San Jacinto del Cauca","San Juan Nepomuceno","San Martín de Loba","San Pablo","Santa Catalina","Santa Rosa","Santa Rosa del Sur","Simití","Soplaviento","Talaigua Nuevo","Tiquisio","Turbaco","Turbaná","Villanueva","Zambrano"});
+
+        DEPTOS.put("Boyacá",
+    new String[]{"Tunja","Almeida","Aquitania","Arcabuco","Belén","Berbeo","Betéitiva","Boavita","Boyacá","Briceño","Buenavista","Busbanzá","Caldas","Campohermoso","Cerinza","Chinavita","Chiquinquirá","Chíquiza","Chiscas","Chita","Chitaraque","Chivatá","Ciénega","Cómbita","Coper","Corrales","Covarachía","Cubará","Cucaita","Cuítiva","Duitama","El Cocuy","El Espino","Firavitoba","Floresta","Gachantivá","Gameza","Garagoa","Guacamayas","Guateque","Guayatá","Güicán","Iza","Jenesano","Jericó","La Capilla","La Uvita","Villa de Leyva","Macanal","Maripí","Miraflores","Mongua","Monguí","Moniquirá","Motavita","Muzo","Nobsa","Nuevo Colón","Oicatá","Otanche","Pachavita","Páez","Paipa","Pajarito","Panqueba","Pauna","Paya","Paz del Río","Pesca","Pisba","Puerto Boyacá","Quípama","Ramiriquí","Ráquira","Rondón","Saboyá","Sáchica","Samacá","San Eduardo","San José de Pare","San Luis de Gaceno","San Mateo","San Miguel de Sema","San Pablo de Borbur","Santa María","Santa Rosa de Viterbo","Santa Sofía","Sativanorte","Sativasur","Siachoque","Soatá","Socha","Socotá","Sogamoso","Somondoco","Sora","Soracá","Sotaquirá","Susacón","Sutamarchán","Sutatenza","Tasco","Tenza","Tibaná","Tibasosa","Tinjacá","Tipacoque","Toca","Togüí","Tópaga","Tota","Tununguá","Turmequé","Tuta","Tutazá","Umbita","Ventaquemada","Viracachá","Zetaquira"});
+
+        DEPTOS.put("Caldas",
+    new String[]{"Manizales","Aguadas","Anserma","Aranzazu","Belalcázar","Chinchiná","Filadelfia","La Dorada","La Merced","Manzanares","Marmato","Marquetalia","Marulanda","Neira","Norcasia","Pácora","Palestina","Pensilvania","Riosucio","Risaralda","Salamina","Samaná","San José","Supía","Victoria","Villamaría","Viterbo"});
+
+        DEPTOS.put("Caquetá",
+    new String[]{"Florencia","Albania","Belén de los Andaquíes","Cartagena del Chairá","Curillo","El Doncello","El Paujil","La Montañita","Milán","Morelia","Puerto Rico","San José del Fragua","San Vicente del Caguán","Solano","Solita","Valparaíso"});
+
+        DEPTOS.put("Casanare",
+    new String[]{"Yopal","Aguazul","Chámeza","Hato Corozal","La Salina","Maní","Monterrey","Nunchía","Orocué","Paz de Ariporo","Pore","Recetor","Sabanalarga","Sacama","San Luis de Palenque","Támara","Tauramena","Trinidad","Villanueva"});
+
+        DEPTOS.put("Cauca",
+    new String[]{"Popayán","Almaguer","Argelia","Balboa","Bolívar","Buenos Aires","Cajibío","Caldono","Caloto","Corinto","El Tambo","Florencia","Guachené","Guapi","Inzá","Jambaló","La Sierra","La Vega","López de Micay","Mercaderes","Miranda","Morales","Padilla","Páez","Patía","Piamonte","Piendamó","Puerto Tejada","Puracé","Rosas","San Sebastián","Santa Rosa","Santander de Quilichao","Silvia","Sotará","Suárez","Sucre","Timbío","Timbiquí","Toribío","Totoró","Villa Rica"});
+
+        DEPTOS.put("Cesar",
+    new String[]{"Valledupar","Aguachica","Agustín Codazzi","Astrea","Becerril","Bosconia","Chimichagua","Chiriguaná","Curumaní","El Copey","El Paso","Gamarra","González","La Gloria","La Jagua de Ibirico","Manaure","Pailitas","Pelaya","Pueblo Bello","Río de Oro","La Paz","San Alberto","San Diego","San Martín","Tamalameque"});
+
+        DEPTOS.put("Chocó",
+    new String[]{"Quibdó","Acandí","Alto Baudó","Atrato","Bagadó","Bahía Solano","Bajo Baudó","Belén de Bajirá","Bojayá","Cantón de San Pablo","Carmen del Darién","Cértegui","Condoto","El Carmen de Atrato","El Litoral del San Juan","Istmina","Juradó","Lloró","Medio Atrato","Medio Baudó","Medio San Juan","Nóvita","Nuquí","Río Iró","Río Quito","Riosucio","San José del Palmar","Sipí","Tadó","Unguía","Unión Panamericana"});
+
+        DEPTOS.put("Córdoba",
+    new String[]{"Montería","Ayapel","Buenavista","Canalete","Cereté","Chimá","Chinú","Ciénaga de Oro","Cotorra","La Apartada","Lorica","Los Córdobas","Momil","Montelíbano","Moñitos","Planeta Rica","Pueblo Nuevo","Puerto Escondido","Puerto Libertador","Purísima","Sahagún","San Andrés de Sotavento","San Antero","San Bernardo del Viento","San Carlos","San José de Uré","San Pelayo","Tierralta","Tuchín","Valencia"});
+
+        DEPTOS.put("Cundinamarca",
+    new String[]{"Facatativá","Agua de Dios","Albán","Anapoima","Anolaima","Apulo","Arbeláez","Beltrán","Bituima","Bojacá","Cabrera","Cachipay","Cajicá","Caparrapí","Cáqueza","Carmen de Carupa","Chaguaní","Chía","Chipaque","Choachí","Chocontá","Cogua","Cota","Cucunubá","El Colegio","El Peñón","El Rosal","Facatativá","Fómeque","Fosca","Funza","Fúquene","Fusagasugá","Gachalá","Gachancipá","Gachetá","Gama","Girardot","Granada","Guachetá","Guaduas","Guasca","Guataquí","Guatavita","Guayabal de Síquima","Guayabetal","Gutiérrez","Jerusalén","Junín","La Calera","La Mesa","La Palma","La Peña","La Vega","Lenguazaque","Machetá","Madrid","Manta","Medina","Mosquera","Nariño","Nemocón","Nilo","Nimaima","Nocaima","Pacho","Paime","Pandi","Paratebueno","Pasca","Puerto Salgar","Pulí","Quebradanegra","Quetame","Quipile","Ricaurte","San Antonio del Tequendama","San Bernardo","San Cayetano","San Francisco","San Juan de Rioseco","Sasaima","Sesquilé","Sibaté","Silvania","Simijaca","Soacha","Sopó","Subachoque","Suesca","Supatá","Susa","Sutatausa","Tabio","Tausa","Tena","Tenjo","Tibacuy","Tibirita","Tocaima","Tocancipá","Topaipí","Ubalá","Ubaque","Villa de San Diego de Ubaté","Une","Útica","Venecia","Vergara","Vianí","Villagómez","Villapinzón","Villeta","Viotá","Yacopí","Zipacón","Zipaquirá"});
+
+        DEPTOS.put("Guainía",
+    new String[]{"Inírida"});
+
+        DEPTOS.put("Guaviare",
+    new String[]{"San José del Guaviare","Calamar","El Retorno","Miraflores"});
+
+        DEPTOS.put("Huila",
+    new String[]{"Neiva","Acevedo","Agrado","Aipe","Algeciras","Altamira","Baraya","Campoalegre","Colombia","Elías","Garzón","Gigante","Guadalupe","Hobo","Íquira","Isnos","La Argentina","La Plata","Nátaga","Oporapa","Paicol","Palermo","Palestina","Pital","Pitalito","Rivera","Saladoblanco","San Agustín","Santa María","Suaza","Tarqui","Tello","Teruel","Tesalia","Timaná","Villavieja","Yaguará"});
+
+        DEPTOS.put("La Guajira",
+    new String[]{"Riohacha","Albania","Barrancas","Dibulla","Distracción","El Molino","Fonseca","Hatonuevo","La Jagua del Pilar","Maicao","Manaure","San Juan del Cesar","Uribia","Urumita","Villanueva"});
+
+        DEPTOS.put("Magdalena",
+    new String[]{"Santa Marta","Algarrobo","Aracataca","Ariguaní","Cerro de San Antonio","Chibolo","Ciénaga","Concordia","El Banco","El Piñón","El Retén","Fundación","Guamal","Nueva Granada","Pedraza","Pijiño del Carmen","Pivijay","Plato","Puebloviejo","Remolino","Sabanas de San Ángel","Salamina","San Sebastián de Buenavista","San Zenón","Santa Ana","Santa Bárbara de Pinto","Sitionuevo","Tenerife","Zapayán","Zona Bananera"});
+
+        DEPTOS.put("Meta",
+    new String[]{"Villavicencio","Acacías","Barranca de Upía","Cabuyaro","Castilla la Nueva","Cubarral","Cumaral","El Calvario","El Castillo","El Dorado","Fuente de Oro","Granada","Guamal","La Macarena","Lejanías","Mapiripán","Mesetas","Puerto Concordia","Puerto Gaitán","Puerto López","Puerto Lleras","Puerto Rico","Restrepo","San Carlos de Guaroa","San Juan de Arama","San Juanito","San Martín","Uribe","Vista Hermosa"});
+
+        DEPTOS.put("Nariño",
+    new String[]{"Pasto","Albán","Aldana","Ancuyá","Arboleda","Barbacoas","Belén","Buesaco","Chachagüí","Colón","Consacá","Contadero","Córdoba","Cuaspud","Cumbal","Cumbitara","El Charco","El Peñol","El Rosario","El Tablón","El Tambo","Francisco Pizarro","Funes","Guachucal","Guaitarilla","Gualmatán","Iles","Imués","Ipiales","La Cruz","La Florida","La Llanada","La Tola","La Unión","Leiva","Linares","Los Andes","Magüí","Mallama","Mosquera","Nariño","Olaya Herrera","Ospina","Policarpa","Potosí","Providencia","Puerres","Pupiales","Ricaurte","Roberto Payán","Samaniego","San Bernardo","San Lorenzo","San Pablo","San Pedro de Cartago","Sandoná","Santa Bárbara","Santacruz","Sapuyes","Taminango","Tangua","Tumaco","Túquerres","Yacuanquer"});
+
+        DEPTOS.put("Norte de Santander",
+    new String[]{"Cúcuta","Ábrego","Arboledas","Bochalema","Bucarasica","Cácota","Cáchira","Chinácota","Chitagá","Convención","Cucutilla","Durania","El Carmen","El Tarra","El Zulia","Gramalote","Hacarí","Herrán","Labateca","La Esperanza","La Playa","Los Patios","Lourdes","Mutiscua","Ocaña","Pamplona","Pamplonita","Puerto Santander","Ragonvalia","Salazar","San Calixto","San Cayetano","Santiago","Santo Domingo de Silos","Sardinata","Teorama","Tibú","Toledo","Villa Caro","Villa del Rosario"});
+    
+        DEPTOS.put("Putumayo",
+    new String[]{"Mocoa","Colón","Orito","Puerto Asís","Puerto Caicedo","Puerto Guzmán","Puerto Leguízamo","San Francisco","San Miguel","Santiago","Sibundoy","Valle del Guamuez","Villagarzón"});
+
+        DEPTOS.put("Quindío",
+    new String[]{"Armenia","Buenavista","Calarcá","Circasia","Córdoba","Filandia","Génova","La Tebaida","Montenegro","Pijao","Quimbaya","Salento"});
+
+        DEPTOS.put("Risaralda",
+    new String[]{"Pereira","Apía","Balboa","Belén de Umbría","Dosquebradas","Guática","La Celia","La Virginia","Marsella","Mistrató","Pueblo Rico","Quinchía","Santa Rosa de Cabal","Santuario"});
+
+        DEPTOS.put("San Andrés y Providencia",
+    new String[]{"San Andrés","Providencia"});
+
+        DEPTOS.put("Santander",
+    new String[]{"Bucaramanga","Aguada","Albania","Aratoca","Barbosa","Barichara","Barrancabermeja","Betulia","Bolívar","Cabrera","California","Capitanejo","Carcasí","Cepitá","Cerrito","Charalá","Charta","Chima","Chipatá","Cimitarra","Concepción","Confines","Contratación","Coromoro","Curití","El Carmen de Chucurí","El Guacamayo","El Peñón","El Playón","Encino","Enciso","Florián","Floridablanca","Galán","Gámbita","Girón","Guaca","Guadalupe","Guapotá","Guavatá","Güepsa","Hato","Jesús María","Jordán","La Belleza","Landázuri","La Paz","Lebrija","Los Santos","Macaravita","Málaga","Matanza","Mogotes","Molagavita","Ocamonte","Oiba","Onzaga","Palmar","Palmas del Socorro","Páramo","Piedecuesta","Pinchote","Puente Nacional","Puerto Parra","Puerto Wilches","Rionegro","Sabana de Torres","San Andrés","San Benito","San Gil","San Joaquín","San José de Miranda","San Miguel","San Vicente de Chucurí","Santa Bárbara","Santa Helena del Opón","Simacota","Socorro","Suaita","Sucre","Suratá","Tona","Valle de San José","Vélez","Vetas","Villanueva","Zapatoca"});
+
+        DEPTOS.put("Sucre",
+    new String[]{"Sincelejo","Buenavista","Caimito","Chalán","Colosó","Corozal","Coveñas","El Roble","Galeras","Guaranda","La Unión","Los Palmitos","Majagual","Morroa","Ovejas","Palmito","Sampués","San Benito Abad","San Juan de Betulia","San Marcos","San Onofre","San Pedro","Sincé","Sucre","Tolú","Toluviejo"});
+
+        DEPTOS.put("Tolima",
+    new String[]{"Ibagué","Alpujarra","Alvarado","Ambalema","Anzoátegui","Armero","Ataco","Cajamarca","Carmen de Apicalá","Casabianca","Chaparral","Coello","Coyaima","Cunday","Dolores","Espinal","Falán","Flandes","Fresno","Guamo","Herveo","Honda","Icononzo","Lérida","Líbano","Mariquita","Melgar","Murillo","Natagaima","Ortega","Palocabildo","Piedras","Planadas","Prado","Purificación","Rioblanco","Roncesvalles","Rovira","Saldaña","San Antonio","San Luis","Santa Isabel","Suárez","Valle de San Juan","Venadillo","Villahermosa","Villarrica"});
+
+        DEPTOS.put("Valle del Cauca",
+    new String[]{"Cali","Alcalá","Andalucía","Ansermanuevo","Argelia","Bolívar","Buenaventura","Buga","Bugalagrande","Caicedonia","Calima","Candelaria","Cartago","Dagua","El Águila","El Cairo","El Cerrito","El Dovio","Florida","Ginebra","Guacarí","Jamundí","La Cumbre","La Unión","La Victoria","Obando","Palmira","Pradera","Restrepo","Riofrío","Roldanillo","San Pedro","Sevilla","Toro","Trujillo","Tuluá","Ulloa","Versalles","Vijes","Yotoco","Yumbo","Zarzal"});
+
+        DEPTOS.put("Vaupés",
+    new String[]{"Mitú","Carurú","Pacoa","Papunahua","Taraira","Yavaraté"});
+
+        DEPTOS.put("Vichada",
+    new String[]{"Puerto Carreño","Cumaribo","La Primavera","Santa Rosalía"});
+        
+    }
+    
     private producto[] listaProductos;
-    private cliente[] listaClientes;
+    private clienteBoom[] listaClientes;
     private admin[] listaAdmins;
 
     private int contadorProductos;
     private int contadorClientes;
     private int contadorAdmins;
     
-    // Log in
-    @FXML
-    private Pane paneLogin;
-    @FXML
-    private Pane paneRegistro;
-    @FXML
-    private TextField correO; 
-    @FXML
-    private PasswordField password;
-    //Registro
-    @FXML
-    private TextField txtCorreoRegistro;
-    @FXML
-    private TextField txtTelefonoRegistro;
-    @FXML
-    private TextField txtUsuarioRegistro;
-    @FXML
-    private PasswordField txtPasswordRegistro;
-    @FXML
-    private TextField txtIdClienteRegistro;
+    //Paneles
+    @FXML private Pane paneLogin;
+    @FXML private Pane paneRegistro;
+    @FXML private Pane paneRegistroFinal;
 
+    //Login
+    @FXML private TextField      txtCorreoLogin;
+    @FXML private PasswordField  txtPasswordLogin;
 
-//--------------------------------------------     Metodos de log in 
-     @FXML
-    private void irAPanelAdmin(ActionEvent event){
-        // Navegar a la vista principal de admin
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Vista_Home.fxml"));
-            Parent root = loader.load();
-            
-            Scene scene = new Scene(root);
-            Stage stage = new Stage();
-            stage.setScene(scene);
-            stage.setTitle("Boom - Ofertas");
-            stage.show();
-            
-            // Cerrar ventana actual
-            Node source = (Node) event.getSource();
-            Stage currentStage = (Stage) source.getScene().getWindow();
-            currentStage.close();
-            
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error al cargar la vista: " + e.getMessage());
-            e.printStackTrace();
-        }
+    //Registro Paso 1
+    @FXML private TextField txtCorreoRegistro;
+    @FXML private TextField txtNombreRegistro;
+    @FXML private TextField txtApellidoRegistro;
+    @FXML private TextField txtIdClienteRegistro;
+    @FXML private TextField txtFechaRegistro;
+
+    //Registro Paso 2
+    @FXML private TextField        txtCelularRegistro;
+    @FXML private ComboBox<String> comboDepartamento;
+    @FXML private ComboBox<String> comboCiudad;
+    @FXML private TextField        txtDireccionRegistro;
+    @FXML private PasswordField    txtPasswordRegistro;
+
+    
+    //Inicializacion Panes y ComboBoxes
+    @FXML
+    public void initialize() {
+        paneLogin.setVisible(true);
+        paneRegistro.setVisible(false);
+        paneRegistroFinal.setVisible(false);
+
+        comboDepartamento.getItems().addAll(DEPTOS.keySet());
+        comboDepartamento.setOnAction(e -> {
+            String dep = comboDepartamento.getValue();
+            comboCiudad.getItems().clear();
+            comboCiudad.setValue(null);
+            if (dep != null && DEPTOS.containsKey(dep))
+                comboCiudad.getItems().addAll(DEPTOS.get(dep));
+        });
     }
     
     //Metodo ir a registro
     @FXML
-    private void irARegistro(MouseEvent event){
+    private void irARegistro(MouseEvent event) {
         limpiarCamposRegistro();
         paneLogin.setVisible(false);
         paneRegistro.setVisible(true);
+        paneRegistroFinal.setVisible(false);
     }
     
-    //Metodo ir a login desde registro
+    //Metodo ir a login 
     @FXML
-    private void irALogin(MouseEvent event){
+    private void irALogin(MouseEvent event) {
         paneRegistro.setVisible(false);
+        paneRegistroFinal.setVisible(false);
         paneLogin.setVisible(true);
+    }
+    
+    //Metodo ir a registro final
+    @FXML
+    private void irAPaso1(MouseEvent event) {
+        paneRegistroFinal.setVisible(false);
+        paneRegistro.setVisible(true);
     }
 
     
     //Metodo ir a iniciar seccion
     @FXML
     private void iniciarSesion(ActionEvent event) {
-        String user = correO.getText().trim();
-        String contra = password.getText();
+        String user = txtCorreoLogin.getText().trim();
+        String contra = txtPasswordLogin.getText();
         
         // Validar campos vacios
         if (user.isEmpty() || contra.isEmpty()) {
@@ -140,6 +260,7 @@ public class Controladora {
         }
 
         String userNormalizado = user.toLowerCase();
+        
         // Verificacion de admin
         for (int i = 0; i < contadorAdmins; i++) {
             admin a = listaAdmins[i];
@@ -150,14 +271,13 @@ public class Controladora {
                 return;
             }
         }
-        // Inicio con cliente
+        // Inicio con clienteBoom
         for (int i = 0; i < contadorClientes; i++) {
-            cliente c = listaClientes[i];
+            clienteBoom c = listaClientes[i];
             if ((c.getCorreoCliente().equalsIgnoreCase(userNormalizado) || 
                  c.getNombreCliente().equalsIgnoreCase(user) ||
                  c.getIdCliente().equalsIgnoreCase(user)) && 
                 c.getContraseñaCliente().equals(contra)) {
-                
                 abrirVistaHome(event, c.getNombreCliente());
                 return;
             }
@@ -165,11 +285,6 @@ public class Controladora {
         JOptionPane.showMessageDialog(null, 
             "Usuario o contraseña incorrectos.", 
             "Error de autenticación", JOptionPane.ERROR_MESSAGE);
-    }
-    
-    @FXML
-    private void Inicioseccion_admin(ActionEvent event) {
-        iniciarSesion(event);
     }
  
     private void abrirVistaAdmin(ActionEvent event) {
@@ -216,7 +331,7 @@ public class Controladora {
 
     public Controladora() {
         listaProductos = new producto[mx];
-        listaClientes = new cliente[mx];
+        listaClientes = new clienteBoom[mx];
         listaAdmins = new admin[mx];
         
         contadorProductos = 0;
@@ -324,7 +439,7 @@ public class Controladora {
 
 //--------------------------------------------   Metodos correspondientes a la lista de clientes
     
-    public boolean agregarCliente(cliente cliente) {
+    public boolean agregarCliente(clienteBoom cliente) {
         if (contadorClientes < mx) {
             listaClientes[contadorClientes] = cliente;
             contadorClientes++;
@@ -332,42 +447,44 @@ public class Controladora {
         }
         return false;
     }
+    
     @FXML
-    private void registrarCliente(ActionEvent event) {
+    private void irPaso2(ActionEvent event) {
 
-        String correo = txtCorreoRegistro.getText().trim();
-        String telefono = txtTelefonoRegistro.getText().trim();
-        String nombreCompleto = txtUsuarioRegistro.getText().trim();
-        String contraseña = txtPasswordRegistro.getText();
-        String idcliente = txtIdClienteRegistro.getText().trim();
+        String correo   = txtCorreoRegistro.getText().trim();
+        String nombre   = txtNombreRegistro.getText().trim();
+        String apellido = txtApellidoRegistro.getText().trim();
+        String id       = txtIdClienteRegistro.getText().trim();
+        String fecha    = txtFechaRegistro.getText().trim();
         
-       //---------------------------   Validaciones para el registro de un cliente
+       //Validaciones para el registro de un clienteBoom
        
         // Campos vacios 
-        if (correo.isEmpty() || telefono.isEmpty() || nombreCompleto.isEmpty() || contraseña.isEmpty() || idcliente.isEmpty()) {
+        if (correo.isEmpty() || nombre.isEmpty() || apellido.isEmpty() || id.isEmpty() || fecha.isEmpty()) {
             JOptionPane.showMessageDialog(null, 
                 "Error: Todos los campos son obligatorios para ingresar.\nPor favor complete todos los campos.", 
                 "Campos vacios", JOptionPane.WARNING_MESSAGE);
             return;
         }
         
-        // ============ VALIDACION DE NUMERO DE IDENTIFICACION ============
-        // Formato del ID (solo numeros, entre 6 y 12 digitos)
-        if (!validarFormatoId(idcliente)) {
+        // VALIDACIONES DE NUMERO DE IDENTIFICACION
+        // Formato del ID (solo numeros, entre 7 y 12 digitos)
+        if (!validarFormatoId(id)) {
             JOptionPane.showMessageDialog(null, 
-                "Error: El numero de identificacion no es valido.\nDebe contener solo numeros (entre 6 y 12 digitos).\nEjemplo: 1234567890", 
+                "Error: El numero de identificacion no es valido.\nDebe contener solo numeros (entre 6 y 12 digitos).\nEjemplo: 1003345643", 
                 "Identificacion invalida", JOptionPane.WARNING_MESSAGE);
             return;
         }
         
         // Verificar que el ID no este duplicado
-        if (existeIdCliente(idcliente)) {
+        if (existeIdCliente(id)) {
             JOptionPane.showMessageDialog(null, 
                 "Error: Ya existe una cuenta registrada con este numero de identificacion.\nPor favor verifique sus datos o inicie sesion.", 
                 "Identificacion ya registrada", JOptionPane.WARNING_MESSAGE);
             return;
         }
         
+        // VALIDACIONES DE CORREO
         // Forma del correo 
         if (!validarCorreoCompleto(correo)) {
             JOptionPane.showMessageDialog(null, 
@@ -391,30 +508,66 @@ public class Controladora {
             return;
         }
         
-        // Validar longitud del nombre
-        if (nombreCompleto.length() < MIN_NAME_LENGTH || nombreCompleto.length() > MAX_NAME_LENGTH) {
+        // VALIDACIONES INFORMACION BASICA
+        
+        if (!validarNombre(nombre)) {
             JOptionPane.showMessageDialog(null, 
-                "Error: El nombre completo debe tener entre " + MIN_NAME_LENGTH + 
-                " y " + MAX_NAME_LENGTH + " caracteres.", 
+                "Error: El nombre solo puede contener letras y espacios.", 
                 "Nombre invalido", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        if (!validarNombreCompleto(nombreCompleto)) {
-            JOptionPane.showMessageDialog(null, 
-                "Error: El nombre completo solo puede contener letras y espacios.", 
-                "Nombre invalido", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        String telefonoLimpio = telefono.replaceAll("[\\s-]", "");
-        if (!validarFormatoTelefono(telefonoLimpio)) {
-            JOptionPane.showMessageDialog(null, 
-                "Error: El formato del telefono no es valido.\nDebe contener entre 7 y 15 digitos.\nEjemplo: +573001234567", 
-                "Telefono invalido", JOptionPane.WARNING_MESSAGE);
             return;
         }
         
+        if (!validarApellido(apellido)) {
+            JOptionPane.showMessageDialog(null, 
+                "Error: El apellido solo puede contener letras y espacios.", 
+                "Apellido invalido", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        if (!fecha.isEmpty() && !fecha.matches("^\\d{2}/\\d{2}/\\d{4}$")) {
+            JOptionPane.showMessageDialog(null,
+                "Formato de fecha inválido. Use dd/MM/YYYY\nEjemplo: 15/03/2000",
+                "Fecha inválida", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        paneRegistro.setVisible(false);
+        paneRegistroFinal.setVisible(true);
+        paneLogin.setVisible(false);
+
+    }
+    
+    @FXML
+    private void registrarCliente(ActionEvent event) {
+        
+        String correo          = txtCorreoRegistro.getText().trim();
+        String nombre          = txtNombreRegistro.getText().trim();
+        String apellido        = txtApellidoRegistro.getText().trim();
+        String documento       = txtIdClienteRegistro.getText().trim();
+        String fechaNacimiento = txtFechaRegistro.getText().trim();
+
+        String celular     = txtCelularRegistro.getText().trim();
+        String departamento = comboDepartamento.getValue();
+        String ciudad       = comboCiudad.getValue();
+        String direccion    = txtDireccionRegistro.getText().trim();
+        String contraseña   = txtPasswordRegistro.getText();
+
+        if (celular.isEmpty() || departamento == null || ciudad == null ||
+            direccion.isEmpty() || contraseña.isEmpty()) {
+            JOptionPane.showMessageDialog(null,
+                "Todos los campos son obligatorios.\nSeleccione Departamento y Ciudad.",
+                "Campos vacíos", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        String celularLimpio = celular.replaceAll("[\\s-]", "");
+        if (!validarFormatoTelefono(celularLimpio)) {
+            JOptionPane.showMessageDialog(null, 
+                "Error: El formato del celular no es valido.\nDebe contener entre 7 y 15 digitos.\nEjemplo: +573001234567", 
+                "Celular invalido", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
         if (contraseña.length() < MIN_PASSWORD_LENGTH || contraseña.length() > MAX_PASSWORD_LENGTH) {
             JOptionPane.showMessageDialog(null, 
                 "Error: La contraseña debe tener entre " + MIN_PASSWORD_LENGTH + 
@@ -429,42 +582,48 @@ public class Controladora {
             return;
         }
 
-        cliente nuevoCliente = new cliente(
-            nombreCompleto,                      
-            idcliente,                            
-            telefonoLimpio,                      
-            correo.toLowerCase(),                
-            contraseña,                           
-            "Agregue una direccion por favor." 
-        );
-        
-        // Agregar a la lista
-        if (agregarCliente(nuevoCliente)) {
-            if (guardarClienteEnArchivo(nuevoCliente)) {
-                JOptionPane.showMessageDialog(null, 
-                    "Registro exitoso!\nBienvenido " + nombreCompleto + ".\nAhora puede iniciar sesion.", 
-                    "Registro completado", JOptionPane.INFORMATION_MESSAGE);
+        String digitos = celularLimpio.replaceAll("[^0-9]", "");
+        String idCliente = digitos.length() >= 7 ? digitos.substring(Math.max(0, digitos.length() - 10)) : digitos;
+        if (existeIdCliente(idCliente)) idCliente = idCliente + (System.currentTimeMillis() % 100);
 
+        String nombreCompleto    = nombre + " " + apellido;
+        String direccionCompleta = direccion + ", " + ciudad + ", " + departamento;
+
+        clienteBoom nuevo = new clienteBoom(
+                correo.toLowerCase(),
+                nombre, 
+                apellido,
+                idCliente, 
+                fechaNacimiento,
+                celularLimpio,   
+                departamento,
+                ciudad,
+                direccion,
+                contraseña); 
+
+        if (agregarCliente(nuevo)) {
+            if (guardarClienteEnArchivo(nuevo)) {
+                JOptionPane.showMessageDialog(null,
+                    "¡Registro exitoso!\nBienvenido " + nombreCompleto + ".\nAhora puede iniciar sesión.",
+                    "Registro completado", JOptionPane.INFORMATION_MESSAGE);
                 limpiarCamposRegistro();
+                paneRegistroFinal.setVisible(false);
                 paneRegistro.setVisible(false);
                 paneLogin.setVisible(true);
-
-                correO.setText(correo.toLowerCase());
-                password.requestFocus();
+                txtCorreoLogin.setText(correo.toLowerCase());
+                txtPasswordLogin.requestFocus();
             } else {
                 eliminarCliente(contadorClientes - 1);
-                JOptionPane.showMessageDialog(null, 
-                    "Error al guardar el registro. Por favor intente de nuevo.", 
+                JOptionPane.showMessageDialog(null, "Error al guardar el registro. Intente de nuevo.",
                     "Error de sistema", JOptionPane.ERROR_MESSAGE);
             }
         } else {
-            JOptionPane.showMessageDialog(null, 
-                "Error: No se pudo completar el registro.\nEl sistema esta lleno.", 
+            JOptionPane.showMessageDialog(null, "Error: Sistema lleno.",
                 "Error de sistema", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-    // Eliminar un cliente por su posicion 
+    // Eliminar un clienteBoom por su posicion 
    public boolean eliminarCliente(int pos) {
         if (pos >= 0 && pos < contadorClientes) {
             for (int i = pos; i < contadorClientes - 1; i++) {
@@ -477,7 +636,7 @@ public class Controladora {
         return false;
     }
     
-    // Eliminar un cliente por su ID
+    // Eliminar un clienteBoom por su ID
     public boolean eliminarClientePorId(String IdCliente) {
         for (int i = 0; i < contadorClientes; i++) {
             if (listaClientes[i].getIdCliente().equals(IdCliente)) {
@@ -487,16 +646,16 @@ public class Controladora {
         return false;
     }
     
-    // Obtener un cliente por su posicion
-    public cliente obtenerCliente(int pos) {
+    // Obtener un clienteBoom por su posicion
+    public clienteBoom obtenerCliente(int pos) {
         if (pos >= 0 && pos < contadorClientes) {
             return listaClientes[pos];
         }
         return null;
     }
     
-    // Buscar un cliente por su ID
-    public cliente buscarClientePorId(String IdCliente) {
+    // Buscar un clienteBoom por su ID
+    public clienteBoom buscarClientePorId(String IdCliente) {
         for (int i = 0; i < contadorClientes; i++) {
             if (listaClientes[i].getIdCliente().equals(IdCliente)) {
                 return listaClientes[i];
@@ -505,7 +664,7 @@ public class Controladora {
         return null;
     }
     
-    // Buscar posicion de un cliente por su ID
+    // Buscar posicion de un clienteBoom por su ID
     public int buscarIndiceClientePorId(String IdCliente) {
         for (int i = 0; i < contadorClientes; i++) {
             if (listaClientes[i].getIdCliente().equals(IdCliente)) {
@@ -515,7 +674,7 @@ public class Controladora {
         return -1;
     }
     
-    // Verificar si un correo de cliente ya existe
+    // Verificar si un correo de clienteBoom ya existe
     public boolean existeCorreoCliente(String correoCliente) {
         for (int i = 0; i < contadorClientes; i++) {
             if (listaClientes[i].getCorreoCliente().equalsIgnoreCase(correoCliente)) {
@@ -530,7 +689,7 @@ public class Controladora {
         return contadorClientes;
     }
     
-//--------------------------------------------   Metodos para la lista de admins
+    //Metodos para la lista de admins
     // Agregar un admin al array
     public boolean agregarAdmin(admin admin) {
         if (contadorAdmins < mx) {
@@ -607,7 +766,7 @@ public class Controladora {
         return contadorAdmins;
     }
 
-//--------------------------------------------   Metodos auxiliares y validaciones aleatorias
+    //Metodos auxiliares y validaciones aleatorias
     
     // Obtener el tamaño máximo
     public int getTamanoMaximo() {
@@ -617,7 +776,7 @@ public class Controladora {
     // Limpiar todos los datos
     public void limpiarTodo() {
         listaProductos = new producto[mx];
-        listaClientes = new cliente[mx];
+        listaClientes = new clienteBoom[mx];
         listaAdmins = new admin[mx];
         contadorProductos = 0;
         contadorClientes = 0;
@@ -633,11 +792,6 @@ public class Controladora {
             }
         }
         return false;
-    }
-    
-    private boolean validarFormatoCorreo(String correo) {
-        if (correo == null || correo.isEmpty()) return false;
-        return EMAIL_PATTERN.matcher(correo).matches();
     }
     
     private boolean validarFormatoTelefono(String telefono) {
@@ -661,58 +815,114 @@ public class Controladora {
     
     // Validar formato de correo
     private boolean validarCorreoCompleto(String correo) {
-        if (!EMAIL_PATTERN.matcher(correo).matches()) {
-            return false;
-        }
-
-        if (correo.contains("..") || correo.contains("--") || correo.contains("__")) {
-            return false;
-        }
-
-        if (correo.length() < 6 || correo.length() > 100) {
-            return false;
-        }
-
-        String[] partes = correo.split("@");
-        if (partes.length != 2) {
-            return false;
-        }
         
-        String dominio = partes[1].toLowerCase();
+    correo = correo.trim().toLowerCase();
 
-        if (!dominio.contains(".")) {
-            return false;
-        }
-
-        String[] partesdominio = dominio.split("\\.");
-        String extension = partesdominio[partesdominio.length - 1];
-        if (extension.length() < 2 || extension.length() > 6) {
-            return false;
-        }
-        
-        return true;
+    if (correo.length() < 6 || correo.length() > 254) {
+        return false;
     }
+
+    if (!EMAIL_PATTERN.matcher(correo).matches()) {
+        return false;
+    }
+
+    if (correo.contains(" ")) {
+        return false;
+    }
+
+    if (correo.chars().filter(c -> c == '@').count() != 1) {
+        return false;
+    }
+
+    String[] partes = correo.split("@");
+
+    if (partes.length != 2) {
+        return false;
+    }
+
+    String usuario = partes[0];
+    String dominio = partes[1];
+
+    // Usuario inválido
+    if (usuario.startsWith(".") ||
+        usuario.endsWith(".") ||
+        usuario.startsWith("_") ||
+        usuario.endsWith("_") ||
+        usuario.startsWith("-") ||
+        usuario.endsWith("-")) {
+
+        return false;
+    }
+
+    if (dominio.startsWith("-") ||
+        dominio.endsWith("-") ||
+        dominio.startsWith(".") ||
+        dominio.endsWith(".")) {
+
+        return false;
+    }
+
+    String[] niveles = dominio.split("\\.");
+
+    for (String nivel : niveles) {
+
+        if (nivel.isEmpty()) {
+            return false;
+        }
+
+        if (nivel.length() > 63) {
+            return false;
+        }
+
+        if (nivel.startsWith("-") ||
+            nivel.endsWith("-")) {
+
+            return false;
+        }
+    }
+
+    String tld = niveles[niveles.length - 1];
+
+    if (tld.length() < 2 || tld.length() > 63) {
+        return false;
+    }
+
+    boolean dominioPermitido = false;
+
+    for (String d : DOMINIOS_VALIDOS) {
+
+        if (dominio.equalsIgnoreCase(d)) {
+            dominioPermitido = true;
+            break;
+        }
+    }
+
+    return dominioPermitido;
+}
  
-    private boolean validarNombreCompleto(String nombre) {
+    private boolean validarNombre(String nombre) {
         return nombre.matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ'\\s]+$");
     }
     
-    private boolean validarUsuario(String usuario) {
-        if (usuario == null || usuario.isEmpty()) return false;
-        return usuario.matches("^[a-zA-Z0-9_]+$");
-    }
+    private boolean validarApellido(String nombre) {
+        return nombre.matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ'\\s]+$");
+    } 
     
     
     //Persistencia archivo clientes
-    private boolean guardarClienteEnArchivo(cliente c) {
+    private boolean guardarClienteEnArchivo(clienteBoom c) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(CLIENTES_FILE, true))) {
-            // Formato: nombre;idCliente;telefono;correo;contrasena;direccion (6 campos)
-            String linea = c.getNombreCliente() + ";" + 
+            // Formato: correo;nombre;apellido;idCliente;fechaNacimiento;celular;departamento;ciudad;direccion;contrasena (10 campos)
+            String linea = c.getCorreoCliente() + ";" + 
+                          c.getNombreCliente() + ";" +
+                          c.getApellidoCliente() + ";" +
                           c.getIdCliente() + ";" +
-                          c.getTelefonoCliente() + ";" + 
-                          c.getCorreoCliente() + ";" + 
-                          c.getContraseñaCliente() + ";" + 
-                          c.getDireccionCliente();
+                          c.getFechaCliente() + ";" +
+                          c.getCelularCliente() + ";" + 
+                          c.getDepartamentoCliente() + ";" + 
+                          c.getCiudadCliente() + ";" + 
+                          c.getDireccionCliente() + ";" + 
+                          c.getContraseñaCliente();
             writer.write(linea);
             writer.newLine();
             return true;
@@ -736,15 +946,19 @@ public class Controladora {
                 
                 String[] datos = linea.split(";");
                 
-                // Verificar si tiene 6 campos (formato nuevo con IdCliente)
-                if (datos.length >= 6) {
-                    cliente c = new cliente(
-                        datos[0].trim(),  // NombreCliente
-                        datos[1].trim(),  // IdCliente
-                        datos[2].trim(),  // TelefonoCliente
-                        datos[3].trim(),  // CorreoCliente
-                        datos[4].trim(),  // ContraseñaCliente
-                        datos[5].trim()   // DireccionCliente
+                // Verificar si tiene 10 campos (formato nuevo con IdCliente)
+                if (datos.length >= 10) {
+                    clienteBoom c = new clienteBoom(
+                        datos[0].trim(),  
+                        datos[1].trim(), 
+                        datos[2].trim(),  
+                        datos[3].trim(),  
+                        datos[4].trim(),  
+                        datos[5].trim(),   
+                        datos[6].trim(),  
+                        datos[7].trim(),  
+                        datos[8].trim(),  
+                        datos[9].trim()  
                     );
                     
                     if (!existeCorreoCliente(c.getCorreoCliente())) {
@@ -755,14 +969,18 @@ public class Controladora {
                     }
                 }
                 // Compatibilidad con formato antiguo de 5 campos (sin IdCliente separado)
-                else if (datos.length == 5) {
-                    cliente c = new cliente(
-                        datos[0].trim(),  // NombreCliente
-                        datos[0].trim(),  // IdCliente (usa el mismo nombre)
-                        datos[1].trim(),  // TelefonoCliente
-                        datos[2].trim(),  // CorreoCliente
-                        datos[3].trim(),  // ContraseñaCliente
-                        datos[4].trim()   // DireccionCliente
+                else if (datos.length == 10) {
+                    clienteBoom c = new clienteBoom(
+                        datos[0].trim(),  
+                        datos[1].trim(), 
+                        datos[2].trim(),  
+                        datos[3].trim(),  
+                        datos[4].trim(),  
+                        datos[5].trim(),   
+                        datos[6].trim(),  
+                        datos[7].trim(),  
+                        datos[8].trim(),  
+                        datos[9].trim()  
                     );
                     
                     if (!existeCorreoCliente(c.getCorreoCliente())) {
@@ -781,43 +999,20 @@ public class Controladora {
     
     //Limpiar los campos 
     private void limpiarCamposRegistro() {
-        if (txtCorreoRegistro != null) txtCorreoRegistro.clear();
-        if (txtTelefonoRegistro != null) txtTelefonoRegistro.clear();
-        if (txtUsuarioRegistro != null) txtUsuarioRegistro.clear();
-        if (txtPasswordRegistro != null) txtPasswordRegistro.clear();
+        if (txtCorreoRegistro   !=null) txtCorreoRegistro.clear();
+        if (txtNombreRegistro  !=null) txtNombreRegistro.clear();
+        if (txtApellidoRegistro !=null) txtApellidoRegistro.clear();
+        if (txtFechaRegistro    !=null) txtFechaRegistro.clear();
+        if (txtCelularRegistro !=null) txtCelularRegistro.clear();
+        if (txtDireccionRegistro!=null) txtDireccionRegistro.clear();
+        if (txtPasswordRegistro !=null) txtPasswordRegistro.clear();
+        if (comboDepartamento   !=null) comboDepartamento.setValue(null);
+        if (comboCiudad         !=null) { comboCiudad.getItems().clear(); comboCiudad.setValue(null); }
     }
     
     private void limpiarCamposLogin() {
-        if (correO != null) correO.clear();
-        if (password != null) password.clear();
+        if (txtCorreoLogin != null) txtCorreoLogin.clear();
+        if (txtPasswordLogin != null) txtPasswordLogin.clear();
     }
 
-    
-    @FXML
-    private void irACategoriaOfertas(ActionEvent event) {
-
-        System.out.println("Navegando a categoria: Ofertas");
-
-    }
-    
-    @FXML
-    private void irACategoriaTecnologia(ActionEvent event) {
-        System.out.println("Navegando a categoria: Tecnologia");
-    }
-    
-    @FXML
-    private void irACategoriaHogar(ActionEvent event) {
-        System.out.println("Navegando a categoria: Hogar");
-    }
-    
-    @FXML
-    private void irACategoriaDeportes(ActionEvent event) {
-        System.out.println("Navegando a categoria: Deportes");
-    }
-    
-    @FXML
-    private void irACategoriaModa(ActionEvent event) {
-        System.out.println("Navegando a categoria: Moda y Belleza");
-    }
-    
 }

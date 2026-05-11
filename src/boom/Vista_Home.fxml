@@ -33,7 +33,7 @@
                <children>
                   <Pane prefHeight="2312.0" prefWidth="1280.0">
                      <children>
-                        <Pane id="paneControl" prefHeight="110.0" prefWidth="1280.0" style="-fx-background-color: #111111;" styleClass="dark-toolbar" stylesheets="@../../../Boom/src/boom/estilosbotones.css">
+                        <Pane id="paneControl" prefHeight="110.0" prefWidth="1280.0" style="-fx-background-color: #111111;" styleClass="dark-toolbar" stylesheets="@estilosbotones.css">
                            <children>
                               <TextField id="txtBuscar" layoutX="279.0" layoutY="33.0" prefHeight="45.0" prefWidth="690.0" promptText="Laptop Vivabook 15" style="-fx-background-color: #F6F6F6;">
                                  <font>
@@ -49,23 +49,23 @@
                                     <Font size="24.0" />
                                  </font>
                               </Button>
-                              <Button id="btnFavoritos" layoutX="1019.0" layoutY="32.0" mnemonicParsing="false" prefHeight="47.0" prefWidth="50.0" style="-fx-background-color: transparent;" styleClass="icon-button">
+                              <Button id="btnFavoritos" layoutX="1019.0" layoutY="32.0" mnemonicParsing="false" onAction="#mostrarFavoritosPerfilInicio" prefHeight="47.0" prefWidth="50.0" style="-fx-background-color: transparent;" styleClass="icon-button">
                                  <graphic>
                                     <Region prefHeight="45.0" prefWidth="63.0" style="-fx-border-color: #ffffff; -fx-border-width: 3;" styleClass="icon-corazon" />
                                  </graphic>
                               </Button>
-                              <Button id="btnCarrito" layoutX="1102.0" layoutY="33.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="48.0" style="-fx-background-color: transparent;" styleClass="icon-button">
+                              <Button id="btnCarrito" layoutX="1102.0" layoutY="33.0" mnemonicParsing="false" onAction="#mostrarCarrito" prefHeight="45.0" prefWidth="48.0" style="-fx-background-color: transparent;" styleClass="icon-button">
                                  <graphic>
                                     <Region prefHeight="45.0" prefWidth="23.0" style="-fx-border-color: #ffffff; -fx-border-width: 2;" styleClass="icon-carrito" />
                                  </graphic>
                               </Button>
-                              <MenuButton id="menuUsuario" layoutX="1197.0" layoutY="40.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="33.0" style="-fx-background-color: #ffffff;" styleClass="icon-usuario">
+                              <MenuButton id="menuUsuario" layoutX="1197.0" layoutY="40.0" mnemonicParsing="false" prefHeight="19.0" prefWidth="33.0" style="-fx-background-color: #ffffff; -fx-cursor: hand;" styleClass="icon-usuario">
                                  <items>
-                                    <MenuItem id="menubtnPerfil" mnemonicParsing="false" text="Mi Perfil" />
+                                    <MenuItem id="menubtnPerfil" mnemonicParsing="false" onAction="#mostrarPerfil" text="Mi Perfil" />
                                     <MenuItem id="menubtnCerrarSesion" mnemonicParsing="false" text="Cerrar Sesión  " />
                                  </items>
                               </MenuButton>
-                              <Button id="btnInicio" layoutX="13.0" layoutY="15.0" mnemonicParsing="false" onAction="#irACategoriaOfertas" prefHeight="81.0" prefWidth="195.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="B O O M" textFill="WHITE">
+                              <Button id="btnInicio" layoutX="13.0" layoutY="15.0" mnemonicParsing="false" onAction="#mostrarInicio" prefHeight="81.0" prefWidth="195.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="B O O M" textFill="WHITE">
                                  <font>
                                     <Font name="Poppins Bold" size="38.0" />
                                  </font>
@@ -114,7 +114,7 @@
                         </Pane>
                         <StackPane layoutY="155.0" prefHeight="2082.0" prefWidth="1280.0">
                            <children>
-                              <Pane prefHeight="2082.0" prefWidth="1280.0">
+                              <Pane fx:id="paneInicioHome" prefHeight="2082.0" prefWidth="1280.0" visible="false">
                                  <children>
                                     <Pane id="paneImagen" prefHeight="400.0" prefWidth="1280.0" style="-fx-background-color: #f6f6f6;">
                                        <children>
@@ -130,7 +130,7 @@
                                           </Text>
                                           <ImageView fitHeight="316.0" fitWidth="407.0" layoutX="457.0" layoutY="82.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
-                                                <Image url="@../../../Boom/src/boom/Media/Home.png" />
+                                                <Image url="@Media/Home.png" />
                                              </image>
                                           </ImageView>
                                           <Region layoutY="320.0" prefHeight="80.0" prefWidth="1280.0" style="-fx-background-color: linear-gradient(to top, #f6f6f6 0%, rgba(255, 255, 255, 0) 100%);" />
@@ -152,12 +152,12 @@
                                                       </Text>
                                                       <ImageView fitHeight="122.0" fitWidth="123.0" layoutX="-10.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../../../Boom/src/boom/Media/EllipseS.png" />
+                                                            <Image url="@Media/EllipseS.png" />
                                                          </image>
                                                       </ImageView>
                                                       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="-9.0" layoutY="-17.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../../../Boom/src/boom/Media/Ofertas.png" />
+                                                            <Image url="@Media/Ofertas.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>
@@ -178,12 +178,12 @@
                                                       </Text>
                                                       <ImageView fitHeight="122.0" fitWidth="123.0" layoutX="-10.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../../../Boom/src/boom/Media/EllipseS.png" />
+                                                            <Image url="@Media/EllipseS.png" />
                                                          </image>
                                                       </ImageView>
                                                       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="-23.0" layoutY="-18.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../../../Boom/src/boom/Media/Tecnologia.png" />
+                                                            <Image url="@Media/Tecnologia.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>
@@ -204,12 +204,12 @@
                                                       </Text>
                                                       <ImageView fitHeight="122.0" fitWidth="123.0" layoutX="-10.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../../../Boom/src/boom/Media/EllipseS.png" />
+                                                            <Image url="@Media/EllipseS.png" />
                                                          </image>
                                                       </ImageView>
                                                       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="-10.0" layoutY="-25.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../../../Boom/src/boom/Media/Hogar.png" />
+                                                            <Image url="@Media/Hogar.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>
@@ -230,12 +230,12 @@
                                                       </Text>
                                                       <ImageView fitHeight="122.0" fitWidth="123.0" layoutX="-10.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../../../Boom/src/boom/Media/EllipseS.png" />
+                                                            <Image url="@Media/EllipseS.png" />
                                                          </image>
                                                       </ImageView>
                                                       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="-17.0" layoutY="-18.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../../../Boom/src/boom/Media/Deportes.png" />
+                                                            <Image url="@Media/Deportes.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>
@@ -256,12 +256,12 @@
                                                       </Text>
                                                       <ImageView fitHeight="122.0" fitWidth="123.0" layoutX="-10.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../../../Boom/src/boom/Media/EllipseS.png" />
+                                                            <Image url="@Media/EllipseS.png" />
                                                          </image>
                                                       </ImageView>
                                                       <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="-6.0" layoutY="-35.0" pickOnBounds="true" preserveRatio="true">
                                                          <image>
-                                                            <Image url="@../../../Boom/src/boom/Media/Moda.png" />
+                                                            <Image url="@Media/Moda.png" />
                                                          </image>
                                                       </ImageView>
                                                    </children>
@@ -282,7 +282,7 @@
                                     <FlowPane id="contenedorProductosHome" fx:id="contenedorProductosHome" hgap="90.0" layoutY="656.0" prefHeight="1417.0" prefWidth="1280.0" vgap="60.0" />
                                  </children>
                               </Pane>
-                              <Pane prefHeight="2082.0" prefWidth="1280.0" visible="false">
+                              <Pane fx:id="paneCarritoHome" prefHeight="2082.0" prefWidth="1280.0" visible="false">
                                  <children>
                                     <Pane layoutX="33.0" layoutY="33.0" prefHeight="60.0" prefWidth="800.0" style="-fx-background-color: #ffffff; -fx-background-radius: 10px;">
                                        <children>
@@ -347,7 +347,7 @@
                                     <VBox id="vboxCarrito" layoutX="33.0" layoutY="114.0" prefHeight="1490.0" prefWidth="800.0" />
                                  </children>
                               </Pane>
-                              <Pane prefHeight="2082.0" prefWidth="1280.0" stylesheets="@estilosbotones.css" visible="false">
+                              <Pane fx:id="panePerfilHome" prefHeight="2082.0" prefWidth="1280.0" stylesheets="@estilosbotones.css">
                                  <children>
                                     <ScrollPane hbarPolicy="NEVER" layoutX="38.0" layoutY="31.0" prefHeight="112.0" prefWidth="1185.0" style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-background-radius: 15px; -fx-border-radius: 15px;" vbarPolicy="NEVER">
                                        <content>
@@ -441,7 +441,7 @@
                                     </Pane>
                                     <HBox layoutX="38.0" layoutY="283.0" prefHeight="40.0" prefWidth="1185.0" styleClass="menu-container">
                                        <children>
-                                          <ToggleButton id="btnPedidosPerfil" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" selected="true" text="Pedidos" HBox.hgrow="ALWAYS">
+                                          <ToggleButton id="btnPedidosPerfil" fx:id="tbtnPedidosPerfilHome" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#mostrarPedidosPerfil" selected="true" text="Pedidos" HBox.hgrow="ALWAYS">
                                              <toggleGroup>
                                                 <ToggleGroup fx:id="BarraUsuario" />
                                              </toggleGroup>
@@ -450,8 +450,8 @@
                                                 <String fx:value="menu-btn-izq" />
                                              </styleClass>
                                           </ToggleButton>
-                                          <ToggleButton id="btnFavoritosPerfil" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" styleClass="menu-btn" text="Favoritos" toggleGroup="$BarraUsuario" HBox.hgrow="ALWAYS" />
-                                          <ToggleButton id="btnMiCuentaPerfil" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" text="Mi Cuenta" toggleGroup="$BarraUsuario" HBox.hgrow="ALWAYS">
+                                          <ToggleButton id="btnFavoritosPerfil" fx:id="tbtnFavoritosPerfilHome" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#mostrarFavoritosPerfil" styleClass="menu-btn" text="Favoritos" toggleGroup="$BarraUsuario" HBox.hgrow="ALWAYS" />
+                                          <ToggleButton id="btnMiCuentaPerfil" fx:id="tbtnMiCuentaPerfilHome" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#mostrarMiCuentaPerfil" text="Mi Cuenta" toggleGroup="$BarraUsuario" HBox.hgrow="ALWAYS">
                                              <styleClass>
                                                 <String fx:value="menu-btn-der" />
                                                 <String fx:value="menu-btn" />
@@ -461,9 +461,9 @@
                                     </HBox>
                                     <StackPane layoutX="38.0" layoutY="343.0" prefHeight="1708.0" prefWidth="1185.0">
                                        <children>
-                                          <VBox id="vboxPedidosPerfil" prefHeight="200.0" prefWidth="100.0" visible="false" />
-                                          <VBox id="vboxFavoritosPerfil" prefHeight="200.0" prefWidth="100.0" visible="false" />
-                                          <VBox prefHeight="200.0" prefWidth="100.0" visible="false">
+                                          <VBox id="vboxPedidosPerfil" fx:id="panePedidosPerfilHome" prefHeight="200.0" prefWidth="100.0" />
+                                          <VBox id="vboxFavoritosPerfil" fx:id="paneFavoritosPerfilHome" prefHeight="200.0" prefWidth="100.0" visible="false" />
+                                          <VBox fx:id="paneMiCuentaPerfilHome" prefHeight="200.0" prefWidth="100.0" visible="false">
                                              <children>
                                                 <Pane prefHeight="45.0" prefWidth="1185.0" style="-fx-border-color: #f5f4f4; -fx-background-color: #fafafa;">
                                                    <children>
@@ -602,7 +602,7 @@
                                                 </Pane>
                                              </children>
                                           </VBox>
-                                          <VBox prefHeight="200.0" prefWidth="100.0">
+                                          <VBox prefHeight="200.0" prefWidth="100.0" visible="false">
                                              <children>
                                                 <Pane prefHeight="45.0" prefWidth="1185.0" style="-fx-border-color: #f5f4f4; -fx-background-color: #fafafa;">
                                                    <children>

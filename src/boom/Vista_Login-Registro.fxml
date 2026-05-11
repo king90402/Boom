@@ -150,7 +150,7 @@
                         <Font name="Roboto Regular" size="11.0" />
                      </font>
                   </Button>
-                  <Button id="btLogin-Sign" layoutX="1.0" layoutY="7.0" mnemonicParsing="false" onAction="#irAPaso1" onMouseClicked="#irALogin" prefHeight="27.0" prefWidth="92.0" style="-fx-background-color: transparent; -fx-background-radius: 7; -fx-cursor: hand;" text="&lt; Regresar">
+                  <Button id="btLogin-Sign" layoutX="1.0" layoutY="7.0" mnemonicParsing="false" onAction="#irAPaso1" onMouseClicked="#irAPaso1" prefHeight="27.0" prefWidth="92.0" style="-fx-background-color: transparent; -fx-background-radius: 7; -fx-cursor: hand;" text="&lt; Regresar">
                      <font>
                         <Font name="Poppins Bold" size="13.0" />
                      </font>

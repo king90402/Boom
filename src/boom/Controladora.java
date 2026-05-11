@@ -20,11 +20,15 @@ import java.util.regex.Pattern;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.FlowPane;
 /**
  *
- * @author all
+ * @author alejo
  */
 public class Controladora {
+    
     //Tamaño maximo de los arreglos
     private static final int mx = 500;
     
@@ -170,20 +174,57 @@ public class Controladora {
     new String[]{"Puerto Carreño","Cumaribo","La Primavera","Santa Rosalía"});
         
     }
-    
-    private producto[] listaProductos;
-    private clienteBoom[] listaClientes;
-    private admin[] listaAdmins;
-
-    private int contadorProductos;
-    private int contadorClientes;
-    private int contadorAdmins;
+    //Inicializacion de Datos Compartidos pot Controladora en las Vistas para evitar conflictos
+    private static producto[]    listaProductos    = new producto[mx];
+    private static clienteBoom[] listaClientes     = new clienteBoom[mx];
+    private static admin[]       listaAdmins       = new admin[mx];
+    private static int           contadorProductos = 0;
+    private static int           contadorClientes  = 0;
+    private static int           contadorAdmins    = 0;
+    private static boolean       datosInicializados = false;
     
     //Paneles
     @FXML private Pane paneLogin;
     @FXML private Pane paneRegistro;
     @FXML private Pane paneRegistroFinal;
+    @FXML private Pane paneInicioHome;
+    @FXML private Pane panePerfilHome;
+    @FXML private Pane paneCarritoHome;
 
+    @FXML private Pane paneFavoritosPerfilHome;
+    @FXML private Pane panePedidosPerfilHome;
+    @FXML private Pane paneMiCuentaPerfilHome;
+    
+    @FXML private Pane panePerfilAdmin;
+    @FXML private Pane paneEstadisticasAdmin;
+    @FXML private Pane paneRestaStockAdmin;
+    @FXML private Pane paneInventarioAdmin;
+    @FXML private Pane panePedidosAdmin;
+    @FXML private Pane paneIngrePersoAdmin;
+    
+    @FXML private Pane paneRestaNuevo_Producto;
+    @FXML private Pane paneEditarInfoAdmin;
+    @FXML private Pane paneRestaNuevo_ProductoPaso1;
+    @FXML private Pane paneRestaNuevo_ProductoPaso2;
+    @FXML private Pane paneRestaNuevo_ProductoPaso3;
+    
+    //Botones Home
+    @FXML private ToggleButton tbtnPedidosPerfilHome;
+    @FXML private ToggleButton tbtnFavoritosPerfilHome;
+    @FXML private ToggleButton tbtnMiCuentaPerfilHome;
+    
+    @FXML private ToggleGroup BarraUsuario;
+    
+    //Botones Administración
+    @FXML private ToggleButton tbtnPerfilAdmin;
+    @FXML private ToggleButton tbtnEstadisticasAdmin;
+    @FXML private ToggleButton tbtnRestaStockAdmin;
+    @FXML private ToggleButton tbtnInventarioAdmin;
+    @FXML private ToggleButton tbtnPedidosAdmin;
+    @FXML private ToggleButton tbtnIngrePersoAdmin;
+    
+    @FXML private ToggleGroup BarraAdmin;
+    
     //Login
     @FXML private TextField      txtCorreoLogin;
     @FXML private PasswordField  txtPasswordLogin;
@@ -202,50 +243,80 @@ public class Controladora {
     @FXML private TextField        txtDireccionRegistro;
     @FXML private PasswordField    txtPasswordRegistro;
 
+    //Catalogo
+    @FXML private FlowPane contenedorProductosHome;
+    
+    public Controladora() {
+        if (!datosInicializados) {
+            datosInicializados = true;
+            cargarClientesDesdeArchivo();
+
+            // Admin por defecto del equipo
+            admin principal = new admin(
+                "Diomedes Díaz",
+                "Admin principal",
+                "+57 3148011595",
+                "elcaciquedelajunta2013@outlook.es",
+                "Diomedes2013",
+                "Cl 26 # 5 - 1957 La junta"
+            );
+            listaAdmins[contadorAdmins++] = principal;
+
+        }
+    }
     
     //Inicializacion Panes y ComboBoxes
     @FXML
     public void initialize() {
-        paneLogin.setVisible(true);
-        paneRegistro.setVisible(false);
-        paneRegistroFinal.setVisible(false);
+        if (paneLogin        != null) paneLogin.setVisible(true);
+        if (paneRegistro     != null) paneRegistro.setVisible(false);
+        if (paneRegistroFinal!= null) paneRegistroFinal.setVisible(false);
 
-        comboDepartamento.getItems().addAll(DEPTOS.keySet());
-        comboDepartamento.setOnAction(e -> {
-            String dep = comboDepartamento.getValue();
-            comboCiudad.getItems().clear();
-            comboCiudad.setValue(null);
-            if (dep != null && DEPTOS.containsKey(dep))
-                comboCiudad.getItems().addAll(DEPTOS.get(dep));
-        });
-    }
-    
-    //Metodo ir a registro
-    @FXML
-    private void irARegistro(MouseEvent event) {
-        limpiarCamposRegistro();
-        paneLogin.setVisible(false);
-        paneRegistro.setVisible(true);
-        paneRegistroFinal.setVisible(false);
-    }
-    
-    //Metodo ir a login 
-    @FXML
-    private void irALogin(MouseEvent event) {
-        paneRegistro.setVisible(false);
-        paneRegistroFinal.setVisible(false);
-        paneLogin.setVisible(true);
-    }
-    
-    //Metodo ir a registro final
-    @FXML
-    private void irAPaso1(MouseEvent event) {
-        paneRegistroFinal.setVisible(false);
-        paneRegistro.setVisible(true);
-    }
+        if (comboDepartamento != null) {
+            comboDepartamento.getItems().addAll(DEPTOS.keySet());
+            comboDepartamento.setOnAction(e -> {
+                String dep = comboDepartamento.getValue();
+                comboCiudad.getItems().clear();
+                comboCiudad.setValue(null);
+                if (dep != null && DEPTOS.containsKey(dep))
+                    comboCiudad.getItems().addAll(DEPTOS.get(dep));
+            });
+        }
+        
+        BarraUsuario = new ToggleGroup();
 
-    
-    //Metodo ir a iniciar seccion
+        if (tbtnFavoritosPerfilHome != null)
+            tbtnFavoritosPerfilHome.setToggleGroup(BarraUsuario);
+
+        if (tbtnPedidosPerfilHome != null)
+            tbtnPedidosPerfilHome.setToggleGroup(BarraUsuario);
+
+        if (tbtnMiCuentaPerfilHome != null)
+            tbtnMiCuentaPerfilHome.setToggleGroup(BarraUsuario);
+        
+        BarraAdmin = new ToggleGroup();
+
+        if (tbtnPerfilAdmin != null)
+            tbtnPerfilAdmin.setToggleGroup(BarraAdmin);
+
+        if (tbtnEstadisticasAdmin != null)
+            tbtnEstadisticasAdmin.setToggleGroup(BarraAdmin);
+
+        if (tbtnRestaStockAdmin != null)
+            tbtnRestaStockAdmin.setToggleGroup(BarraAdmin);
+        
+        if (tbtnInventarioAdmin != null)
+            tbtnInventarioAdmin.setToggleGroup(BarraAdmin);
+
+        if (tbtnPedidosAdmin != null)
+            tbtnPedidosAdmin.setToggleGroup(BarraAdmin);
+
+        if (tbtnIngrePersoAdmin != null)
+            tbtnIngrePersoAdmin.setToggleGroup(BarraAdmin);
+
+    }
+  
+    //Metodo para iniciar seccion
     @FXML
     private void iniciarSesion(ActionEvent event) {
         String user = txtCorreoLogin.getText().trim();
@@ -286,7 +357,7 @@ public class Controladora {
             "Usuario o contraseña incorrectos.", 
             "Error de autenticación", JOptionPane.ERROR_MESSAGE);
     }
- 
+    
     private void abrirVistaAdmin(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Vista_Administracion.fxml"));
@@ -317,6 +388,8 @@ public class Controladora {
             Stage stage = new Stage();
             stage.setScene(scene);
             stage.setTitle("Boom - Bienvenido " + nombreUsuario);
+            stage.setResizable(false);
+            stage.setMaximized(true);
             stage.show();
             
             Node source = (Node) event.getSource();
@@ -328,31 +401,452 @@ public class Controladora {
             e.printStackTrace();
         }
     }
+    
+    // Metodo ir a registro
+    @FXML
+    private void irARegistro(MouseEvent event) {
 
-    public Controladora() {
-        listaProductos = new producto[mx];
-        listaClientes = new clienteBoom[mx];
-        listaAdmins = new admin[mx];
-        
-        contadorProductos = 0;
-        contadorClientes = 0;
-        contadorAdmins = 0;
-        
-        cargarClientesDesdeArchivo();
-        
-        admin principal = new admin(
-    "Diomedes Díaz",                   
-    "Admin principal",               
-    "+57 3148011595",                 
-    "elcaciquedelajunta2013@outlook.es", 
-    "Diomedes2013",                  
-    "Cl 26 # 5 - 1957 La junta"        
-);
-        listaAdmins[contadorAdmins] = principal;
-        contadorAdmins++;
+    limpiarCamposRegistro();
+
+        if (paneLogin != null) {
+            paneLogin.setVisible(false);
+            paneLogin.setManaged(false);
+        }
+
+        if (paneRegistro != null) {
+            paneRegistro.setVisible(true);
+            paneRegistro.setManaged(true);
+        }
+
+        if (paneRegistroFinal != null) {
+            paneRegistroFinal.setVisible(false);
+            paneRegistroFinal.setManaged(false);
+        }
+    }
+
+    // Metodo ir a login
+    @FXML
+    private void irALogin(MouseEvent event) {
+
+        if (paneRegistro != null) {
+            paneRegistro.setVisible(false);
+            paneRegistro.setManaged(false);
+        }
+
+        if (paneRegistroFinal != null) {
+            paneRegistroFinal.setVisible(false);
+            paneRegistroFinal.setManaged(false);
+        }
+
+        if (paneLogin != null) {
+            paneLogin.setVisible(true);
+            paneLogin.setManaged(true);
+        }
+    }
+
+    // Metodo ir a registro final
+    @FXML
+    private void irAPaso1(MouseEvent event) {
+
+        if (paneRegistroFinal != null) {
+            paneRegistroFinal.setVisible(true);
+            paneRegistroFinal.setManaged(true);
+        }
+
+        if (paneRegistro != null) {
+            paneRegistro.setVisible(false);
+            paneRegistro.setManaged(false);
+        }
     }
     
-//--------------------------------------------   Metodos correspondientes a la lista de productos 
+    private void ocultarTodosLosPadres() {
+
+        if (paneInicioHome != null) { paneInicioHome.setVisible(false);
+            paneInicioHome.setManaged(false); 
+        }
+        
+        if (panePerfilHome != null) { panePerfilHome.setVisible(false);
+            panePerfilHome.setManaged(false);
+        }
+        
+        if (paneCarritoHome != null) { paneCarritoHome.setVisible(false);
+            paneCarritoHome.setManaged(false);
+        }
+    }
+
+    public void mostrarInicio() {
+
+        ocultarTodosLosPadres();
+
+        if (paneInicioHome != null) { paneInicioHome.setVisible(true);
+            paneInicioHome.setManaged(true);
+        }
+    }
+
+    public void mostrarPerfil() {
+
+        ocultarTodosLosPadres();
+
+        if (panePerfilHome != null) { panePerfilHome.setVisible(true);
+            panePerfilHome.setManaged(true);
+        }
+        
+        mostrarMiCuentaPerfil();
+    }
+
+    public void mostrarCarrito() {
+
+        ocultarTodosLosPadres();
+
+        if (paneCarritoHome != null) { paneCarritoHome.setVisible(true);
+            paneCarritoHome.setManaged(true);
+        }
+        
+    }
+
+    private void ocultarSubPanesPerfil() {
+
+        if (paneFavoritosPerfilHome != null) { paneFavoritosPerfilHome.setVisible(false);
+            paneFavoritosPerfilHome.setManaged(false);
+        }
+        
+        if (panePedidosPerfilHome != null) { panePedidosPerfilHome.setVisible(false);
+            panePedidosPerfilHome.setManaged(false);
+        }
+        
+        if (paneMiCuentaPerfilHome != null) { paneMiCuentaPerfilHome.setVisible(false);
+            paneMiCuentaPerfilHome.setManaged(false);
+        }   
+    }
+
+    public void mostrarFavoritosPerfilInicio() {
+
+        ocultarTodosLosPadres();
+
+        if (panePerfilHome != null) { panePerfilHome.setVisible(true);
+            panePerfilHome.setManaged(true);
+        }
+        
+        ocultarSubPanesPerfil();
+
+        if (paneFavoritosPerfilHome != null) { paneFavoritosPerfilHome.setVisible(true);
+            paneFavoritosPerfilHome.setManaged(true);
+        }
+        
+        tbtnFavoritosPerfilHome.setSelected(true);
+    }
+    
+    public void mostrarFavoritosPerfil() {
+
+        ocultarSubPanesPerfil();
+
+        if (paneFavoritosPerfilHome != null) { paneFavoritosPerfilHome.setVisible(true);
+            paneFavoritosPerfilHome.setManaged(true);
+        }
+    }
+
+    public void mostrarPedidosPerfil() {
+
+        ocultarSubPanesPerfil();
+
+        if (panePedidosPerfilHome != null) { panePedidosPerfilHome.setVisible(true);
+            panePedidosPerfilHome.setManaged(true);
+        }
+        
+        tbtnPedidosPerfilHome.setSelected(true);
+    }
+
+    public void mostrarMiCuentaPerfil() {
+
+        ocultarSubPanesPerfil();
+
+        if (paneMiCuentaPerfilHome != null) { paneMiCuentaPerfilHome.setVisible(true);
+            paneMiCuentaPerfilHome.setManaged(true);
+        }
+        
+        tbtnMiCuentaPerfilHome.setSelected(true);
+    }
+
+    private void ocultarPanesAdmin() {
+
+        Pane[] panes = {
+
+            panePerfilAdmin,
+            paneEstadisticasAdmin,
+            paneRestaStockAdmin,
+            paneInventarioAdmin,
+            panePedidosAdmin,
+            paneIngrePersoAdmin,
+            paneEditarInfoAdmin,
+            paneRestaNuevo_Producto
+        };
+
+        for (Pane pane : panes) {
+
+            if (pane != null) {
+                pane.setVisible(false);
+                pane.setManaged(false);
+            }
+        }
+    }
+    
+    private void mostrarPaneAdmin(Pane paneMostrar) {
+
+        ocultarPanesAdmin();
+
+        if (paneMostrar != null) {
+            paneMostrar.setVisible(true);
+            paneMostrar.setManaged(true);
+        }
+    }
+    
+    @FXML private void irPerfilAdmin() {
+        mostrarPaneAdmin(panePerfilAdmin);
+    }
+
+    @FXML private void irEstadisticasAdmin() {
+        mostrarPaneAdmin(paneEstadisticasAdmin);
+    }
+
+    @FXML private void irRestaStockAdmin() {
+        mostrarPaneAdmin(paneRestaStockAdmin);
+    }
+
+    @FXML private void irInventarioAdmin() {
+        mostrarPaneAdmin(paneInventarioAdmin);
+    }
+
+    @FXML private void irPedidosAdmin() {
+        mostrarPaneAdmin(panePedidosAdmin);
+    }
+
+    @FXML private void irIngresoPersonalAdmin() {
+        mostrarPaneAdmin(paneIngrePersoAdmin);
+    }
+
+    @FXML private void irEditarInfoAdmin() {
+        mostrarPaneAdmin(paneEditarInfoAdmin);
+    }
+    
+    private void ocultarPasosNuevoProducto() {
+
+        Pane[] pasos = {
+
+            paneRestaNuevo_ProductoPaso1,
+            paneRestaNuevo_ProductoPaso2,
+            paneRestaNuevo_ProductoPaso3
+        };
+
+        for (Pane paso : pasos) {
+
+            if (paso != null) {
+                paso.setVisible(false);
+                paso.setManaged(false);
+            }
+        }
+    }
+    
+    private void mostrarPasoNuevoProducto(Pane pasoMostrar) {
+
+        ocultarPasosNuevoProducto();
+
+        if (pasoMostrar != null) {
+            pasoMostrar.setVisible(true);
+            pasoMostrar.setManaged(true);
+        }
+    }
+    
+    @FXML private void irPaso1NuevoProducto() {
+        mostrarPaneAdmin(paneRestaNuevo_Producto);
+        mostrarPasoNuevoProducto(paneRestaNuevo_ProductoPaso1);
+    }
+
+    @FXML private void irPaso2NuevoProducto() {
+        mostrarPasoNuevoProducto(paneRestaNuevo_ProductoPaso2);
+    }
+
+    @FXML private void irPaso3NuevoProducto() {
+        mostrarPasoNuevoProducto(paneRestaNuevo_ProductoPaso3);
+    }
+    
+    //Registro Primer Paso
+    @FXML
+    private void irPaso2(ActionEvent event) {
+
+        String correo   = txtCorreoRegistro.getText().trim();
+        String nombre   = txtNombreRegistro.getText().trim();
+        String apellido = txtApellidoRegistro.getText().trim();
+        String id       = txtIdClienteRegistro.getText().trim();
+        String fecha    = txtFechaRegistro.getText().trim();
+        
+       //Validaciones para el registro de un clienteBoom
+       
+        // Campos vacios 
+        if (correo.isEmpty() || nombre.isEmpty() || apellido.isEmpty() || id.isEmpty() || fecha.isEmpty()) {
+            JOptionPane.showMessageDialog(null, 
+                "Error: Todos los campos son obligatorios para ingresar.\nPor favor complete todos los campos.", 
+                "Campos vacios", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        // VALIDACIONES DE NUMERO DE IDENTIFICACION
+        // Formato del ID (solo numeros, entre 7 y 12 digitos)
+        if (!validarFormatoId(id)) {
+            JOptionPane.showMessageDialog(null, 
+                "Error: El numero de identificacion no es valido.\nDebe contener solo numeros (entre 6 y 12 digitos).\nEjemplo: 1003345643", 
+                "Identificacion invalida", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        // Verificar que el ID no este duplicado
+        if (existeIdCliente(id)) {
+            JOptionPane.showMessageDialog(null, 
+                "Error: Ya existe una cuenta registrada con este numero de identificacion.\nPor favor verifique sus datos o inicie sesion.", 
+                "Identificacion ya registrada", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        // VALIDACIONES DE CORREO
+        // Forma del correo 
+        if (!validarCorreoCompleto(correo)) {
+            JOptionPane.showMessageDialog(null, 
+                "Error: El formato del correo electronico no es valido.\nPor favor ingrese un correo valido.\nEjemplo: usuario@gmail.com\n\nNo se permiten:\n- Caracteres especiales consecutivos\n- Dominios invalidos\n- Correos muy cortos o muy largos", 
+                "Correo invalido", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        // Validacion de correo duplicado
+        if (existeCorreoCliente(correo)) {
+            JOptionPane.showMessageDialog(null, 
+                "Error: Ya existe una cuenta registrada con este correo electronico.\nPor favor use otro correo o inicie sesion.", 
+                "Correo ya en uso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        if (existeCorreoAdmin(correo)) {
+            JOptionPane.showMessageDialog(null, 
+                "Error: Ya existe una cuenta registrada con este correo electronico.\nPor favor use otro correo o inicie sesion.", 
+                "Correo ya en uso", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        // VALIDACIONES INFORMACION BASICA
+        
+        if (!validarNombre(nombre)) {
+            JOptionPane.showMessageDialog(null, 
+                "Error: El nombre solo puede contener letras y espacios.", 
+                "Nombre invalido", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        if (!validarApellido(apellido)) {
+            JOptionPane.showMessageDialog(null, 
+                "Error: El apellido solo puede contener letras y espacios.", 
+                "Apellido invalido", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        
+        if (!fecha.isEmpty() && !fecha.matches("^\\d{2}/\\d{2}/\\d{4}$")) {
+            JOptionPane.showMessageDialog(null,
+                "Formato de fecha inválido. Use dd/MM/YYYY\nEjemplo: 15/03/2000",
+                "Fecha inválida", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if (paneRegistro     != null) paneRegistro.setVisible(false);
+        if (paneRegistroFinal!= null) paneRegistroFinal.setVisible(true);
+        if (paneLogin        != null) paneLogin.setVisible(false);
+
+    }
+    
+    //Registro Paso Final
+    @FXML
+    private void registrarCliente(ActionEvent event) {
+        
+        String correo          = txtCorreoRegistro.getText().trim();
+        String nombre          = txtNombreRegistro.getText().trim();
+        String apellido        = txtApellidoRegistro.getText().trim();
+        String id              = txtIdClienteRegistro.getText().trim();
+        String fechaNacimiento = txtFechaRegistro.getText().trim();
+
+        String celular     = txtCelularRegistro.getText().trim();
+        String departamento = comboDepartamento.getValue();
+        String ciudad       = comboCiudad.getValue();
+        String direccion    = txtDireccionRegistro.getText().trim();
+        String contraseña   = txtPasswordRegistro.getText();
+
+        if (celular.isEmpty() || departamento == null || ciudad == null ||
+            direccion.isEmpty() || contraseña.isEmpty()) {
+            JOptionPane.showMessageDialog(null,
+                "Todos los campos son obligatorios.\nSeleccione Departamento y Ciudad.",
+                "Campos vacíos", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        String celularLimpio = celular.replaceAll("[\\s-]", "");
+        if (!validarFormatoTelefono(celularLimpio)) {
+            JOptionPane.showMessageDialog(null, 
+                "Error: El formato del celular no es valido.\nDebe contener entre 7 y 15 digitos.\nEjemplo: +573001234567", 
+                "Celular invalido", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        if (contraseña.length() < MIN_PASSWORD_LENGTH || contraseña.length() > MAX_PASSWORD_LENGTH) {
+            JOptionPane.showMessageDialog(null, 
+                "Error: La contraseña debe tener entre " + MIN_PASSWORD_LENGTH + 
+                " y " + MAX_PASSWORD_LENGTH + " caracteres.", 
+                "Contraseña invalida", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        if (contraseña.contains(" ")) {
+            JOptionPane.showMessageDialog(null, 
+                "Error: La contraseña no puede contener espacios.", 
+                "Contraseña invalida", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+
+        String digitos = celularLimpio.replaceAll("[^0-9]", "");
+        String idCliente = digitos.length() >= 7 ? digitos.substring(Math.max(0, digitos.length() - 10)) : digitos;
+        if (existeIdCliente(idCliente)) idCliente = idCliente + (System.currentTimeMillis() % 100);
+
+        String nombreCompleto    = nombre + " " + apellido;
+        String direccionCompleta = direccion + ", " + ciudad + ", " + departamento;
+
+        clienteBoom nuevo = new clienteBoom(
+                correo.toLowerCase(),
+                nombre, 
+                apellido,
+                idCliente, 
+                fechaNacimiento,
+                celularLimpio,   
+                departamento,
+                ciudad,
+                direccion,
+                contraseña); 
+
+        if (agregarCliente(nuevo)) {
+            if (guardarClienteEnArchivo(nuevo)) {
+                JOptionPane.showMessageDialog(null,
+                    "¡Registro exitoso!\nBienvenido " + nombreCompleto + ".\nAhora puede iniciar sesión.",
+                    "Registro completado", JOptionPane.INFORMATION_MESSAGE);
+                limpiarCamposRegistro();
+                if (paneRegistroFinal!= null) paneRegistroFinal.setVisible(false);
+                if (paneRegistro     != null) paneRegistro.setVisible(false);
+                if (paneLogin        != null) paneLogin.setVisible(true);
+                if (txtCorreoLogin   != null) txtCorreoLogin.setText(correo.toLowerCase());
+                if (txtPasswordLogin != null) txtPasswordLogin.requestFocus();
+            } else {
+                eliminarCliente(contadorClientes - 1);
+                JOptionPane.showMessageDialog(null, "Error al guardar el registro. Intente de nuevo.",
+                    "Error de sistema", JOptionPane.ERROR_MESSAGE);
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "Error: Sistema lleno.",
+                "Error de sistema", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+    
+    //Metodos correspondientes a la lista de productos 
     
     // Agregar un producto
     public boolean agregarProducto(producto producto) {
@@ -437,8 +931,9 @@ public class Controladora {
         return contadorProductos;
     }
 
-//--------------------------------------------   Metodos correspondientes a la lista de clientes
+    //Metodos correspondientes a la lista de clientes
     
+    // Agregar un cliente
     public boolean agregarCliente(clienteBoom cliente) {
         if (contadorClientes < mx) {
             listaClientes[contadorClientes] = cliente;
@@ -448,181 +943,6 @@ public class Controladora {
         return false;
     }
     
-    @FXML
-    private void irPaso2(ActionEvent event) {
-
-        String correo   = txtCorreoRegistro.getText().trim();
-        String nombre   = txtNombreRegistro.getText().trim();
-        String apellido = txtApellidoRegistro.getText().trim();
-        String id       = txtIdClienteRegistro.getText().trim();
-        String fecha    = txtFechaRegistro.getText().trim();
-        
-       //Validaciones para el registro de un clienteBoom
-       
-        // Campos vacios 
-        if (correo.isEmpty() || nombre.isEmpty() || apellido.isEmpty() || id.isEmpty() || fecha.isEmpty()) {
-            JOptionPane.showMessageDialog(null, 
-                "Error: Todos los campos son obligatorios para ingresar.\nPor favor complete todos los campos.", 
-                "Campos vacios", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        
-        // VALIDACIONES DE NUMERO DE IDENTIFICACION
-        // Formato del ID (solo numeros, entre 7 y 12 digitos)
-        if (!validarFormatoId(id)) {
-            JOptionPane.showMessageDialog(null, 
-                "Error: El numero de identificacion no es valido.\nDebe contener solo numeros (entre 6 y 12 digitos).\nEjemplo: 1003345643", 
-                "Identificacion invalida", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        
-        // Verificar que el ID no este duplicado
-        if (existeIdCliente(id)) {
-            JOptionPane.showMessageDialog(null, 
-                "Error: Ya existe una cuenta registrada con este numero de identificacion.\nPor favor verifique sus datos o inicie sesion.", 
-                "Identificacion ya registrada", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        
-        // VALIDACIONES DE CORREO
-        // Forma del correo 
-        if (!validarCorreoCompleto(correo)) {
-            JOptionPane.showMessageDialog(null, 
-                "Error: El formato del correo electronico no es valido.\nPor favor ingrese un correo valido.\nEjemplo: usuario@gmail.com\n\nNo se permiten:\n- Caracteres especiales consecutivos\n- Dominios invalidos\n- Correos muy cortos o muy largos", 
-                "Correo invalido", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        
-        // Validacion de correo duplicado
-        if (existeCorreoCliente(correo)) {
-            JOptionPane.showMessageDialog(null, 
-                "Error: Ya existe una cuenta registrada con este correo electronico.\nPor favor use otro correo o inicie sesion.", 
-                "Correo ya en uso", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        
-        if (existeCorreoAdmin(correo)) {
-            JOptionPane.showMessageDialog(null, 
-                "Error: Ya existe una cuenta registrada con este correo electronico.\nPor favor use otro correo o inicie sesion.", 
-                "Correo ya en uso", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        
-        // VALIDACIONES INFORMACION BASICA
-        
-        if (!validarNombre(nombre)) {
-            JOptionPane.showMessageDialog(null, 
-                "Error: El nombre solo puede contener letras y espacios.", 
-                "Nombre invalido", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        
-        if (!validarApellido(apellido)) {
-            JOptionPane.showMessageDialog(null, 
-                "Error: El apellido solo puede contener letras y espacios.", 
-                "Apellido invalido", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        
-        if (!fecha.isEmpty() && !fecha.matches("^\\d{2}/\\d{2}/\\d{4}$")) {
-            JOptionPane.showMessageDialog(null,
-                "Formato de fecha inválido. Use dd/MM/YYYY\nEjemplo: 15/03/2000",
-                "Fecha inválida", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        paneRegistro.setVisible(false);
-        paneRegistroFinal.setVisible(true);
-        paneLogin.setVisible(false);
-
-    }
-    
-    @FXML
-    private void registrarCliente(ActionEvent event) {
-        
-        String correo          = txtCorreoRegistro.getText().trim();
-        String nombre          = txtNombreRegistro.getText().trim();
-        String apellido        = txtApellidoRegistro.getText().trim();
-        String documento       = txtIdClienteRegistro.getText().trim();
-        String fechaNacimiento = txtFechaRegistro.getText().trim();
-
-        String celular     = txtCelularRegistro.getText().trim();
-        String departamento = comboDepartamento.getValue();
-        String ciudad       = comboCiudad.getValue();
-        String direccion    = txtDireccionRegistro.getText().trim();
-        String contraseña   = txtPasswordRegistro.getText();
-
-        if (celular.isEmpty() || departamento == null || ciudad == null ||
-            direccion.isEmpty() || contraseña.isEmpty()) {
-            JOptionPane.showMessageDialog(null,
-                "Todos los campos son obligatorios.\nSeleccione Departamento y Ciudad.",
-                "Campos vacíos", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        String celularLimpio = celular.replaceAll("[\\s-]", "");
-        if (!validarFormatoTelefono(celularLimpio)) {
-            JOptionPane.showMessageDialog(null, 
-                "Error: El formato del celular no es valido.\nDebe contener entre 7 y 15 digitos.\nEjemplo: +573001234567", 
-                "Celular invalido", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        if (contraseña.length() < MIN_PASSWORD_LENGTH || contraseña.length() > MAX_PASSWORD_LENGTH) {
-            JOptionPane.showMessageDialog(null, 
-                "Error: La contraseña debe tener entre " + MIN_PASSWORD_LENGTH + 
-                " y " + MAX_PASSWORD_LENGTH + " caracteres.", 
-                "Contraseña invalida", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        if (contraseña.contains(" ")) {
-            JOptionPane.showMessageDialog(null, 
-                "Error: La contraseña no puede contener espacios.", 
-                "Contraseña invalida", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-
-        String digitos = celularLimpio.replaceAll("[^0-9]", "");
-        String idCliente = digitos.length() >= 7 ? digitos.substring(Math.max(0, digitos.length() - 10)) : digitos;
-        if (existeIdCliente(idCliente)) idCliente = idCliente + (System.currentTimeMillis() % 100);
-
-        String nombreCompleto    = nombre + " " + apellido;
-        String direccionCompleta = direccion + ", " + ciudad + ", " + departamento;
-
-        clienteBoom nuevo = new clienteBoom(
-                correo.toLowerCase(),
-                nombre, 
-                apellido,
-                idCliente, 
-                fechaNacimiento,
-                celularLimpio,   
-                departamento,
-                ciudad,
-                direccion,
-                contraseña); 
-
-        if (agregarCliente(nuevo)) {
-            if (guardarClienteEnArchivo(nuevo)) {
-                JOptionPane.showMessageDialog(null,
-                    "¡Registro exitoso!\nBienvenido " + nombreCompleto + ".\nAhora puede iniciar sesión.",
-                    "Registro completado", JOptionPane.INFORMATION_MESSAGE);
-                limpiarCamposRegistro();
-                paneRegistroFinal.setVisible(false);
-                paneRegistro.setVisible(false);
-                paneLogin.setVisible(true);
-                txtCorreoLogin.setText(correo.toLowerCase());
-                txtPasswordLogin.requestFocus();
-            } else {
-                eliminarCliente(contadorClientes - 1);
-                JOptionPane.showMessageDialog(null, "Error al guardar el registro. Intente de nuevo.",
-                    "Error de sistema", JOptionPane.ERROR_MESSAGE);
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Error: Sistema lleno.",
-                "Error de sistema", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
     // Eliminar un clienteBoom por su posicion 
    public boolean eliminarCliente(int pos) {
         if (pos >= 0 && pos < contadorClientes) {

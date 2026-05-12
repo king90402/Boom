@@ -8,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.layout.Pane;
 import javafx.scene.input.MouseEvent;
-import javax.swing.JOptionPane;
 import javax.swing.JOptionPane; 
 import javafx.fxml.FXMLLoader; 
 import javafx.scene.Parent;
@@ -17,12 +16,16 @@ import javafx.stage.Stage;
 import java.io.*;
 import java.util.LinkedHashMap;
 import java.util.regex.Pattern;
+import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
 import javafx.scene.control.ToggleGroup;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
+import javafx.scene.text.Text;
 /**
  *
  * @author alejo
@@ -30,12 +33,13 @@ import javafx.scene.layout.FlowPane;
 public class Controladora {
     
     //Tamaño maximo de los arreglos
-    private static final int mx = 500;
+    private static final int MAX_USUARIOS = 500;
+    private static final int MAX_PRODUCTOS = 500;
     
     // Constantes para validaciones
     private static final int MIN_PASSWORD_LENGTH = 8;
     private static final int MAX_PASSWORD_LENGTH = 32;
-    private static final String CLIENTES_FILE = "clientes.txt";
+    private static final String USUARIOS_FILE = "usuarios.txt";
     
     // Patron de validacion para correo (mejorado)
     private static final Pattern EMAIL_PATTERN = Pattern.compile(
@@ -69,6 +73,11 @@ public class Controladora {
     // Patron de validacion para telefono
     private static final Pattern PHONE_PATTERN = Pattern.compile(
         "^\\+?[0-9]{10,15}$"
+    );
+    
+    // Patrón para nombres y apellidos
+    private static final Pattern NOMBRE_PATTERN = Pattern.compile(
+        "^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ'\\s]+$"
     );
     
     //Datos para los ComboBox: Departamento y Ciudad
@@ -174,14 +183,16 @@ public class Controladora {
     new String[]{"Puerto Carreño","Cumaribo","La Primavera","Santa Rosalía"});
         
     }
+    
     //Inicializacion de Datos Compartidos pot Controladora en las Vistas para evitar conflictos
-    private static producto[]    listaProductos    = new producto[mx];
-    private static clienteBoom[] listaClientes     = new clienteBoom[mx];
-    private static admin[]       listaAdmins       = new admin[mx];
-    private static int           contadorProductos = 0;
-    private static int           contadorClientes  = 0;
-    private static int           contadorAdmins    = 0;
-    private static boolean       datosInicializados = false;
+    private static producto[] listaProductos = new producto[MAX_PRODUCTOS];
+    private static Usuario[] listaUsuarios = new Usuario[MAX_USUARIOS];
+    private static int contadorProductos = 0;
+    private static int contadorUsuarios = 0;
+    private static boolean datosInicializados = false;
+    
+    private Usuario usuarioActual;
+    
     
     //Paneles
     @FXML private Pane paneLogin;
@@ -246,26 +257,51 @@ public class Controladora {
     //Catalogo
     @FXML private FlowPane contenedorProductosHome;
     
+    //Label 
+    @FXML private Text lblDireccionHome;
+    @FXML private Text lblUsuarioHome;
+    @FXML private Text lblNombrePerfilHome;
+    @FXML private Text lblAbreNombrePerfilHome;
+    @FXML private Text lblCorreoPerfilHome;
+    @FXML private Text lblRolPerfilHome;
+    
+    @FXML private Text lblNombre2PerfilHome;
+    @FXML private Text lblCorreo2PerfilHome;
+    @FXML private Text lblCelularPerfilHome;
+    @FXML private Text lblDocumentoPerfilHome;
+    @FXML private Text lblFechaPerfilHome;
+    @FXML private Text lblDireccionPerfilHome;
+    
+    
+    
+    //Constructor
     public Controladora() {
         if (!datosInicializados) {
             datosInicializados = true;
-            cargarClientesDesdeArchivo();
+            cargarUsuariosDesdeArchivo();
 
             // Admin por defecto del equipo
-            admin principal = new admin(
-                "Diomedes Díaz",
-                "Admin principal",
-                "+57 3148011595",
-                "elcaciquedelajunta2013@outlook.es",
-                "Diomedes2013",
-                "Cl 26 # 5 - 1957 La junta"
+            Usuario adminPrincipal = new Usuario(
+                "admin@gmail.com",           
+                "Diomedes",                 
+                "Diaz",                      
+                "73423212",                 
+                "10/02/2000",            
+                "3148011595",              
+                "Cordoba",                 
+                "Monteria",                 
+                "Cl 26 # 5 - 1957 La junta", 
+                "123123123",                
+                Usuario.Rol.ADMIN            
             );
-            listaAdmins[contadorAdmins++] = principal;
-
+            
+            if (!existeCorreoUsuario(adminPrincipal.getCorreo())) {
+                agregarUsuario(adminPrincipal);
+            }
         }
     }
     
-    //Inicializacion Panes y ComboBoxes
+    //Inicializacion 
     @FXML
     public void initialize() {
         if (paneLogin        != null) paneLogin.setVisible(true);
@@ -274,51 +310,71 @@ public class Controladora {
 
         if (comboDepartamento != null) {
             comboDepartamento.getItems().addAll(DEPTOS.keySet());
-            comboDepartamento.setOnAction(e -> {
-                String dep = comboDepartamento.getValue();
-                comboCiudad.getItems().clear();
-                comboCiudad.setValue(null);
-                if (dep != null && DEPTOS.containsKey(dep))
-                    comboCiudad.getItems().addAll(DEPTOS.get(dep));
+            
+            comboDepartamento.setOnAction(event -> {
+                String depto = comboDepartamento.getValue();
+            if (depto != null) {
+            comboCiudad.getItems().clear();
+            comboCiudad.getItems().addAll(DEPTOS.get(depto));
+            comboCiudad.setValue(null);
+            }
+        });
+            
+            comboDepartamento.setOnKeyPressed(e -> {
+                switch (e.getCode()) {
+                    case ENTER -> {
+                        Platform.runLater(() -> {
+                            comboCiudad.requestFocus();
+                            comboCiudad.show();
+                        });
+                    }
+                }
             });
-        }
+            
+        comboCiudad.setOnKeyPressed(e -> {
+            switch (e.getCode()) {
+                case ENTER -> {
+                    Platform.runLater(() -> {
+                        comboCiudad.hide();
+                        txtDireccionRegistro.requestFocus();
+                    });
+                }
+            }
+        });
+    }
         
+    inicializarToggleGroups();
+    mostrarPaneAdmin(panePerfilAdmin);
+
+    }
+    
+    private void inicializarToggleGroups() {
         BarraUsuario = new ToggleGroup();
-
-        if (tbtnFavoritosPerfilHome != null)
-            tbtnFavoritosPerfilHome.setToggleGroup(BarraUsuario);
-
-        if (tbtnPedidosPerfilHome != null)
-            tbtnPedidosPerfilHome.setToggleGroup(BarraUsuario);
-
-        if (tbtnMiCuentaPerfilHome != null)
-            tbtnMiCuentaPerfilHome.setToggleGroup(BarraUsuario);
+        if (tbtnFavoritosPerfilHome != null) tbtnFavoritosPerfilHome.setToggleGroup(BarraUsuario);
+        if (tbtnPedidosPerfilHome != null) tbtnPedidosPerfilHome.setToggleGroup(BarraUsuario);
+        if (tbtnMiCuentaPerfilHome != null) tbtnMiCuentaPerfilHome.setToggleGroup(BarraUsuario);
         
         BarraAdmin = new ToggleGroup();
-
-        if (tbtnPerfilAdmin != null)
-            tbtnPerfilAdmin.setToggleGroup(BarraAdmin);
-
-        if (tbtnEstadisticasAdmin != null)
-            tbtnEstadisticasAdmin.setToggleGroup(BarraAdmin);
-
-        if (tbtnRestaStockAdmin != null)
-            tbtnRestaStockAdmin.setToggleGroup(BarraAdmin);
-        
-        if (tbtnInventarioAdmin != null)
-            tbtnInventarioAdmin.setToggleGroup(BarraAdmin);
-
-        if (tbtnPedidosAdmin != null)
-            tbtnPedidosAdmin.setToggleGroup(BarraAdmin);
-
-        if (tbtnIngrePersoAdmin != null)
-            tbtnIngrePersoAdmin.setToggleGroup(BarraAdmin);
-
+        if (tbtnPerfilAdmin != null) tbtnPerfilAdmin.setToggleGroup(BarraAdmin);
+        if (tbtnEstadisticasAdmin != null) tbtnEstadisticasAdmin.setToggleGroup(BarraAdmin);
+        if (tbtnRestaStockAdmin != null) tbtnRestaStockAdmin.setToggleGroup(BarraAdmin);
+        if (tbtnInventarioAdmin != null) tbtnInventarioAdmin.setToggleGroup(BarraAdmin);
+        if (tbtnPedidosAdmin != null) tbtnPedidosAdmin.setToggleGroup(BarraAdmin);
+        if (tbtnIngrePersoAdmin != null) tbtnIngrePersoAdmin.setToggleGroup(BarraAdmin);
+    }
+    
+    //Autenticación
+    
+    //Metodo para traer UsuarioActual y poder Intanciarlo en otras Vistas
+    public void setUsuarioActual(Usuario u) {
+        this.usuarioActual = u;
+        cargarDatosUsuario();
     }
   
     //Metodo para iniciar seccion
     @FXML
     private void iniciarSesion(ActionEvent event) {
+        
         String user = txtCorreoLogin.getText().trim();
         String contra = txtPasswordLogin.getText();
         
@@ -332,24 +388,21 @@ public class Controladora {
 
         String userNormalizado = user.toLowerCase();
         
-        // Verificacion de admin
-        for (int i = 0; i < contadorAdmins; i++) {
-            admin a = listaAdmins[i];
-            if ((a.getCorreoAdmin().equalsIgnoreCase(userNormalizado) || 
-                 a.getIdAdmin().equalsIgnoreCase(user)) && 
-                a.getContrasenaAdmin().equals(contra)) {
-                abrirVistaAdmin(event);
-                return;
-            }
-        }
-        // Inicio con clienteBoom
-        for (int i = 0; i < contadorClientes; i++) {
-            clienteBoom c = listaClientes[i];
-            if ((c.getCorreoCliente().equalsIgnoreCase(userNormalizado) || 
-                 c.getNombreCliente().equalsIgnoreCase(user) ||
-                 c.getIdCliente().equalsIgnoreCase(user)) && 
-                c.getContraseñaCliente().equals(contra)) {
-                abrirVistaHome(event, c.getNombreCliente());
+        // Verificacion y asignacion por rol
+        for (int i = 0; i < contadorUsuarios; i++) {
+            Usuario u = listaUsuarios[i];
+            if ((u.getCorreo().equalsIgnoreCase(userNormalizado) || 
+                u.getNombre().equalsIgnoreCase(user) ||
+                u.getId().equalsIgnoreCase(user)) && 
+                u.getContraseña().equals(contra)) {
+                
+                usuarioActual = u;
+                
+                if (u.esAdmin()) {
+                    abrirVistaAdmin(event);
+                } else {
+                    abrirVistaHome(event);
+                }
                 return;
             }
         }
@@ -369,32 +422,32 @@ public class Controladora {
             stage.setTitle("Panel de Administracion - Boom");
             stage.show();
             
-            Node source = (Node) event.getSource();
-            Stage currentStage = (Stage) source.getScene().getWindow();
-            currentStage.close();
+            cerrarVentanaActual(event);
             
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error al cargar la vista de administración: " + e.getMessage());
             e.printStackTrace();
         }
     }
+    
     @FXML
-    private void abrirVistaHome(ActionEvent event, String nombreUsuario) {
+    private void abrirVistaHome(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Vista_Home.fxml"));
             Parent root = loader.load();
             
+            Controladora homeController = loader.getController();
+            homeController.setUsuarioActual(usuarioActual);
+            
             Scene scene = new Scene(root);
             Stage stage = new Stage();
             stage.setScene(scene);
-            stage.setTitle("Boom - Bienvenido " + nombreUsuario);
+            stage.setTitle("Boom - Bienvenido " + usuarioActual.getNombre());
             stage.setResizable(false);
             stage.setMaximized(true);
             stage.show();
             
-            Node source = (Node) event.getSource();
-            Stage currentStage = (Stage) source.getScene().getWindow();
-            currentStage.close();
+            cerrarVentanaActual(event);
             
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, "Error al cargar la vista principal: " + e.getMessage());
@@ -402,254 +455,169 @@ public class Controladora {
         }
     }
     
-    // Metodo ir a registro
-    @FXML
-    private void irARegistro(MouseEvent event) {
-
-    limpiarCamposRegistro();
-
-        if (paneLogin != null) {
-            paneLogin.setVisible(false);
-            paneLogin.setManaged(false);
-        }
-
-        if (paneRegistro != null) {
-            paneRegistro.setVisible(true);
-            paneRegistro.setManaged(true);
-        }
-
-        if (paneRegistroFinal != null) {
-            paneRegistroFinal.setVisible(false);
-            paneRegistroFinal.setManaged(false);
-        }
+    private void cerrarVentanaActual(ActionEvent event) {
+        Node source = (Node) event.getSource();
+        Stage currentStage = (Stage) source.getScene().getWindow();
+        currentStage.close();
+    }
+    
+    //Navegacion Paneles
+    
+    @FXML private void irARegistro(MouseEvent event) {
+        limpiarCamposRegistro();
+        mostrarPane(paneRegistro, paneLogin, paneRegistroFinal);
     }
 
-    // Metodo ir a login
-    @FXML
-    private void irALogin(MouseEvent event) {
-
-        if (paneRegistro != null) {
-            paneRegistro.setVisible(false);
-            paneRegistro.setManaged(false);
-        }
-
-        if (paneRegistroFinal != null) {
-            paneRegistroFinal.setVisible(false);
-            paneRegistroFinal.setManaged(false);
-        }
-
-        if (paneLogin != null) {
-            paneLogin.setVisible(true);
-            paneLogin.setManaged(true);
-        }
+    @FXML private void irALogin(MouseEvent event) {
+        limpiarCamposLogin();
+        mostrarPane(paneLogin, paneRegistro, paneRegistroFinal);
     }
 
-    // Metodo ir a registro final
-    @FXML
-    private void irAPaso1(MouseEvent event) {
-
-        if (paneRegistroFinal != null) {
-            paneRegistroFinal.setVisible(true);
-            paneRegistroFinal.setManaged(true);
+    @FXML private void irAPaso1(MouseEvent event) {
+        mostrarPane(paneRegistro, paneRegistroFinal, paneLogin);
+        if (txtCorreoRegistro != null) txtCorreoRegistro.requestFocus();
+    }
+    
+    private void mostrarPane(Pane mostrar, Pane... ocultar) {
+        for (Pane p : ocultar) {
+            if (p != null) {
+                p.setVisible(false);
+                p.setManaged(false);
+            }
         }
-
-        if (paneRegistro != null) {
-            paneRegistro.setVisible(false);
-            paneRegistro.setManaged(false);
+        if (mostrar != null) {
+            mostrar.setVisible(true);
+            mostrar.setManaged(true);
         }
     }
     
     private void ocultarTodosLosPadres() {
-
-        if (paneInicioHome != null) { paneInicioHome.setVisible(false);
-            paneInicioHome.setManaged(false); 
-        }
-        
-        if (panePerfilHome != null) { panePerfilHome.setVisible(false);
-            panePerfilHome.setManaged(false);
-        }
-        
-        if (paneCarritoHome != null) { paneCarritoHome.setVisible(false);
-            paneCarritoHome.setManaged(false);
+        Pane[] panes = {paneInicioHome, panePerfilHome, paneCarritoHome};
+        for (Pane p : panes) {
+            if (p != null) {
+                p.setVisible(false);
+                p.setManaged(false);
+            }
         }
     }
 
     public void mostrarInicio() {
-
         ocultarTodosLosPadres();
-
-        if (paneInicioHome != null) { paneInicioHome.setVisible(true);
+        if (paneInicioHome != null) {
+            paneInicioHome.setVisible(true);
             paneInicioHome.setManaged(true);
         }
     }
 
     public void mostrarPerfil() {
-
         ocultarTodosLosPadres();
-
-        if (panePerfilHome != null) { panePerfilHome.setVisible(true);
+        if (panePerfilHome != null) {
+            panePerfilHome.setVisible(true);
             panePerfilHome.setManaged(true);
         }
-        
         mostrarMiCuentaPerfil();
     }
 
     public void mostrarCarrito() {
-
         ocultarTodosLosPadres();
-
-        if (paneCarritoHome != null) { paneCarritoHome.setVisible(true);
+        if (paneCarritoHome != null) {
+            paneCarritoHome.setVisible(true);
             paneCarritoHome.setManaged(true);
         }
-        
     }
 
     private void ocultarSubPanesPerfil() {
-
-        if (paneFavoritosPerfilHome != null) { paneFavoritosPerfilHome.setVisible(false);
-            paneFavoritosPerfilHome.setManaged(false);
+        Pane[] panes = {paneFavoritosPerfilHome, panePedidosPerfilHome, paneMiCuentaPerfilHome};
+        for (Pane p : panes) {
+            if (p != null) {
+                p.setVisible(false);
+                p.setManaged(false);
+            }
         }
-        
-        if (panePedidosPerfilHome != null) { panePedidosPerfilHome.setVisible(false);
-            panePedidosPerfilHome.setManaged(false);
-        }
-        
-        if (paneMiCuentaPerfilHome != null) { paneMiCuentaPerfilHome.setVisible(false);
-            paneMiCuentaPerfilHome.setManaged(false);
-        }   
     }
 
     public void mostrarFavoritosPerfilInicio() {
-
         ocultarTodosLosPadres();
-
-        if (panePerfilHome != null) { panePerfilHome.setVisible(true);
+        if (panePerfilHome != null) {
+            panePerfilHome.setVisible(true);
             panePerfilHome.setManaged(true);
         }
-        
         ocultarSubPanesPerfil();
-
-        if (paneFavoritosPerfilHome != null) { paneFavoritosPerfilHome.setVisible(true);
+        if (paneFavoritosPerfilHome != null) {
+            paneFavoritosPerfilHome.setVisible(true);
             paneFavoritosPerfilHome.setManaged(true);
         }
-        
-        tbtnFavoritosPerfilHome.setSelected(true);
+        if (tbtnFavoritosPerfilHome != null) tbtnFavoritosPerfilHome.setSelected(true);
     }
     
     public void mostrarFavoritosPerfil() {
-
         ocultarSubPanesPerfil();
-
-        if (paneFavoritosPerfilHome != null) { paneFavoritosPerfilHome.setVisible(true);
+        if (paneFavoritosPerfilHome != null) {
+            paneFavoritosPerfilHome.setVisible(true);
             paneFavoritosPerfilHome.setManaged(true);
         }
     }
 
     public void mostrarPedidosPerfil() {
-
         ocultarSubPanesPerfil();
-
-        if (panePedidosPerfilHome != null) { panePedidosPerfilHome.setVisible(true);
+        if (panePedidosPerfilHome != null) {
+            panePedidosPerfilHome.setVisible(true);
             panePedidosPerfilHome.setManaged(true);
         }
-        
-        tbtnPedidosPerfilHome.setSelected(true);
+        if (tbtnPedidosPerfilHome != null) tbtnPedidosPerfilHome.setSelected(true);
     }
 
     public void mostrarMiCuentaPerfil() {
-
         ocultarSubPanesPerfil();
-
-        if (paneMiCuentaPerfilHome != null) { paneMiCuentaPerfilHome.setVisible(true);
+        if (paneMiCuentaPerfilHome != null) {
+            paneMiCuentaPerfilHome.setVisible(true);
             paneMiCuentaPerfilHome.setManaged(true);
         }
-        
-        tbtnMiCuentaPerfilHome.setSelected(true);
+        if (tbtnMiCuentaPerfilHome != null) tbtnMiCuentaPerfilHome.setSelected(true);
     }
 
     private void ocultarPanesAdmin() {
-
         Pane[] panes = {
-
-            panePerfilAdmin,
-            paneEstadisticasAdmin,
-            paneRestaStockAdmin,
-            paneInventarioAdmin,
-            panePedidosAdmin,
-            paneIngrePersoAdmin,
-            paneEditarInfoAdmin,
-            paneRestaNuevo_Producto
+            panePerfilAdmin, paneEstadisticasAdmin, paneRestaStockAdmin,
+            paneInventarioAdmin, panePedidosAdmin, paneIngrePersoAdmin,
+            paneEditarInfoAdmin, paneRestaNuevo_Producto
         };
-
-        for (Pane pane : panes) {
-
-            if (pane != null) {
-                pane.setVisible(false);
-                pane.setManaged(false);
+        for (Pane p : panes) {
+            if (p != null) {
+                p.setVisible(false);
+                p.setManaged(false);
             }
         }
     }
     
     private void mostrarPaneAdmin(Pane paneMostrar) {
-
         ocultarPanesAdmin();
-
         if (paneMostrar != null) {
             paneMostrar.setVisible(true);
             paneMostrar.setManaged(true);
         }
     }
     
-    @FXML private void irPerfilAdmin() {
-        mostrarPaneAdmin(panePerfilAdmin);
-    }
-
-    @FXML private void irEstadisticasAdmin() {
-        mostrarPaneAdmin(paneEstadisticasAdmin);
-    }
-
-    @FXML private void irRestaStockAdmin() {
-        mostrarPaneAdmin(paneRestaStockAdmin);
-    }
-
-    @FXML private void irInventarioAdmin() {
-        mostrarPaneAdmin(paneInventarioAdmin);
-    }
-
-    @FXML private void irPedidosAdmin() {
-        mostrarPaneAdmin(panePedidosAdmin);
-    }
-
-    @FXML private void irIngresoPersonalAdmin() {
-        mostrarPaneAdmin(paneIngrePersoAdmin);
-    }
-
-    @FXML private void irEditarInfoAdmin() {
-        mostrarPaneAdmin(paneEditarInfoAdmin);
-    }
+    @FXML private void irPerfilAdmin() { mostrarPaneAdmin(panePerfilAdmin); }
+    @FXML private void irEstadisticasAdmin() { mostrarPaneAdmin(paneEstadisticasAdmin); }
+    @FXML private void irRestaStockAdmin() { mostrarPaneAdmin(paneRestaStockAdmin); }
+    @FXML private void irInventarioAdmin() { mostrarPaneAdmin(paneInventarioAdmin); }
+    @FXML private void irPedidosAdmin() { mostrarPaneAdmin(panePedidosAdmin); }
+    @FXML private void irIngresoPersonalAdmin() { mostrarPaneAdmin(paneIngrePersoAdmin); }
+    @FXML private void irEditarInfoAdmin() { mostrarPaneAdmin(paneEditarInfoAdmin); }
     
     private void ocultarPasosNuevoProducto() {
-
-        Pane[] pasos = {
-
-            paneRestaNuevo_ProductoPaso1,
-            paneRestaNuevo_ProductoPaso2,
-            paneRestaNuevo_ProductoPaso3
-        };
-
-        for (Pane paso : pasos) {
-
-            if (paso != null) {
-                paso.setVisible(false);
-                paso.setManaged(false);
+        Pane[] pasos = {paneRestaNuevo_ProductoPaso1, paneRestaNuevo_ProductoPaso2, paneRestaNuevo_ProductoPaso3};
+        for (Pane p : pasos) {
+            if (p != null) {
+                p.setVisible(false);
+                p.setManaged(false);
             }
         }
     }
     
     private void mostrarPasoNuevoProducto(Pane pasoMostrar) {
-
         ocultarPasosNuevoProducto();
-
         if (pasoMostrar != null) {
             pasoMostrar.setVisible(true);
             pasoMostrar.setManaged(true);
@@ -661,18 +629,111 @@ public class Controladora {
         mostrarPasoNuevoProducto(paneRestaNuevo_ProductoPaso1);
     }
 
-    @FXML private void irPaso2NuevoProducto() {
-        mostrarPasoNuevoProducto(paneRestaNuevo_ProductoPaso2);
+    @FXML private void irPaso2NuevoProducto() { mostrarPasoNuevoProducto(paneRestaNuevo_ProductoPaso2); }
+    @FXML private void irPaso3NuevoProducto() { mostrarPasoNuevoProducto(paneRestaNuevo_ProductoPaso3); }
+    
+    //Navegacion Basica Teclado
+    
+    @FXML private void irAContraseñaLogin(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            txtPasswordLogin.requestFocus();
+        }
     }
+    
+    @FXML private void irANombreRegistro(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            txtNombreRegistro.requestFocus();
+        }   
+    }
+    
+    @FXML private void irAApellidoRegistro(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            txtApellidoRegistro.requestFocus();
+        }
+    }
+    
+    @FXML private void irADocumentoRegistro(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            txtIdClienteRegistro.requestFocus();
+        }
+    }
+    
+    @FXML private void irAFechaRegistro(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            txtFechaRegistro.requestFocus();
+        }
+    }
+        
+    @FXML private void irADepartamentoRegistro(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            comboDepartamento.show();
+            comboDepartamento.requestFocus();
+        }
+    }
+   
+    @FXML private void irAContraseñaRegistro(KeyEvent event) {
+        if (event.getCode() == KeyCode.ENTER) {
+            txtPasswordRegistro.requestFocus();
+        }
+    }
+    
+    //Carga datos usuario
+    private void cargarDatosUsuario() {
+        if (usuarioActual == null) return;
 
-    @FXML private void irPaso3NuevoProducto() {
-        mostrarPasoNuevoProducto(paneRestaNuevo_ProductoPaso3);
+        if (lblUsuarioHome != null) {
+            lblUsuarioHome.setText(usuarioActual.getNombre());
+        }
+        
+        if (lblDireccionHome != null) {
+            lblDireccionHome.setText(usuarioActual.getDireccion());
+        }
+        
+        if (lblNombrePerfilHome != null) {
+            lblNombrePerfilHome.setText(usuarioActual.getNombreCompleto());
+        }
+
+        if (lblCorreoPerfilHome != null) {
+            lblCorreoPerfilHome.setText(usuarioActual.getCorreo());
+        }
+
+        if (lblAbreNombrePerfilHome != null) {
+            lblAbreNombrePerfilHome.setText(usuarioActual.getIniciales());
+        }
+        
+        if (lblRolPerfilHome != null) {
+            lblRolPerfilHome.setText(usuarioActual.getRol().name());
+        }
+        
+        if (lblNombre2PerfilHome != null) {
+            lblNombre2PerfilHome.setText(usuarioActual.getNombre());
+        }
+        
+        if (lblCorreo2PerfilHome != null) {
+            lblCorreo2PerfilHome.setText(usuarioActual.getCorreo());
+        }
+        
+        if (lblCelularPerfilHome != null) {
+            lblCelularPerfilHome.setText(usuarioActual.getTelefono());
+        }
+
+        if (lblDocumentoPerfilHome != null) {
+            lblDocumentoPerfilHome.setText(usuarioActual.getId());
+        }
+
+        if (lblFechaPerfilHome != null) {
+            lblFechaPerfilHome.setText(usuarioActual.getFechaNacimiento());
+        }
+        
+        if (lblDireccionPerfilHome != null) {
+            lblDireccionPerfilHome.setText(usuarioActual.getDireccion());
+        }
     }
     
     //Registro Primer Paso
     @FXML
     private void irPaso2(ActionEvent event) {
-
+        
         String correo   = txtCorreoRegistro.getText().trim();
         String nombre   = txtNombreRegistro.getText().trim();
         String apellido = txtApellidoRegistro.getText().trim();
@@ -689,24 +750,22 @@ public class Controladora {
             return;
         }
         
-        // VALIDACIONES DE NUMERO DE IDENTIFICACION
         // Formato del ID (solo numeros, entre 7 y 12 digitos)
         if (!validarFormatoId(id)) {
             JOptionPane.showMessageDialog(null, 
-                "Error: El numero de identificacion no es valido.\nDebe contener solo numeros (entre 6 y 12 digitos).\nEjemplo: 1003345643", 
+                "Error: El numero de identificacion no es valido.\nDebe contener solo numeros (entre 7 y 12 digitos).\nEjemplo: 1003345643", 
                 "Identificacion invalida", JOptionPane.WARNING_MESSAGE);
             return;
         }
         
         // Verificar que el ID no este duplicado
-        if (existeIdCliente(id)) {
+        if (existeIdUsuario(id)) {
             JOptionPane.showMessageDialog(null, 
                 "Error: Ya existe una cuenta registrada con este numero de identificacion.\nPor favor verifique sus datos o inicie sesion.", 
                 "Identificacion ya registrada", JOptionPane.WARNING_MESSAGE);
             return;
         }
         
-        // VALIDACIONES DE CORREO
         // Forma del correo 
         if (!validarCorreoCompleto(correo)) {
             JOptionPane.showMessageDialog(null, 
@@ -716,36 +775,29 @@ public class Controladora {
         }
         
         // Validacion de correo duplicado
-        if (existeCorreoCliente(correo)) {
+        if (existeCorreoUsuario(correo)) {
             JOptionPane.showMessageDialog(null, 
-                "Error: Ya existe una cuenta registrada con este correo electronico.\nPor favor use otro correo o inicie sesion.", 
+                "Error: Ya existe una cuenta registrada con este correo electrónico.\nPor favor use otro correo o inicie sesión.", 
                 "Correo ya en uso", JOptionPane.WARNING_MESSAGE);
             return;
         }
         
-        if (existeCorreoAdmin(correo)) {
-            JOptionPane.showMessageDialog(null, 
-                "Error: Ya existe una cuenta registrada con este correo electronico.\nPor favor use otro correo o inicie sesion.", 
-                "Correo ya en uso", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
-        
-        // VALIDACIONES INFORMACION BASICA
-        
-        if (!validarNombre(nombre)) {
+        // Validacion de nombre y apellido
+        if (!validarNombreOApellido(nombre)) {
             JOptionPane.showMessageDialog(null, 
                 "Error: El nombre solo puede contener letras y espacios.", 
-                "Nombre invalido", JOptionPane.WARNING_MESSAGE);
+                "Nombre inválido", JOptionPane.WARNING_MESSAGE);
             return;
         }
         
-        if (!validarApellido(apellido)) {
+        if (!validarNombreOApellido(apellido)) {
             JOptionPane.showMessageDialog(null, 
                 "Error: El apellido solo puede contener letras y espacios.", 
-                "Apellido invalido", JOptionPane.WARNING_MESSAGE);
+                "Apellido inválido", JOptionPane.WARNING_MESSAGE);
             return;
         }
         
+        //Validacion de fecha
         if (!fecha.isEmpty() && !fecha.matches("^\\d{2}/\\d{2}/\\d{4}$")) {
             JOptionPane.showMessageDialog(null,
                 "Formato de fecha inválido. Use dd/MM/YYYY\nEjemplo: 15/03/2000",
@@ -756,6 +808,8 @@ public class Controladora {
         if (paneRegistro     != null) paneRegistro.setVisible(false);
         if (paneRegistroFinal!= null) paneRegistroFinal.setVisible(true);
         if (paneLogin        != null) paneLogin.setVisible(false);
+        
+        txtCelularRegistro.requestFocus();
 
     }
     
@@ -783,7 +837,7 @@ public class Controladora {
             return;
         }
 
-        String celularLimpio = celular.replaceAll("[\\s-]", "");
+        String celularLimpio = celular.replaceAll("[^0-9]", "");
         if (!validarFormatoTelefono(celularLimpio)) {
             JOptionPane.showMessageDialog(null, 
                 "Error: El formato del celular no es valido.\nDebe contener entre 7 y 15 digitos.\nEjemplo: +573001234567", 
@@ -805,29 +859,23 @@ public class Controladora {
             return;
         }
 
-        String digitos = celularLimpio.replaceAll("[^0-9]", "");
-        String idCliente = digitos.length() >= 7 ? digitos.substring(Math.max(0, digitos.length() - 10)) : digitos;
-        if (existeIdCliente(idCliente)) idCliente = idCliente + (System.currentTimeMillis() % 100);
+        Usuario nuevo = new Usuario(
+            correo.toLowerCase(),
+            nombre, 
+            apellido,
+            id,
+            fechaNacimiento,
+            celularLimpio,   
+            departamento,
+            ciudad,
+            direccion,
+            contraseña
+        ); 
 
-        String nombreCompleto    = nombre + " " + apellido;
-        String direccionCompleta = direccion + ", " + ciudad + ", " + departamento;
-
-        clienteBoom nuevo = new clienteBoom(
-                correo.toLowerCase(),
-                nombre, 
-                apellido,
-                idCliente, 
-                fechaNacimiento,
-                celularLimpio,   
-                departamento,
-                ciudad,
-                direccion,
-                contraseña); 
-
-        if (agregarCliente(nuevo)) {
-            if (guardarClienteEnArchivo(nuevo)) {
+        if (agregarUsuario(nuevo)) {
+            if (guardarUsuarioEnArchivo(nuevo)) {
                 JOptionPane.showMessageDialog(null,
-                    "¡Registro exitoso!\nBienvenido " + nombreCompleto + ".\nAhora puede iniciar sesión.",
+                    "¡Registro exitoso!\nBienvenido " + nuevo.getNombreCompleto() + ".\nAhora puede iniciar sesión.",
                     "Registro completado", JOptionPane.INFORMATION_MESSAGE);
                 limpiarCamposRegistro();
                 if (paneRegistroFinal!= null) paneRegistroFinal.setVisible(false);
@@ -836,7 +884,7 @@ public class Controladora {
                 if (txtCorreoLogin   != null) txtCorreoLogin.setText(correo.toLowerCase());
                 if (txtPasswordLogin != null) txtPasswordLogin.requestFocus();
             } else {
-                eliminarCliente(contadorClientes - 1);
+                eliminarUsuario(contadorUsuarios - 1);
                 JOptionPane.showMessageDialog(null, "Error al guardar el registro. Intente de nuevo.",
                     "Error de sistema", JOptionPane.ERROR_MESSAGE);
             }
@@ -850,7 +898,7 @@ public class Controladora {
     
     // Agregar un producto
     public boolean agregarProducto(producto producto) {
-        if (contadorProductos < mx) {
+        if (contadorProductos < MAX_PRODUCTOS) {
             listaProductos[contadorProductos] = producto;
             contadorProductos++;
             return true;
@@ -931,73 +979,92 @@ public class Controladora {
         return contadorProductos;
     }
 
-    //Metodos correspondientes a la lista de clientes
+    //Metodos correspondientes a la lista de usuarios
     
-    // Agregar un cliente
-    public boolean agregarCliente(clienteBoom cliente) {
-        if (contadorClientes < mx) {
-            listaClientes[contadorClientes] = cliente;
-            contadorClientes++;
+    // Agregar un usuario
+    public boolean agregarUsuario(Usuario usuario) {
+        if (contadorUsuarios < MAX_USUARIOS) {
+            listaUsuarios[contadorUsuarios++] = usuario;
             return true;
         }
         return false;
     }
     
-    // Eliminar un clienteBoom por su posicion 
-   public boolean eliminarCliente(int pos) {
-        if (pos >= 0 && pos < contadorClientes) {
-            for (int i = pos; i < contadorClientes - 1; i++) {
-                listaClientes[i] = listaClientes[i + 1];
+    // Eliminar un usuario por su posicion 
+   public boolean eliminarUsuario(int pos) {
+        if (pos >= 0 && pos < contadorUsuarios) {
+            for (int i = pos; i < contadorUsuarios - 1; i++) {
+                listaUsuarios[i] = listaUsuarios[i + 1];
             }
-            listaClientes[contadorClientes - 1] = null;
-            contadorClientes--;
+            listaUsuarios[--contadorUsuarios] = null;
             return true;
         }
         return false;
     }
     
-    // Eliminar un clienteBoom por su ID
-    public boolean eliminarClientePorId(String IdCliente) {
-        for (int i = 0; i < contadorClientes; i++) {
-            if (listaClientes[i].getIdCliente().equals(IdCliente)) {
-                return eliminarCliente(i);
+    // Eliminar un usuario por su ID
+    public boolean eliminarUsuarioPorId(String id) {
+        for (int i = 0; i < contadorUsuarios; i++) {
+            if (listaUsuarios[i].getId().equals(id)) {
+                return eliminarUsuario(i);
             }
         }
         return false;
     }
     
-    // Obtener un clienteBoom por su posicion
-    public clienteBoom obtenerCliente(int pos) {
-        if (pos >= 0 && pos < contadorClientes) {
-            return listaClientes[pos];
+    // Obtener un usuario por su posicion
+    public Usuario obtenerUsuario(int pos) {
+        if (pos >= 0 && pos < contadorUsuarios) {
+            return listaUsuarios[pos];
         }
         return null;
     }
     
-    // Buscar un clienteBoom por su ID
-    public clienteBoom buscarClientePorId(String IdCliente) {
-        for (int i = 0; i < contadorClientes; i++) {
-            if (listaClientes[i].getIdCliente().equals(IdCliente)) {
-                return listaClientes[i];
+    // Buscar un usuario por su ID
+    public Usuario buscarUsuarioPorId(String id) {
+        for (int i = 0; i < contadorUsuarios; i++) {
+            if (listaUsuarios[i].getId().equals(id)) {
+                return listaUsuarios[i];
             }
         }
         return null;
     }
     
-    // Buscar posicion de un clienteBoom por su ID
-    public int buscarIndiceClientePorId(String IdCliente) {
-        for (int i = 0; i < contadorClientes; i++) {
-            if (listaClientes[i].getIdCliente().equals(IdCliente)) {
+    // Buscar posicion de un usuario por su ID
+    public int buscarIndiceUsuarioPorId(String id) {
+        for (int i = 0; i < contadorUsuarios; i++) {
+            if (listaUsuarios[i].getId().equals(id)) {
                 return i;
             }
         }
         return -1;
     }
     
-    // Verificar si un correo de clienteBoom ya existe
-    public boolean existeCorreoCliente(String correoCliente) {
-        for (int i = 0; i < contadorClientes; i++) {
-            if (listaClientes[i].getCorreoCliente().equalsIgnoreCase(correoCliente)) {
+    // Verificar si un correo de usuario ya existe
+    public boolean existeCorreoUsuario(String correo) {
+        for (int i = 0; i < contadorUsuarios; i++) {
+            if (listaUsuarios[i].getCorreo().equalsIgnoreCase(correo)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    //Verificar si esxite id de usuario
+    public boolean existeIdUsuario(String id) {
+        for (int i = 0; i < contadorUsuarios; i++) {
+            if (listaUsuarios[i].getId().equals(id)) {
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    //Verificar si existe usuario por nombre
+    public boolean existeUsuarioPorNombre(String nombreUsuario) {
+        for (int i = 0; i < contadorUsuarios; i++) {
+            if (listaUsuarios[i].getNombre().equalsIgnoreCase(nombreUsuario) ||
+                listaUsuarios[i].getId().equalsIgnoreCase(nombreUsuario)) {
                 return true;
             }
         }
@@ -1005,113 +1072,44 @@ public class Controladora {
     }
     
     // Obtener la cantidad de clientes
+    public int getCantidadUsuarios() {
+        return contadorUsuarios;
+    }
+    
+    //Obtenemos usuarios filtrados por rol
+    public Usuario[] obtenerUsuariosPorRol(Usuario.Rol rol) {
+        Usuario[] resultados = new Usuario[contadorUsuarios];
+        int contador = 0;
+        for (int i = 0; i < contadorUsuarios; i++) {
+            if (listaUsuarios[i].getRol() == rol) {
+                resultados[contador++] = listaUsuarios[i];
+            }
+        }
+        Usuario[] filtrados = new Usuario[contador];
+        System.arraycopy(resultados, 0, filtrados, 0, contador);
+        return filtrados;
+    }
+    
     public int getCantidadClientes() {
-        return contadorClientes;
+        return obtenerUsuariosPorRol(Usuario.Rol.CLIENTE).length;
     }
     
-    //Metodos para la lista de admins
-    // Agregar un admin al array
-    public boolean agregarAdmin(admin admin) {
-        if (contadorAdmins < mx) {
-            listaAdmins[contadorAdmins] = admin;
-            contadorAdmins++;
-            return true;
-        }
-        return false;
-    }
-    
-    // Eliminar un admin por su posicion
-    public boolean eliminarAdmin(int pos) {
-        if (pos >= 0 && pos < contadorAdmins) {
-            for (int i = pos; i < contadorAdmins - 1; i++) {
-                listaAdmins[i] = listaAdmins[i + 1];
-            }
-            listaAdmins[contadorAdmins - 1] = null;
-            contadorAdmins--;
-            return true;
-        }
-        return false;
-    }
-    
-    // Eliminar un admin por su ID
-    public boolean eliminarAdminPorId(String IdAdmin) {
-        for (int i = 0; i < contadorAdmins; i++) {
-            if (listaAdmins[i].getIdAdmin().equals(IdAdmin)) {
-                return eliminarAdmin(i);
-            }
-        }
-        return false;
-    }
-    
-    // Obtener un admin por su posicion
-    public admin obtenerAdmin(int pos) {
-        if (pos >= 0 && pos < contadorAdmins) {
-            return listaAdmins[pos];
-        }
-        return null;
-    }
-    
-    // Buscar un admin por su ID
-    public admin buscarAdminPorId(String IdAdmin) {
-        for (int i = 0; i < contadorAdmins; i++) {
-            if (listaAdmins[i].getIdAdmin().equals(IdAdmin)) {
-                return listaAdmins[i];
-            }
-        }
-        return null;
-    }
-    
-    // Buscar posicion de un admin por su ID
-    public int buscarIndiceAdminPorId(String IdAdmin) {
-        for (int i = 0; i < contadorAdmins; i++) {
-            if (listaAdmins[i].getIdAdmin().equals(IdAdmin)) {
-                return i;
-            }
-        }
-        return -1;
-    }
-    
-    // Verificar si un correo de admin ya existe
-    public boolean existeCorreoAdmin(String correoAdmin) {
-        for (int i = 0; i < contadorAdmins; i++) {
-            if (listaAdmins[i].getCorreoAdmin().equals(correoAdmin)) {
-                return true;
-            }
-        }
-        return false;
-    }
-    
-    // Obtener la cantidad de admins
     public int getCantidadAdmins() {
-        return contadorAdmins;
+        return obtenerUsuariosPorRol(Usuario.Rol.ADMIN).length;
     }
 
-    //Metodos auxiliares y validaciones aleatorias
+    //Metodos auxiliares y validaciones 
     
-    // Obtener el tamaño máximo
     public int getTamanoMaximo() {
-        return mx;
+        return MAX_USUARIOS;
     }
     
     // Limpiar todos los datos
     public void limpiarTodo() {
-        listaProductos = new producto[mx];
-        listaClientes = new clienteBoom[mx];
-        listaAdmins = new admin[mx];
+        listaProductos = new producto[MAX_PRODUCTOS];
+        listaUsuarios = new Usuario[MAX_USUARIOS];
         contadorProductos = 0;
-        contadorClientes = 0;
-        contadorAdmins = 0;
-    }
-    
-    // Verificar si existe un usuario con ese nombre
-    public boolean existeUsuarioCliente(String nombreUsuario) {
-        for (int i = 0; i < contadorClientes; i++) {
-            if (listaClientes[i].getNombreCliente().equalsIgnoreCase(nombreUsuario) ||
-                listaClientes[i].getIdCliente().equalsIgnoreCase(nombreUsuario)) {
-                return true;
-            }
-        }
-        return false;
+        contadorUsuarios = 0;
     }
     
     private boolean validarFormatoTelefono(String telefono) {
@@ -1123,14 +1121,8 @@ public class Controladora {
         return ID_PATTERN.matcher(id).matches();
     }
     
-    // Verificar si el ID ya existe
-    public boolean existeIdCliente(String idCliente) {
-        for (int i = 0; i < contadorClientes; i++) {
-            if (listaClientes[i].getIdCliente().equals(idCliente)) {
-                return true;
-            }
-        }
-        return false;
+    private boolean validarNombreOApellido(String texto) {
+        return NOMBRE_PATTERN.matcher(texto).matches();
     }
     
     // Validar formato de correo
@@ -1138,182 +1130,83 @@ public class Controladora {
         
     correo = correo.trim().toLowerCase();
 
-    if (correo.length() < 6 || correo.length() > 254) {
-        return false;
-    }
+        if (correo.length() < 6 || correo.length() > 254) return false;
+        if (!EMAIL_PATTERN.matcher(correo).matches()) return false;
+        if (correo.contains(" ")) return false;
+        if (correo.chars().filter(c -> c == '@').count() != 1) return false;
 
-    if (!EMAIL_PATTERN.matcher(correo).matches()) {
-        return false;
-    }
+        String[] partes = correo.split("@");
+        if (partes.length != 2) return false;
 
-    if (correo.contains(" ")) {
-        return false;
-    }
+        String usuario = partes[0];
+        String dominio = partes[1];
 
-    if (correo.chars().filter(c -> c == '@').count() != 1) {
-        return false;
-    }
-
-    String[] partes = correo.split("@");
-
-    if (partes.length != 2) {
-        return false;
-    }
-
-    String usuario = partes[0];
-    String dominio = partes[1];
-
-    // Usuario inválido
-    if (usuario.startsWith(".") ||
-        usuario.endsWith(".") ||
-        usuario.startsWith("_") ||
-        usuario.endsWith("_") ||
-        usuario.startsWith("-") ||
-        usuario.endsWith("-")) {
-
-        return false;
-    }
-
-    if (dominio.startsWith("-") ||
-        dominio.endsWith("-") ||
-        dominio.startsWith(".") ||
-        dominio.endsWith(".")) {
-
-        return false;
-    }
-
-    String[] niveles = dominio.split("\\.");
-
-    for (String nivel : niveles) {
-
-        if (nivel.isEmpty()) {
+        // Validar usuario
+        if (usuario.startsWith(".") || usuario.endsWith(".") ||
+            usuario.startsWith("_") || usuario.endsWith("_") ||
+            usuario.startsWith("-") || usuario.endsWith("-")) {
             return false;
         }
 
-        if (nivel.length() > 63) {
+        // Validar dominio
+        if (dominio.startsWith("-") || dominio.endsWith("-") ||
+            dominio.startsWith(".") || dominio.endsWith(".")) {
             return false;
         }
 
-        if (nivel.startsWith("-") ||
-            nivel.endsWith("-")) {
-
-            return false;
+        String[] niveles = dominio.split("\\.");
+        for (String nivel : niveles) {
+            if (nivel.isEmpty() || nivel.length() > 63 ||
+                nivel.startsWith("-") || nivel.endsWith("-")) {
+                return false;
+            }
         }
-    }
 
-    String tld = niveles[niveles.length - 1];
+        String tld = niveles[niveles.length - 1];
+        if (tld.length() < 2 || tld.length() > 63) return false;
 
-    if (tld.length() < 2 || tld.length() > 63) {
+        // Verificar dominio permitido
+        for (String d : DOMINIOS_VALIDOS) {
+            if (dominio.equalsIgnoreCase(d)) {
+                return true;
+            }
+        }
         return false;
     }
-
-    boolean dominioPermitido = false;
-
-    for (String d : DOMINIOS_VALIDOS) {
-
-        if (dominio.equalsIgnoreCase(d)) {
-            dominioPermitido = true;
-            break;
-        }
-    }
-
-    return dominioPermitido;
-}
- 
-    private boolean validarNombre(String nombre) {
-        return nombre.matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ'\\s]+$");
-    }
     
-    private boolean validarApellido(String nombre) {
-        return nombre.matches("^[a-zA-ZáéíóúÁÉÍÓÚñÑüÜ'\\s]+$");
-    } 
+    //Persistencia archivo usuarios
     
-    
-    //Persistencia archivo clientes
-    private boolean guardarClienteEnArchivo(clienteBoom c) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(CLIENTES_FILE, true))) {
-            // Formato: correo;nombre;apellido;idCliente;fechaNacimiento;celular;departamento;ciudad;direccion;contrasena (10 campos)
-            String linea = c.getCorreoCliente() + ";" + 
-                          c.getNombreCliente() + ";" +
-                          c.getApellidoCliente() + ";" +
-                          c.getIdCliente() + ";" +
-                          c.getFechaCliente() + ";" +
-                          c.getCelularCliente() + ";" + 
-                          c.getDepartamentoCliente() + ";" + 
-                          c.getCiudadCliente() + ";" + 
-                          c.getDireccionCliente() + ";" + 
-                          c.getContraseñaCliente();
-            writer.write(linea);
+    private boolean guardarUsuarioEnArchivo(Usuario u) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(USUARIOS_FILE, true))) {
+            writer.write(u.toArchivoLinea());
             writer.newLine();
             return true;
         } catch (IOException e) {
-            System.err.println("Error al guardar cliente en archivo: " + e.getMessage());
+            System.err.println("Error al guardar usuario en archivo: " + e.getMessage());
             return false;
         }
     }
     
-     private void cargarClientesDesdeArchivo() {
-        File archivo = new File(CLIENTES_FILE);
+    private void cargarUsuariosDesdeArchivo() {
+        File archivo = new File(USUARIOS_FILE);
         if (!archivo.exists()) {
-            System.out.println("Archivo de clientes no existe. Se creara al registrar el primer cliente.");
+            System.out.println("Archivo de usuarios no existe. Se creará al registrar el primer usuario.");
             return;
         }
         
-        try (BufferedReader reader = new BufferedReader(new FileReader(CLIENTES_FILE))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(USUARIOS_FILE))) {
             String linea;
             while ((linea = reader.readLine()) != null) {
                 if (linea.trim().isEmpty()) continue;
                 
-                String[] datos = linea.split(";");
-                
-                // Verificar si tiene 10 campos (formato nuevo con IdCliente)
-                if (datos.length >= 10) {
-                    clienteBoom c = new clienteBoom(
-                        datos[0].trim(),  
-                        datos[1].trim(), 
-                        datos[2].trim(),  
-                        datos[3].trim(),  
-                        datos[4].trim(),  
-                        datos[5].trim(),   
-                        datos[6].trim(),  
-                        datos[7].trim(),  
-                        datos[8].trim(),  
-                        datos[9].trim()  
-                    );
-                    
-                    if (!existeCorreoCliente(c.getCorreoCliente())) {
-                        if (contadorClientes < mx) {
-                            listaClientes[contadorClientes] = c;
-                            contadorClientes++;
-                        }
-                    }
-                }
-                // Compatibilidad con formato antiguo de 5 campos (sin IdCliente separado)
-                else if (datos.length == 10) {
-                    clienteBoom c = new clienteBoom(
-                        datos[0].trim(),  
-                        datos[1].trim(), 
-                        datos[2].trim(),  
-                        datos[3].trim(),  
-                        datos[4].trim(),  
-                        datos[5].trim(),   
-                        datos[6].trim(),  
-                        datos[7].trim(),  
-                        datos[8].trim(),  
-                        datos[9].trim()  
-                    );
-                    
-                    if (!existeCorreoCliente(c.getCorreoCliente())) {
-                        if (contadorClientes < mx) {
-                            listaClientes[contadorClientes] = c;
-                            contadorClientes++;
-                        }
-                    }
+                Usuario u = Usuario.fromArchivoLinea(linea);
+                if (u != null && !existeCorreoUsuario(u.getCorreo()) && contadorUsuarios < MAX_USUARIOS) {
+                    listaUsuarios[contadorUsuarios++] = u;
                 }
             }
-            System.out.println("Clientes cargados desde archivo: " + contadorClientes);
+            System.out.println("Usuarios cargados desde archivo: " + contadorUsuarios);
         } catch (IOException e) {
-            System.err.println("Error al cargar clientes desde archivo: " + e.getMessage());
+            System.err.println("Error al cargar usuarios desde archivo: " + e.getMessage());
         }
     }
     
@@ -1334,5 +1227,5 @@ public class Controladora {
         if (txtCorreoLogin != null) txtCorreoLogin.clear();
         if (txtPasswordLogin != null) txtPasswordLogin.clear();
     }
-
+    
 }

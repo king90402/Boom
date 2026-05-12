@@ -132,6 +132,28 @@ public class Usuario {
         return inicial1 + inicial2;
     }
     
+    public String getDireccionCompleta() {
+        StringBuilder direccionCompleta = new StringBuilder();
+        if (direccion != null && !direccion.isEmpty()) {
+            direccionCompleta.append(direccion);
+        }
+        if (ciudad != null && !ciudad.isEmpty()) {
+
+            if (direccionCompleta.length() > 0) {
+                direccionCompleta.append(", ");
+            }
+            direccionCompleta.append(ciudad);
+        }
+        if (departamento != null && !departamento.isEmpty()) {
+
+            if (direccionCompleta.length() > 0) {
+                direccionCompleta.append(", ");
+            }
+            direccionCompleta.append(departamento);
+        }
+        return direccionCompleta.toString();
+    }
+    
     public boolean esAdmin() {
         return rol == Rol.ADMIN;
     }

@@ -7,14 +7,14 @@
 <?import javafx.scene.chart.PieChart?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToggleGroup?>
-<?import javafx.scene.control.MenuButton?>
-<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -30,7 +30,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<StackPane id="mother" minHeight="450.0" minWidth="981.0" prefHeight="450.0" prefWidth="981.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="boom.Controladora">
+<StackPane id="mother" minHeight="450.0" minWidth="981.0" prefHeight="450.0" prefWidth="981.0" stylesheets="@estilosbotones.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="boom.Controladora">
    <children>
       <Pane id="paneLogin" prefHeight="450.0" prefWidth="800.0" style="-fx-background-coor: linear-gradient(to bottom, #f6f5f5, #f6daa7);">
          <children>
@@ -104,160 +104,6 @@
             </Pane>
             <StackPane layoutX="178.0" prefHeight="450.0" prefWidth="804.0">
    <children>
-                  <Pane fx:id="panePerfilAdmin" layoutX="10.0" layoutY="10.0" prefHeight="359.0" prefWidth="660.0" style="-fx-background-color: #f0f0f0; -fx-background-radius: 8;" visible="false">
-                     <children>
-                        <ScrollPane hbarPolicy="NEVER" layoutX="24.0" layoutY="36.0" prefHeight="112.0" prefWidth="743.0" style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-background-radius: 15px; -fx-border-radius: 15px;" vbarPolicy="NEVER">
-                          <content>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="108.0" prefWidth="732.0" style="-fx-background-radius: 15px; -fx-background-color: #111111;" stylesheets="@estilosbotones.css">
-                                 <children>
-                                    <Circle fill="#262110" layoutX="684.0" layoutY="54.0" radius="87.0" stroke="BLACK" strokeType="INSIDE" />
-                                    <Circle fill="#feb900" layoutX="56.0" layoutY="54.0" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
-                                    <Text id="lblAbreviaturaNombreAdmin" layoutX="36.0" layoutY="64.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DD">
-                                       <font>
-                                          <Font name="Inter 18pt SemiBold" size="28.0" />
-                                       </font>
-                                    </Text>
-                                    <Text id="lblNombreAdmin" fill="WHITE" layoutX="106.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Diomedes Diaz">
-                                       <font>
-                                          <Font name="Inter 18pt SemiBold" size="20.0" />
-                                       </font>
-                                    </Text>
-                                    <Text id="lblCorreoAdmin" fill="#aaaaaa" layoutX="106.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="elcaciquedelajunta2013@outlook.es">
-                                       <font>
-                                          <Font name="Inter Regular" size="14.0" />
-                                       </font>
-                                    </Text>
-                                    <Pane layoutX="106.0" layoutY="71.0" prefHeight="27.0" prefWidth="115.0" style="-fx-background-color: #443713; -fx-background-radius: 10px;">
-                                       <children>
-                                          <Text id="lblRolAdmin" fill="#ffb800" layoutX="13.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Admin Principal" textAlignment="CENTER">
-                                             <font>
-                                                <Font name="Inter 18pt SemiBold" size="12.0" />
-                                             </font>
-                                          </Text>
-                                       </children>
-                                    </Pane>
-                                    <Button layoutX="619.0" layoutY="37.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="86.0" style="-fx-background-color: #3b3527; -fx-border-color: #4a4436; -fx-border-radius: 8px; -fx-cursor: hand;" text="Button">
-                                       <graphic>
-                                          <Pane id="btnEditarAdmin" prefHeight="35.0" prefWidth="75.0">
-                                             <children>
-                                                <Region layoutX="6.0" layoutY="10.0" prefHeight="27.0" prefWidth="29.0" style="-fx-border-color: #ffffff;" styleClass="icon-edit" />
-                                                <Text fill="WHITE" layoutX="27.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Editar">
-                                                   <font>
-                                                      <Font name="Inter 18pt SemiBold" size="13.0" />
-                                                   </font>
-                                                </Text>
-                                             </children>
-                                          </Pane>
-                                       </graphic>
-                                    </Button>
-                                 </children>
-                              </AnchorPane>
-                          </content>
-                        </ScrollPane>
-                        <Button id="btLogin" layoutX="636.0" layoutY="318.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="131.0" style="-fx-background-color: #f6cd85; -fx-background-radius: 20; -fx-cursor: hand;" text="Eliminar Cuenta">
-                            <font>
-                                <Font name="Poppins ExtraLight" size="13.0" />
-                            </font>
-                        </Button>
-                    <MenuButton fx:id="menuUsuarioAdmin" layoutX="500.0" layoutY="318.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="131.0" 
-                        style="-fx-background-color: #f6cd85; -fx-background-radius: 20; -fx-cursor: hand;" 
-                        stylesheets="@estilosbotones.css" text="  Cerrar Sesion">
-                            <font>
-                                <Font name="Poppins ExtraLight" size="13.0" />
-                            </font>
-                                <items>
-                            <MenuItem mnemonicParsing="false" onAction="#cerrarSesionAdmin" text="Confirmar Cierre" />
-                        </items>
-                    </MenuButton>
-                        <TextFlow layoutX="42.0" layoutY="179.0" prefHeight="51.0" prefWidth="350.0">
-                           <children>
-                              <Text id="lblBienvenido" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombres: ">
-                                 <font>
-                                    <Font name="Poppins SemiBold" size="14.0" />
-                                 </font>
-                              </Text>
-                              <Text id="lblBienvenido" strokeType="OUTSIDE" strokeWidth="0.0" text="Diomedes Diaz">
-                                 <font>
-                                    <Font name="Poppins Regular" size="14.0" />
-                                 </font>
-                              </Text>
-                           </children>
-                        </TextFlow>
-                        <TextFlow layoutX="42.0" layoutY="230.0" prefHeight="51.0" prefWidth="350.0">
-                           <children>
-                              <Text id="lblBienvenido" strokeType="OUTSIDE" strokeWidth="0.0" text="Correo: ">
-                                 <font>
-                                    <Font name="Poppins SemiBold" size="14.0" />
-                                 </font>
-                              </Text>
-                              <Text id="lblBienvenido" strokeType="OUTSIDE" strokeWidth="0.0" text="elcaciquedelajunta2013@outlook.es">
-                                 <font>
-                                    <Font name="Poppins Regular" size="14.0" />
-                                 </font>
-                              </Text>
-                           </children>
-                        </TextFlow>
-                        <TextFlow layoutX="42.0" layoutY="281.0" prefHeight="51.0" prefWidth="350.0">
-                           <children>
-                              <Text id="lblBienvenido" strokeType="OUTSIDE" strokeWidth="0.0" text="Telefono: ">
-                                 <font>
-                                    <Font name="Poppins SemiBold" size="14.0" />
-                                 </font>
-                              </Text>
-                              <Text id="lblBienvenido" strokeType="OUTSIDE" strokeWidth="0.0" text="+57 314 8011595">
-                                 <font>
-                                    <Font name="Poppins Regular" size="14.0" />
-                                 </font>
-                              </Text>
-                           </children>
-                        </TextFlow>
-                        <TextFlow layoutX="42.0" layoutY="332.0" prefHeight="41.0" prefWidth="361.0">
-                           <children>
-                              <Text id="lblBienvenido" strokeType="OUTSIDE" strokeWidth="0.0" text="Direccion: ">
-                                 <font>
-                                    <Font name="Poppins SemiBold" size="14.0" />
-                                 </font>
-                              </Text>
-                              <Text id="lblBienvenido" strokeType="OUTSIDE" strokeWidth="0.0" text="Cl 26 # 5 - 1957 La Junta - La Guajira">
-                                 <font>
-                                    <Font name="Poppins Regular" size="14.0" />
-                                 </font>
-                              </Text>
-                           </children>
-                        </TextFlow>
-                        <TextFlow layoutX="392.0" layoutY="179.0" prefHeight="51.0" prefWidth="350.0">
-                           <children>
-                              <Text id="lblBienvenido" strokeType="OUTSIDE" strokeWidth="0.0" text="Rol: ">
-                                 <font>
-                                    <Font name="Poppins SemiBold" size="14.0" />
-                                 </font>
-                              </Text>
-                              <Text id="lblBienvenido" strokeType="OUTSIDE" strokeWidth="0.0" text=" Admin principal">
-                                 <font>
-                                    <Font name="Poppins Regular" size="14.0" />
-                                 </font>
-                              </Text>
-                           </children>
-                        </TextFlow>
-                        <TextFlow layoutX="392.0" layoutY="230.0" prefHeight="51.0" prefWidth="350.0">
-                           <children>
-                              <Text id="lblBienvenido" strokeType="OUTSIDE" strokeWidth="0.0" text="Numero de personal ingresado:  ">
-                                 <font>
-                                    <Font name="Poppins SemiBold" size="14.0" />
-                                 </font>
-                              </Text>
-                              <Text id="lblBienvenido" strokeType="OUTSIDE" strokeWidth="0.0" text="5">
-                                 <font>
-                                    <Font name="Poppins Regular" size="14.0" />
-                                 </font>
-                              </Text>
-                           </children>
-                        </TextFlow>
-                     </children>
-                     <effect>
-                        <DropShadow height="5.0" offsetX="0.8" offsetY="1.0" radius="2.0" spread="0.1" width="5.0" />
-                     </effect>
-                  </Pane>
                   <Pane id="contenedor1" fx:id="paneEstadisticasAdmin" prefHeight="450.0" prefWidth="693.0" style="-fx-background-color: #ffffff;" visible="false">
                      <children>
                         <Pane layoutX="27.0" layoutY="119.0" prefHeight="73.0" prefWidth="241.0" style="-fx-background-color: #f6f6f6; -fx-background-radius: 8;">
@@ -442,7 +288,7 @@
                         </Pane>
                      </children>
                   </Pane>
-                  <Pane id="contenedor1" fx:id="paneRestaNuevo_Producto" prefHeight="450.0" prefWidth="693.0" style="-fx-background-color: #ffffff;">
+                  <Pane id="contenedor1" fx:id="paneRestaNuevo_Producto" prefHeight="450.0" prefWidth="693.0" style="-fx-background-color: #ffffff;" visible="false">
                      <children>
                         <StackPane layoutX="57.0" layoutY="46.0" prefHeight="359.0" prefWidth="688.0">
                            <children>
@@ -883,6 +729,186 @@
                            </children>
                         </VBox>
                      </children>
+                  </Pane>
+                  <Pane fx:id="panePerfilAdmin" layoutX="10.0" layoutY="10.0" prefHeight="359.0" prefWidth="660.0" style="-fx-background-color: #f0f0f0; -fx-background-radius: 8;">
+                     <children>
+                        <ScrollPane hbarPolicy="NEVER" layoutX="24.0" layoutY="36.0" prefHeight="112.0" prefWidth="743.0" style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-background-radius: 15px; -fx-border-radius: 15px;" vbarPolicy="NEVER">
+                          <content>
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="108.0" prefWidth="732.0" style="-fx-background-radius: 15px; -fx-background-color: #111111;" stylesheets="@estilosbotones.css">
+                                 <children>
+                                    <Circle fill="#262110" layoutX="684.0" layoutY="54.0" radius="87.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Circle fill="#feb900" layoutX="56.0" layoutY="54.0" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                                    <Text id="lblAbreviaturaNombreAdmin" fx:id="lblAbreNombrePerfilAdmin" layoutX="36.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="DD">
+                                       <font>
+                                          <Font name="Inter 18pt SemiBold" size="28.0" />
+                                       </font>
+                                    </Text>
+                                    <Text id="lblNombreAdmin" fx:id="lblNombrePerfilAdmin" fill="WHITE" layoutX="106.0" layoutY="35.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Diomedes Diaz">
+                                       <font>
+                                          <Font name="Inter 18pt SemiBold" size="20.0" />
+                                       </font>
+                                    </Text>
+                                    <Text id="lblCorreoAdmin" fx:id="lblCorreoPerfilAdmin" fill="#aaaaaa" layoutX="106.0" layoutY="57.0" strokeType="OUTSIDE" strokeWidth="0.0" text="elcaciquedelajunta2013@outlook.es">
+                                       <font>
+                                          <Font name="Inter Regular" size="14.0" />
+                                       </font>
+                                    </Text>
+                                    <Pane layoutX="106.0" layoutY="68.0" prefHeight="27.0" prefWidth="115.0" style="-fx-background-color: #443713; -fx-background-radius: 10px;">
+                                       <children>
+                                          <Text id="lblRolAdmin" fx:id="lblRolPerfilAdmin" fill="#ffb800" layoutX="13.0" layoutY="18.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Admin Principal" textAlignment="CENTER">
+                                             <font>
+                                                <Font name="Inter 18pt SemiBold" size="12.0" />
+                                             </font>
+                                          </Text>
+                                       </children>
+                                    </Pane>
+                                    <Button layoutX="619.0" layoutY="37.0" mnemonicParsing="false" prefHeight="36.0" prefWidth="86.0" style="-fx-background-color: #3b3527; -fx-border-color: #4a4436; -fx-border-radius: 8px; -fx-cursor: hand;" text="Button">
+                                       <graphic>
+                                          <Pane id="btnEditarAdmin" prefHeight="35.0" prefWidth="75.0">
+                                             <children>
+                                                <Region layoutX="6.0" layoutY="10.0" prefHeight="27.0" prefWidth="29.0" style="-fx-border-color: #ffffff;" styleClass="icon-edit" />
+                                                <Text fill="WHITE" layoutX="27.0" layoutY="22.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Editar">
+                                                   <font>
+                                                      <Font name="Inter 18pt SemiBold" size="13.0" />
+                                                   </font>
+                                                </Text>
+                                             </children>
+                                          </Pane>
+                                       </graphic>
+                                    </Button>
+                                 </children>
+                              </AnchorPane>
+                          </content>
+                        </ScrollPane>
+                        <Button id="btLogin" layoutX="622.0" layoutY="357.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="131.0" style="-fx-background-color: #f6cd85; -fx-background-radius: 20; -fx-cursor: hand;" text="Eliminar Cuenta">
+                            <font>
+                                <Font name="Poppins ExtraLight" size="13.0" />
+                            </font>
+                        </Button>
+                    <MenuButton fx:id="menuUsuarioAdmin" layoutX="496.0" layoutY="357.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="115.0" style="-fx-background-color: #f6cd85; -fx-background-radius: 20; -fx-cursor: hand;" text="  Cerrar Sesion" textAlignment="CENTER">
+                            <font>
+                                <Font name="Poppins ExtraLight" size="13.0" />
+                            </font>
+                                <items>
+                            <MenuItem mnemonicParsing="false" onAction="#cerrarSesion" text="Confirmar Cierre" />
+                        </items>
+                    </MenuButton>
+                        <TextFlow layoutX="42.0" layoutY="179.0" prefHeight="36.0" prefWidth="350.0">
+                           <children>
+                              <Text id="lblBienvenido" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombres: ">
+                                 <font>
+                                    <Font name="Poppins SemiBold" size="14.0" />
+                                 </font>
+                              </Text>
+                              <Text id="lblBienvenido" fx:id="lblNombre2PerfilAdmin" strokeType="OUTSIDE" strokeWidth="0.0" text="Diomedes Diaz">
+                                 <font>
+                                    <Font name="Poppins Regular" size="14.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </TextFlow>
+                        <TextFlow layoutX="42.0" layoutY="270.0" prefHeight="51.0" prefWidth="350.0">
+                           <children>
+                              <Text id="lblBienvenido" strokeType="OUTSIDE" strokeWidth="0.0" text="Correo: ">
+                                 <font>
+                                    <Font name="Poppins SemiBold" size="14.0" />
+                                 </font>
+                              </Text>
+                              <Text id="lblBienvenido" fx:id="lblCorreo2PerfilAdmin" strokeType="OUTSIDE" strokeWidth="0.0" text="elcaciquedelajunta2013@outlook.es">
+                                 <font>
+                                    <Font name="Poppins Regular" size="14.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </TextFlow>
+                        <TextFlow layoutX="42.0" layoutY="224.0" prefHeight="36.0" prefWidth="350.0">
+                           <children>
+                              <Text id="lblBienvenido" strokeType="OUTSIDE" strokeWidth="0.0" text="Documento: ">
+                                 <font>
+                                    <Font name="Poppins SemiBold" size="14.0" />
+                                 </font>
+                              </Text>
+                              <Text id="lblBienvenido" fx:id="lblDocumentoPerfilAdmin" strokeType="OUTSIDE" strokeWidth="0.0" text="+57 314 8011595">
+                                 <font>
+                                    <Font name="Poppins Regular" size="14.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </TextFlow>
+                        <TextFlow layoutX="392.0" layoutY="270.0" prefHeight="41.0" prefWidth="361.0">
+                           <children>
+                              <Text id="lblBienvenido" strokeType="OUTSIDE" strokeWidth="0.0" text="Direccion: ">
+                                 <font>
+                                    <Font name="Poppins SemiBold" size="14.0" />
+                                 </font>
+                              </Text>
+                              <Text id="lblBienvenido" fx:id="lblDireccionPerfilAdmin" strokeType="OUTSIDE" strokeWidth="0.0" text="Cl 26 # 5 - 1957 La Junta - La Guajira">
+                                 <font>
+                                    <Font name="Poppins Regular" size="14.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </TextFlow>
+                        <TextFlow layoutX="392.0" layoutY="179.0" prefHeight="51.0" prefWidth="350.0">
+                           <children>
+                              <Text id="lblBienvenido" strokeType="OUTSIDE" strokeWidth="0.0" text="Rol: ">
+                                 <font>
+                                    <Font name="Poppins SemiBold" size="14.0" />
+                                 </font>
+                              </Text>
+                              <Text id="lblBienvenido" fx:id="lblRol2PerfilAdmin" strokeType="OUTSIDE" strokeWidth="0.0" text=" Admin principal">
+                                 <font>
+                                    <Font name="Poppins Regular" size="14.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </TextFlow>
+                        <TextFlow layoutX="392.0" layoutY="221.0" prefHeight="36.0" prefWidth="350.0">
+                           <children>
+                              <Text id="lblBienvenido" strokeType="OUTSIDE" strokeWidth="0.0" text="Numero de personal ingresado:  ">
+                                 <font>
+                                    <Font name="Poppins SemiBold" size="14.0" />
+                                 </font>
+                              </Text>
+                              <Text id="lblBienvenido" strokeType="OUTSIDE" strokeWidth="0.0" text="5">
+                                 <font>
+                                    <Font name="Poppins Regular" size="14.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </TextFlow>
+                        <TextFlow layoutX="42.0" layoutY="321.0" prefHeight="36.0" prefWidth="350.0">
+                           <children>
+                              <Text id="lblBienvenido" strokeType="OUTSIDE" strokeWidth="0.0" text="Celular: ">
+                                 <font>
+                                    <Font name="Poppins SemiBold" size="14.0" />
+                                 </font>
+                              </Text>
+                              <Text id="lblBienvenido" fx:id="lblCelularPerfilAdmin" strokeType="OUTSIDE" strokeWidth="0.0" text="+57 314 8011595">
+                                 <font>
+                                    <Font name="Poppins Regular" size="14.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </TextFlow>
+                        <TextFlow layoutX="42.0" layoutY="371.0" prefHeight="36.0" prefWidth="350.0">
+                           <children>
+                              <Text id="lblBienvenido" strokeType="OUTSIDE" strokeWidth="0.0" text="Fecha Nacimiento: ">
+                                 <font>
+                                    <Font name="Poppins SemiBold" size="14.0" />
+                                 </font>
+                              </Text>
+                              <Text id="lblBienvenido" fx:id="lblFechaPerfilAdmin" strokeType="OUTSIDE" strokeWidth="0.0" text="26/05/1957">
+                                 <font>
+                                    <Font name="Poppins Regular" size="14.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </TextFlow>
+                     </children>
+                     <effect>
+                        <DropShadow height="5.0" offsetX="0.8" offsetY="1.0" radius="2.0" spread="0.1" width="5.0" />
+                     </effect>
                   </Pane>
                </children>
             </StackPane>

@@ -1,1 +1,4 @@
+admin@gmail.com;Diomedes;Diaz;26066628;10/06/2000;3002234567;Cesar;Valledupar;Cr 5 # 10 - 20; 123123123;ADMIN
 cliente@gmail.com;Jose;Montes;1067285642;24/05/2006;3024337672;Córdoba;Montelíbano;Cr 40 # 10 - 66;123123123;CLIENTE
+
+cliente2@gmail.com;Juan;Hernandez;1008765456;20/10/2000;3024567892;Bogotá D.C.;Bogotá;Tr 56 # 20 - 50;123123123;CLIENTE

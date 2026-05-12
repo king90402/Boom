@@ -8,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.layout.Pane;
 import javafx.scene.input.MouseEvent;
-import javax.swing.JOptionPane; 
 import javafx.fxml.FXMLLoader; 
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -18,6 +17,8 @@ import java.util.LinkedHashMap;
 import java.util.regex.Pattern;
 import javafx.application.Platform;
 import javafx.scene.Node;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleButton;
@@ -124,6 +125,15 @@ public class Controladora {
     
     @FXML private ToggleGroup BarraUsuario;
     
+    //Barra Home
+    @FXML private ToggleButton tbtnOfertasHome;
+    @FXML private ToggleButton tbtnTecnologiaHome;
+    @FXML private ToggleButton tbtnHogarHome;
+    @FXML private ToggleButton tbtnDeportesHome;
+    @FXML private ToggleButton tbtnModaBellezaHome;
+    
+    @FXML private ToggleGroup MenuHome;
+    
     //Botones Administración
     @FXML private ToggleButton tbtnPerfilAdmin;
     @FXML private ToggleButton tbtnEstadisticasAdmin;
@@ -170,6 +180,20 @@ public class Controladora {
     @FXML private Text lblFechaPerfilHome;
     @FXML private Text lblDireccionPerfilHome;
     
+    @FXML private Text lblUsuarioAdmin;
+    @FXML private Text lblNombrePerfilAdmin;
+    @FXML private Text lblAbreNombrePerfilAdmin;
+    @FXML private Text lblCorreoPerfilAdmin;
+    @FXML private Text lblRolPerfilAdmin;
+    
+    @FXML private Text lblNombre2PerfilAdmin;
+    @FXML private Text lblCorreo2PerfilAdmin;
+    @FXML private Text lblCelularPerfilAdmin;
+    @FXML private Text lblDocumentoPerfilAdmin;
+    @FXML private Text lblFechaPerfilAdmin;
+    @FXML private Text lblDireccionPerfilAdmin;
+    @FXML private Text lblRol2PerfilAdmin;
+    
     
     
     //Constructor
@@ -178,24 +202,6 @@ public class Controladora {
             datosInicializados = true;
             cargarUsuariosDesdeArchivo();
 
-            // Admin por defecto del equipo
-            Usuario adminPrincipal = new Usuario(
-                "admin@gmail.com",           
-                "Diomedes",                 
-                "Diaz",                      
-                "73423212",                 
-                "10/02/2000",            
-                "3148011595",              
-                "Cordoba",                 
-                "Monteria",                 
-                "Cl 26 # 5 - 1957 La junta", 
-                "123123123",                
-                Usuario.Rol.ADMIN            
-            );
-            
-            if (!existeCorreoUsuario(adminPrincipal.getCorreo())) {
-                agregarUsuario(adminPrincipal);
-            }
         }
     }
     
@@ -259,6 +265,13 @@ public class Controladora {
         if (tbtnInventarioAdmin != null) tbtnInventarioAdmin.setToggleGroup(BarraAdmin);
         if (tbtnPedidosAdmin != null) tbtnPedidosAdmin.setToggleGroup(BarraAdmin);
         if (tbtnIngrePersoAdmin != null) tbtnIngrePersoAdmin.setToggleGroup(BarraAdmin);
+        
+        MenuHome = new ToggleGroup();
+        if (tbtnOfertasHome != null) tbtnOfertasHome.setToggleGroup(MenuHome);
+        if (tbtnTecnologiaHome != null) tbtnTecnologiaHome.setToggleGroup(MenuHome);
+        if (tbtnHogarHome != null) tbtnHogarHome.setToggleGroup(MenuHome);
+        if (tbtnDeportesHome != null) tbtnDeportesHome.setToggleGroup(MenuHome);
+        if (tbtnModaBellezaHome != null) tbtnModaBellezaHome.setToggleGroup(MenuHome);
     }
     
     //Autenticación
@@ -278,9 +291,9 @@ public class Controladora {
         
         // Validar campos vacios
         if (user.isEmpty() || contra.isEmpty()) {
-            JOptionPane.showMessageDialog(null, 
+            mostrarAlerta(Alert.AlertType.WARNING, 
                 "Por favor ingrese su correo y contraseña.", 
-                "Campos vacios", JOptionPane.WARNING_MESSAGE);
+                "Campos vacios");
             return;
         }
 
@@ -304,15 +317,18 @@ public class Controladora {
                 return;
             }
         }
-        JOptionPane.showMessageDialog(null, 
+        mostrarAlerta(Alert.AlertType.ERROR, 
             "Usuario o contraseña incorrectos.", 
-            "Error de autenticación", JOptionPane.ERROR_MESSAGE);
+            "Error de autenticación");
     }
     
     private void abrirVistaAdmin(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Vista_Administracion.fxml"));
             Parent root = loader.load();
+            
+            Controladora adminController = loader.getController();
+            adminController.setUsuarioActual(usuarioActual);
             
             Scene scene = new Scene(root);
             Stage stage = new Stage();
@@ -323,7 +339,7 @@ public class Controladora {
             cerrarVentanaActual(event);
             
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error al cargar la vista de administración: " + e.getMessage());
+            mostrarAlerta(Alert.AlertType.ERROR, "Erro", "Error al cargar la vista de administración: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -348,7 +364,7 @@ public class Controladora {
             cerrarVentanaActual(event);
             
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error al cargar la vista principal: " + e.getMessage());
+            mostrarAlerta(Alert.AlertType.ERROR, "Error", "Error al cargar la vista principal: " + e.getMessage());
             e.printStackTrace();
         }
     }
@@ -578,6 +594,8 @@ public class Controladora {
     //Carga datos usuario
     private void cargarDatosUsuario() {
         if (usuarioActual == null) return;
+        
+        //Home
 
         if (lblUsuarioHome != null) {
             lblUsuarioHome.setText(usuarioActual.getNombre());
@@ -624,7 +642,57 @@ public class Controladora {
         }
         
         if (lblDireccionPerfilHome != null) {
-            lblDireccionPerfilHome.setText(usuarioActual.getDireccion());
+            lblDireccionPerfilHome.setText(usuarioActual.getDireccionCompleta());
+        }
+        
+        //Administradora
+        
+        if (lblUsuarioAdmin != null) {
+            lblUsuarioAdmin.setText(usuarioActual.getNombre());
+        }
+        
+        if (lblNombrePerfilAdmin != null) {
+            lblNombrePerfilAdmin.setText(usuarioActual.getNombreCompleto());
+        }
+
+        if (lblCorreoPerfilAdmin != null) {
+            lblCorreoPerfilAdmin.setText(usuarioActual.getCorreo());
+        }
+
+        if (lblAbreNombrePerfilAdmin != null) {
+            lblAbreNombrePerfilAdmin.setText(usuarioActual.getIniciales());
+        }
+        
+        if (lblRolPerfilAdmin != null) {
+            lblRolPerfilAdmin.setText(usuarioActual.getRol().name());
+        }
+        
+        if (lblNombre2PerfilAdmin != null) {
+            lblNombre2PerfilAdmin.setText(usuarioActual.getNombreCompleto());
+        }
+        
+        if (lblCorreo2PerfilAdmin != null) {
+            lblCorreo2PerfilAdmin.setText(usuarioActual.getCorreo());
+        }
+        
+        if (lblCelularPerfilAdmin != null) {
+            lblCelularPerfilAdmin.setText(usuarioActual.getTelefono());
+        }
+
+        if (lblDocumentoPerfilAdmin != null) {
+            lblDocumentoPerfilAdmin.setText(usuarioActual.getId());
+        }
+
+        if (lblFechaPerfilAdmin != null) {
+            lblFechaPerfilAdmin.setText(usuarioActual.getFechaNacimiento());
+        }
+        
+        if (lblDireccionPerfilAdmin != null) {
+            lblDireccionPerfilAdmin.setText(usuarioActual.getDireccionCompleta());
+        }
+        
+        if (lblRol2PerfilAdmin != null) {
+            lblRol2PerfilAdmin.setText(usuarioActual.getRol().name());
         }
     }
     
@@ -642,66 +710,65 @@ public class Controladora {
        
         // Campos vacios 
         if (correo.isEmpty() || nombre.isEmpty() || apellido.isEmpty() || id.isEmpty() || fecha.isEmpty()) {
-            JOptionPane.showMessageDialog(null, 
+            mostrarAlerta(Alert.AlertType.WARNING, 
                 "Error: Todos los campos son obligatorios para ingresar.\nPor favor complete todos los campos.", 
-                "Campos vacios", JOptionPane.WARNING_MESSAGE);
+                "Campos vacios");
             return;
         }
         
         // Formato del ID (solo numeros, entre 7 y 12 digitos)
         if (!validarFormatoId(id)) {
-            JOptionPane.showMessageDialog(null, 
+            mostrarAlerta(Alert.AlertType.WARNING, 
                 "Error: El numero de identificacion no es valido.\nDebe contener solo numeros (entre 7 y 12 digitos).\nEjemplo: 1003345643", 
-                "Identificacion invalida", JOptionPane.WARNING_MESSAGE);
+                "Identificacion invalida");
             return;
         }
         
         // Verificar que el ID no este duplicado
         if (existeIdUsuario(id)) {
-            JOptionPane.showMessageDialog(null, 
+            mostrarAlerta(Alert.AlertType.WARNING,
                 "Error: Ya existe una cuenta registrada con este numero de identificacion.\nPor favor verifique sus datos o inicie sesion.", 
-                "Identificacion ya registrada", JOptionPane.WARNING_MESSAGE);
+                "Identificacion ya registrada");
             return;
         }
         
         // Forma del correo 
         if (!validarCorreoCompleto(correo)) {
-            JOptionPane.showMessageDialog(null, 
+            mostrarAlerta(Alert.AlertType.WARNING,
                 "Error: El formato del correo electronico no es valido.\nPor favor ingrese un correo valido.\nEjemplo: usuario@gmail.com\n\nNo se permiten:\n- Caracteres especiales consecutivos\n- Dominios invalidos\n- Correos muy cortos o muy largos", 
-                "Correo invalido", JOptionPane.WARNING_MESSAGE);
+                "Correo invalido");
             return;
         }
         
         // Validacion de correo duplicado
         if (existeCorreoUsuario(correo)) {
-            JOptionPane.showMessageDialog(null, 
+            mostrarAlerta(Alert.AlertType.WARNING,
                 "Error: Ya existe una cuenta registrada con este correo electrónico.\nPor favor use otro correo o inicie sesión.", 
-                "Correo ya en uso", JOptionPane.WARNING_MESSAGE);
+                "Correo ya en uso");
             return;
         }
         
         // Validacion de nombre y apellido
         if (!validarNombreOApellido(nombre)) {
-            JOptionPane.showMessageDialog(null, 
+            mostrarAlerta(Alert.AlertType.WARNING,
                 "Error: El nombre solo puede contener letras y espacios.", 
-                "Nombre inválido", JOptionPane.WARNING_MESSAGE);
+                "Nombre inválido");
             return;
         }
         
         if (!validarNombreOApellido(apellido)) {
-            JOptionPane.showMessageDialog(null, 
+            mostrarAlerta(Alert.AlertType.WARNING,
                 "Error: El apellido solo puede contener letras y espacios.", 
-                "Apellido inválido", JOptionPane.WARNING_MESSAGE);
+                "Apellido inválido");
             return;
         }
         
         //Validacion de fecha
-        if (!fecha.isEmpty() && !fecha.matches("^\\d{2}/\\d{2}/\\d{4}$")) {
-            JOptionPane.showMessageDialog(null,
-                "Formato de fecha inválido. Use dd/MM/YYYY\nEjemplo: 15/03/2000",
-                "Fecha inválida", JOptionPane.WARNING_MESSAGE);
-            return;
-        }
+        if (!validarFechaYEdad(fecha)) {
+        mostrarAlerta(Alert.AlertType.WARNING, "Fecha invalida", 
+            "La fecha debe ser real (dd/MM/yyyy) y el usuario debe tener entre 18 y 120 años.");
+        return;
+    }
 
         if (paneRegistro     != null) paneRegistro.setVisible(false);
         if (paneRegistroFinal!= null) paneRegistroFinal.setVisible(true);
@@ -729,31 +796,31 @@ public class Controladora {
 
         if (celular.isEmpty() || departamento == null || ciudad == null ||
             direccion.isEmpty() || contraseña.isEmpty()) {
-            JOptionPane.showMessageDialog(null,
+            mostrarAlerta(Alert.AlertType.WARNING,
                 "Todos los campos son obligatorios.\nSeleccione Departamento y Ciudad.",
-                "Campos vacíos", JOptionPane.WARNING_MESSAGE);
+                "Campos vacíos");
             return;
         }
 
         String celularLimpio = celular.replaceAll("[^0-9]", "");
         if (!validarFormatoTelefono(celularLimpio)) {
-            JOptionPane.showMessageDialog(null, 
+            mostrarAlerta(Alert.AlertType.WARNING, 
                 "Error: El formato del celular no es valido.\nDebe contener entre 7 y 15 digitos.\nEjemplo: +573001234567", 
-                "Celular invalido", JOptionPane.WARNING_MESSAGE);
+                "Celular invalido");
             return;
         }
 
         if (contraseña.length() < MIN_PASSWORD_LENGTH || contraseña.length() > MAX_PASSWORD_LENGTH) {
-            JOptionPane.showMessageDialog(null, 
+            mostrarAlerta(Alert.AlertType.WARNING, 
                 "Error: La contraseña debe tener entre " + MIN_PASSWORD_LENGTH + 
                 " y " + MAX_PASSWORD_LENGTH + " caracteres.", 
-                "Contraseña invalida", JOptionPane.WARNING_MESSAGE);
+                "Contraseña invalida");
             return;
         }
         if (contraseña.contains(" ")) {
-            JOptionPane.showMessageDialog(null, 
+            mostrarAlerta(Alert.AlertType.WARNING, 
                 "Error: La contraseña no puede contener espacios.", 
-                "Contraseña invalida", JOptionPane.WARNING_MESSAGE);
+                "Contraseña invalida");
             return;
         }
 
@@ -772,9 +839,9 @@ public class Controladora {
 
         if (agregarUsuario(nuevo)) {
             if (guardarUsuarioEnArchivo(nuevo)) {
-                JOptionPane.showMessageDialog(null,
+                mostrarAlerta(Alert.AlertType.INFORMATION,
                     "¡Registro exitoso!\nBienvenido " + nuevo.getNombreCompleto() + ".\nAhora puede iniciar sesión.",
-                    "Registro completado", JOptionPane.INFORMATION_MESSAGE);
+                    "Registro completado");
                 limpiarCamposRegistro();
                 if (paneRegistroFinal!= null) paneRegistroFinal.setVisible(false);
                 if (paneRegistro     != null) paneRegistro.setVisible(false);
@@ -783,12 +850,12 @@ public class Controladora {
                 if (txtPasswordLogin != null) txtPasswordLogin.requestFocus();
             } else {
                 eliminarUsuario(contadorUsuarios - 1);
-                JOptionPane.showMessageDialog(null, "Error al guardar el registro. Intente de nuevo.",
-                    "Error de sistema", JOptionPane.ERROR_MESSAGE);
+                mostrarAlerta(Alert.AlertType.ERROR, "Error al guardar el registro. Intente de nuevo.",
+                    "Error de sistema");
             }
         } else {
-            JOptionPane.showMessageDialog(null, "Error: Sistema lleno.",
-                "Error de sistema", JOptionPane.ERROR_MESSAGE);
+            mostrarAlerta(Alert.AlertType.ERROR, "Error: Sistema lleno.",
+                "Error de sistema");
         }
     }
     
@@ -1072,6 +1139,43 @@ public class Controladora {
         return false;
     }
     
+    private boolean validarFechaYEdad(String fecha) {
+        try {
+            if (!fecha.matches("\\d{2}/\\d{2}/\\d{4}")) {
+                return false;
+            }
+            
+            String[] partes = fecha.split("/");
+            int dia = Integer.parseInt(partes[0]);
+            int mes = Integer.parseInt(partes[1]);
+            int año = Integer.parseInt(partes[2]);
+
+            if (mes < 1 || mes > 12 || dia < 1 || año < 1900) {
+                return false;
+            }
+        
+            int[] diasPorMes = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+        
+        boolean esBisiesto = (año % 4 == 0 && año % 100 != 0) || (año % 400 == 0);
+            if (esBisiesto) {
+                diasPorMes[1] = 29;
+            }
+        
+            if (dia > diasPorMes[mes - 1]) {
+                return false;
+            }
+        
+            java.time.LocalDate fechaNacimiento = java.time.LocalDate.of(año, mes, dia);
+            java.time.LocalDate hoy = java.time.LocalDate.now();
+            int edad = java.time.Period.between(fechaNacimiento, hoy).getYears();
+        
+            return edad >= 18 && edad <= 120;
+        
+        } catch (Exception e) {
+            return false;
+        }
+    }
+    
     //Persistencia archivo usuarios
     
     private boolean guardarUsuarioEnArchivo(Usuario u) {
@@ -1098,7 +1202,7 @@ public class Controladora {
                 if (linea.trim().isEmpty()) continue;
                 
                 Usuario u = Usuario.fromArchivoLinea(linea);
-                if (u != null && !existeCorreoUsuario(u.getCorreo()) && contadorUsuarios < MAX_USUARIOS) {
+                if (u != null && !existeCorreoUsuario(u.getCorreo()) && !existeIdUsuario(u.getId()) && contadorUsuarios < MAX_USUARIOS) {
                     listaUsuarios[contadorUsuarios++] = u;
                 }
             }
@@ -1113,6 +1217,7 @@ public class Controladora {
         if (txtCorreoRegistro       !=null) txtCorreoRegistro.clear();
         if (txtNombreRegistro       !=null) txtNombreRegistro.clear();
         if (txtApellidoRegistro     !=null) txtApellidoRegistro.clear();
+        if (txtIdClienteRegistro    !=null) txtIdClienteRegistro.clear();
         if (txtFechaRegistro        !=null) txtFechaRegistro.clear();
         if (txtCelularRegistro      !=null) txtCelularRegistro.clear();
         if (txtDireccionRegistro    !=null) txtDireccionRegistro.clear();
@@ -1126,9 +1231,9 @@ public class Controladora {
         if (txtPasswordLogin != null) txtPasswordLogin.clear();
     }
     
-    // cerrar sesion en Vista_Home
+    // Cerrar sesion 
     @FXML
-    private void cerrarSesionHome(ActionEvent event) {
+    private void cerrarSesion(ActionEvent event) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("Vista_Login-Registro.fxml"));
             Parent root = loader.load();
@@ -1150,42 +1255,32 @@ public class Controladora {
             usuarioActual = null;
             
         } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error al cerrar sesion: " + e.getMessage());
+            mostrarAlerta(Alert.AlertType.ERROR, "Error", "Error al cerrar sesion: " + e.getMessage());
             e.printStackTrace();
         }
     }
     
-    //cerrar sesion en Vista_Administracion
-    @FXML
-    private void cerrarSesionAdmin(ActionEvent event) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("Vista_Login-Registro.fxml"));
-            Parent root = loader.load();
-            
-            Scene scene = new Scene(root);
-            Stage stage = new Stage();
-            stage.setScene(scene);
-            stage.setTitle("Boom - Iniciar Sesion");
-            stage.setMinWidth(800);
-            stage.setMinHeight(450);
-            stage.setResizable(true);
-            stage.centerOnScreen();
-            stage.show();
-            
-            MenuItem menuItem = (MenuItem) event.getSource();
-            Stage currentStage = (Stage) menuItem.getParentPopup().getOwnerWindow();
-            currentStage.close();
-            
-            usuarioActual = null;
-            
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(null, "Error al cerrar sesion: " + e.getMessage());
-            e.printStackTrace();
-        }
+    //Dialogo Emergente Nativo JavaFX
+    private void mostrarAlerta(Alert.AlertType tipo, String titulo, String mensaje) {
+        Alert alerta = new Alert(tipo);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(null);
+        alerta.setContentText(mensaje);
+        alerta.showAndWait();
+    }
+
+    private boolean mostrarConfirmacion(String titulo, String mensaje) {
+        Alert alerta = new Alert(Alert.AlertType.CONFIRMATION);
+        alerta.setTitle(titulo);
+        alerta.setHeaderText(null);
+        alerta.setContentText(mensaje);
+    
+        java.util.Optional<ButtonType> resultado = alerta.showAndWait();
+        return resultado.isPresent() && resultado.get() == ButtonType.OK;
     }
     
     
- //Datos para los ComboBox: Departamento y Ciudad
+    //Datos para los ComboBox: Departamento y Ciudad
     private static final LinkedHashMap<String, String[]> DEPTOS = new LinkedHashMap<>();
     static {
         DEPTOS.put("Amazonas",

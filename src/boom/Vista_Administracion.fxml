@@ -13,6 +13,8 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -28,7 +30,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<StackPane id="mother" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="981.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="boom.Controladora">
+<StackPane id="mother" minHeight="450.0" minWidth="981.0" prefHeight="450.0" prefWidth="981.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="boom.Controladora">
    <children>
       <Pane id="paneLogin" prefHeight="450.0" prefWidth="800.0" style="-fx-background-coor: linear-gradient(to bottom, #f6f5f5, #f6daa7);">
          <children>
@@ -101,7 +103,7 @@
                </children>
             </Pane>
             <StackPane layoutX="178.0" prefHeight="450.0" prefWidth="804.0">
-               <children>
+   <children>
                   <Pane fx:id="panePerfilAdmin" layoutX="10.0" layoutY="10.0" prefHeight="359.0" prefWidth="660.0" style="-fx-background-color: #f0f0f0; -fx-background-radius: 8;" visible="false">
                      <children>
                         <ScrollPane hbarPolicy="NEVER" layoutX="24.0" layoutY="36.0" prefHeight="112.0" prefWidth="743.0" style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-background-radius: 15px; -fx-border-radius: 15px;" vbarPolicy="NEVER">
@@ -153,10 +155,20 @@
                           </content>
                         </ScrollPane>
                         <Button id="btLogin" layoutX="636.0" layoutY="318.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="131.0" style="-fx-background-color: #f6cd85; -fx-background-radius: 20; -fx-cursor: hand;" text="Eliminar Cuenta">
-                           <font>
-                              <Font name="Poppins ExtraLight" size="13.0" />
-                           </font>
+                            <font>
+                                <Font name="Poppins ExtraLight" size="13.0" />
+                            </font>
                         </Button>
+                    <MenuButton fx:id="menuUsuarioAdmin" layoutX="500.0" layoutY="318.0" mnemonicParsing="false" prefHeight="35.0" prefWidth="131.0" 
+                        style="-fx-background-color: #f6cd85; -fx-background-radius: 20; -fx-cursor: hand;" 
+                        stylesheets="@estilosbotones.css" text="  Cerrar Sesion">
+                            <font>
+                                <Font name="Poppins ExtraLight" size="13.0" />
+                            </font>
+                                <items>
+                            <MenuItem mnemonicParsing="false" onAction="#cerrarSesionAdmin" text="Confirmar Cierre" />
+                        </items>
+                    </MenuButton>
                         <TextFlow layoutX="42.0" layoutY="179.0" prefHeight="51.0" prefWidth="350.0">
                            <children>
                               <Text id="lblBienvenido" strokeType="OUTSIDE" strokeWidth="0.0" text="Nombres: ">

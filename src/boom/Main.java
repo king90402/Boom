@@ -24,7 +24,7 @@ import javafx.stage.Stage;
         stage.setTitle("Boom");
         stage.setMinWidth(800);
         stage.setMinHeight(450);
-        stage.setResizable(false);  
+        stage.setResizable(true);
         stage.centerOnScreen();
         stage.show();
     }

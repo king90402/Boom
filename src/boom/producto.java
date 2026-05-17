@@ -8,6 +8,7 @@ package boom;
  *
  * @author EQUIPO
  */
+
 public class producto {
     public String NombreProducto;
     public String IdProducto;
@@ -59,5 +60,10 @@ public class producto {
     public void setMarcaProducto(String MarcaProducto) { this.MarcaProducto = MarcaProducto; }
     public void setCategoriaProducto(String CategoriaProducto) { this.CategoriaProducto = CategoriaProducto; }
     public void setImagenProducto(String imagenProducto) { this.imagenProducto = imagenProducto;}
+    
+    @Override
+    public String toString() {
+        return "ID: " + IdProducto + " | Nombre: " + NombreProducto + " | Precio: " + PrecioProducto + " | Cantidad: " + CantidadProducto;
+    }
     
 }

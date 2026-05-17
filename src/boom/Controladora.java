@@ -28,12 +28,14 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.text.Text;
 import javafx.scene.control.MenuItem;
-
+import java.util.ArrayList;
 /**
  *
  * @author alejo
  */
 public class Controladora {
+    
+    private ListaProductos ListaProductos;
     
     //Tamaño maximo de los arreglos
     private static final int MAX_USUARIOS = 500;
@@ -198,13 +200,15 @@ public class Controladora {
     
     //Constructor
     public Controladora() {
+        ListaProductos = new ListaProductos();
+        
         if (!datosInicializados) {
             datosInicializados = true;
             cargarUsuariosDesdeArchivo();
 
         }
     }
-    
+   
     //Inicializacion 
     @FXML
     public void initialize() {
@@ -859,92 +863,32 @@ public class Controladora {
         }
     }
     
-    //Metodos correspondientes a la lista de productos 
+    //----------------------------------------------------------- Metodos correspondientes a la lista de productos 
     
-    // Agregar un producto
-    public boolean agregarProducto(producto producto) {
-        if (contadorProductos < MAX_PRODUCTOS) {
-            listaProductos[contadorProductos] = producto;
-            contadorProductos++;
-            return true;
-        }
-        return false;
+    // Agregar producto
+    public void agregarProducto(String nombre, int cantidad, double precio, String estado, String marca, String categoria, String imagen) {
+        String id = ListaProductos.obtenerSiguienteId();
+        producto nuevoProducto = new producto(nombre, id, cantidad, precio, estado, marca, categoria, imagen);
+        ListaProductos.insertarAlFinal(nuevoProducto);
     }
     
-    // Eliminar un producto por su posicion 
-    public boolean eliminarProducto(int pos) {
-        if (pos >= 0 && pos < contadorProductos) {
-            for (int i = pos; i < contadorProductos - 1; i++) {
-                listaProductos[i] = listaProductos[i + 1];
-            }
-            listaProductos[contadorProductos - 1] = null;
-            contadorProductos--;
-            return true;
-        }
-        return false;
+    // Eliminar producto
+    public boolean eliminarProducto(String id) {
+        return ListaProductos.eliminarPorId(id);
     }
     
-    // Eliminar un producto por su ID
-    public boolean eliminarProductoPorId(String IdProducto) {
-        for (int i = 0; i < contadorProductos; i++) {
-            if (listaProductos[i].getIdProducto().equals(IdProducto)) {
-                return eliminarProducto(i);
-            }
-        }
-        return false;
+    // Obtener todos los productos
+    public ArrayList<producto> obtenerProductos() {
+        return ListaProductos.obtenerTodos();
     }
     
-    // Buscar un producto por su ID
-    public producto buscarProductoPorId(String IdProducto) {
-        for (int i = 0; i < contadorProductos; i++) {
-            if (listaProductos[i].getIdProducto().equals(IdProducto)) {
-                return listaProductos[i];
-            }
-        }
-        return null;
-    }
-    
-    // Buscar productos por nombre (puede haber varios)
-    public producto[] buscarProductosPorNombre(String NombreProducto) {
-        producto[] resultados = new producto[contadorProductos];
-        int contador = 0;
-        for (int i = 0; i < contadorProductos; i++) {
-            if (listaProductos[i].getNombreProducto().toLowerCase().contains(NombreProducto.toLowerCase())) {
-                resultados[contador] = listaProductos[i];
-                contador++;
-            }
-        }
-        // Crear array del tamaño exacto
-        producto[] resultadosFinales = new producto[contador];
-        for (int i = 0; i < contador; i++) {
-            resultadosFinales[i] = resultados[i];
-        }
-        return resultadosFinales;
-    }
-    
-    // Buscar productos por categoría
-    public producto[] buscarProductosPorCategoria(String CategoriaProducto) {
-        producto[] resultados = new producto[contadorProductos];
-        int contador = 0;
-        for (int i = 0; i < contadorProductos; i++) {
-            if (listaProductos[i].getCategoriaProducto().equalsIgnoreCase(CategoriaProducto)) {
-                resultados[contador] = listaProductos[i];
-                contador++;
-            }
-        }
-        producto[] resultadosFinales = new producto[contador];
-        for (int i = 0; i < contador; i++) {
-            resultadosFinales[i] = resultados[i];
-        }
-        return resultadosFinales;
-    }
-    
-    // Obtener la cantidad de productos
-    public int getCantidadProductos() {
-        return contadorProductos;
+    // Buscar producto
+    public producto buscarProducto(String id) {
+        return ListaProductos.buscarPorId(id);
     }
 
-    //Metodos correspondientes a la lista de usuarios
+
+    //----------------------------------------------------------- Metodos correspondientes a la lista de usuarios
     
     // Agregar un usuario
     public boolean agregarUsuario(Usuario usuario) {
@@ -1063,7 +1007,7 @@ public class Controladora {
         return obtenerUsuariosPorRol(Usuario.Rol.ADMIN).length;
     }
 
-    //Metodos auxiliares y validaciones 
+    //----------------------------------------------------------- Metodos auxiliares y validaciones 
     
     public int getTamanoMaximo() {
         return MAX_USUARIOS;
@@ -1176,7 +1120,7 @@ public class Controladora {
         }
     }
     
-    //Persistencia archivo usuarios
+    //----------------------------------------------------------- Persistencia archivo usuarios
     
     private boolean guardarUsuarioEnArchivo(Usuario u) {
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(USUARIOS_FILE, true))) {
@@ -1260,7 +1204,7 @@ public class Controladora {
         }
     }
     
-    //Dialogo Emergente Nativo JavaFX
+    //----------------------------------------------------------- Dialogo Emergente Nativo JavaFX
     private void mostrarAlerta(Alert.AlertType tipo, String titulo, String mensaje) {
         Alert alerta = new Alert(tipo);
         alerta.setTitle(titulo);
@@ -1280,7 +1224,7 @@ public class Controladora {
     }
     
     
-    //Datos para los ComboBox: Departamento y Ciudad
+    //----------------------------------------------------------- Datos para los ComboBox: Departamento y Ciudad
     private static final LinkedHashMap<String, String[]> DEPTOS = new LinkedHashMap<>();
     static {
         DEPTOS.put("Amazonas",

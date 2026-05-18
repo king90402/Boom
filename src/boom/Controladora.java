@@ -29,6 +29,14 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.text.Text;
 import javafx.scene.control.MenuItem;
 import java.util.ArrayList;
+import javafx.scene.control.CheckBox;
+import javafx.scene.image.ImageView;
+import java.util.Stack;
+import java.util.LinkedList;
+import java.util.Queue;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+import java.io.IOException;
 /**
  *
  * @author alejo
@@ -36,6 +44,7 @@ import java.util.ArrayList;
 public class Controladora {
     
     private ListaProductos ListaProductos;
+    private String rutaImagenSeleccionada = "Preview Image.png";
     
     //Tamaño maximo de los arreglos
     private static final int MAX_USUARIOS = 500;
@@ -156,7 +165,15 @@ public class Controladora {
     @FXML private TextField txtApellidoRegistro;
     @FXML private TextField txtIdClienteRegistro;
     @FXML private TextField txtFechaRegistro;
+    @FXML private TextField txtnombreproductO;
+    @FXML private TextField txtmarca;
+    @FXML private TextField txtDetalles;
+    @FXML private TextField txtprecio;
+    @FXML private TextField txtruta;
 
+    //Imagen view
+    @FXML private ImageView previsualizacion;
+    
     //Registro Paso 2
     @FXML private TextField        txtCelularRegistro;
     @FXML private ComboBox<String> comboDepartamento;
@@ -196,6 +213,9 @@ public class Controladora {
     @FXML private Text lblDireccionPerfilAdmin;
     @FXML private Text lblRol2PerfilAdmin;
     
+    //CheckBoxs
+    @FXML private CheckBox checknuevo;
+    @FXML private CheckBox checkviejo;
     
     
     //Constructor
@@ -872,6 +892,22 @@ public class Controladora {
         ListaProductos.insertarAlFinal(nuevoProducto);
     }
     
+    // Aumentar stock
+    public void gestionarIngresoProducto (String nombre, int cantidad, double precio, String estado, String marca, String categoria, String imagen){
+        producto ProductoExiste = buscarProductoPorNombre(nombre);
+        
+        if (ProductoExiste != null){
+            int nuevoStock = ProductoExiste.getCantidadProducto() + cantidad;
+            ProductoExiste.setCantidadProducto(nuevoStock);
+            ProductoExiste.setPrecioProducto(precio);
+            Alert alerta = new Alert(Alert.AlertType.INFORMATION);
+            alerta.setTitle("Inventario Actualizado");
+            alerta.setHeaderText(null); 
+            alerta.setContentText("Stock actualizado correctamente");
+            alerta.showAndWait();
+        } 
+    }
+    
     // Eliminar producto
     public boolean eliminarProducto(String id) {
         return ListaProductos.eliminarPorId(id);
@@ -882,9 +918,37 @@ public class Controladora {
         return ListaProductos.obtenerTodos();
     }
     
-    // Buscar producto
+    // Buscar producto por id
     public producto buscarProducto(String id) {
         return ListaProductos.buscarPorId(id);
+    }
+    
+    // Buscar producto por nombre
+    private producto buscarProductoPorNombre(String nombre){
+        ArrayList<producto> todos = obtenerProductos();
+        for (producto p : todos){
+            if (p.getNombreProducto().equalsIgnoreCase(nombre)){
+                return p;
+            }
+        }
+        return null;
+    }
+    
+    // Agregar imagenes 
+    @FXML
+    private void seleccionarImagen(ActionEvent event){
+      javafx.stage.FileChooser filechooser = new javafx.stage.FileChooser();
+      filechooser.setTitle("Seleccionar Imagen del Producto");
+      filechooser.getExtensionFilters().addAll(
+      new javafx.stage.FileChooser.ExtensionFilter("Imágenes", "*.png", "*.jpg", "*,jpeg", "*.gif")
+      );
+      
+      File archivo = filechooser.showOpenDialog(((Node)event.getSource()).getScene().getWindow());
+      if(archivo != null){
+          rutaImagenSeleccionada = archivo.toURI().toString();
+          txtruta.setText(archivo.getName());
+          previsualizacion.setImage(new javafx.scene.image.Image(rutaImagenSeleccionada));
+      }
     }
 
 

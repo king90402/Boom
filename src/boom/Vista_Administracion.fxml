@@ -30,7 +30,7 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<StackPane id="mother" minHeight="450.0" minWidth="981.0" prefHeight="450.0" prefWidth="981.0" stylesheets="@estilosbotones.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="boom.Controladora">
+<StackPane id="mother" minHeight="450.0" minWidth="981.0" prefHeight="450.0" prefWidth="981.0" stylesheets="@estilosbotones.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="boom.Controladora">
    <children>
       <Pane id="paneLogin" prefHeight="450.0" prefWidth="800.0" style="-fx-background-coor: linear-gradient(to bottom, #f6f5f5, #f6daa7);">
          <children>
@@ -288,7 +288,7 @@
                         </Pane>
                      </children>
                   </Pane>
-                  <Pane id="contenedor1" fx:id="paneRestaNuevo_Producto" prefHeight="450.0" prefWidth="693.0" style="-fx-background-color: #ffffff;" visible="false">
+                  <Pane id="contenedor1" fx:id="paneRestaNuevo_Producto" prefHeight="450.0" prefWidth="693.0" style="-fx-background-color: #ffffff;">
                      <children>
                         <StackPane layoutX="57.0" layoutY="46.0" prefHeight="359.0" prefWidth="688.0">
                            <children>
@@ -304,7 +304,7 @@
                                           <Font name="Poppins Light Italic" size="12.0" />
                                        </font>
                                     </Button>
-                                    <TextField id="txtUsuario" layoutX="40.0" layoutY="84.0" prefHeight="36.0" prefWidth="589.0" promptText="ej. Samsung Galaxy A35 5gb 125MB WIFI" style="-fx-border-color: #eaebee; -fx-background-color: #ffffff;">
+                                    <TextField id="txtnombreproductO" fx:id="txtnombreproductO" layoutX="40.0" layoutY="84.0" prefHeight="36.0" prefWidth="589.0" promptText="ej. Samsung Galaxy A35 5gb 125MB WIFI" style="-fx-border-color: #eaebee; -fx-background-color: #ffffff;">
                                        <font>
                                           <Font name="Poppins Regular" size="12.0" />
                                        </font>
@@ -314,7 +314,7 @@
                                           <Font name="Poppins Regular" size="14.0" />
                                        </font>
                                     </Text>
-                                    <TextField id="txtUsuario" layoutX="40.0" layoutY="176.0" prefHeight="36.0" prefWidth="589.0" promptText="ej. Samsung, Iphone, Motorola" style="-fx-border-color: #eaebee; -fx-background-color: #ffffff;">
+                                    <TextField id="txtmarca" fx:id="txtmarca" layoutX="40.0" layoutY="176.0" prefHeight="36.0" prefWidth="589.0" promptText="ej. Samsung, Iphone, Motorola" style="-fx-border-color: #eaebee; -fx-background-color: #ffffff;">
                                        <font>
                                           <Font name="Poppins Regular" size="12.0" />
                                        </font>
@@ -324,12 +324,12 @@
                                           <Font name="Poppins Regular" size="14.0" />
                                        </font>
                                     </Text>
-                                    <CheckBox graphicTextGap="10.0" layoutX="40.0" layoutY="263.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="82.0" style="-fx-border-color: transparent; -fx-label-padding: 0 0 0 6; -fx-background-radius: 5px;" stylesheets="@estilo.css" text="Nuevo">
+                                    <CheckBox id="checknuevo" fx:id="checknuevo" graphicTextGap="10.0" layoutX="40.0" layoutY="263.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="82.0" style="-fx-border-color: transparent; -fx-label-padding: 0 0 0 6; -fx-background-radius: 5px;" stylesheets="@estilo.css" text="Nuevo">
                                        <font>
                                           <Font name="Poppins ExtraLight" size="12.0" />
                                        </font>
                                     </CheckBox>
-                                    <CheckBox graphicTextGap="10.0" layoutX="40.0" layoutY="290.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="82.0" style="-fx-border-color: transparent; -fx-label-padding: 0 0 0 6; -fx-background-radius: 5px;" stylesheets="@estilo.css" text="Usado">
+                                    <CheckBox id="checkviejo" fx:id="checkviejo" graphicTextGap="10.0" layoutX="40.0" layoutY="290.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="82.0" style="-fx-border-color: transparent; -fx-label-padding: 0 0 0 6; -fx-background-radius: 5px;" stylesheets="@estilo.css" text="Usado">
                                        <font>
                                           <Font name="Poppins ExtraLight" size="12.0" />
                                        </font>
@@ -356,7 +356,7 @@
                                           <Font name="Poppins Light Italic" size="12.0" />
                                        </font>
                                     </Button>
-                                    <TextField id="txtUsuario" alignment="TOP_LEFT" layoutX="40.0" layoutY="84.0" prefHeight="194.0" prefWidth="609.0" promptText="Escribe aqui todas las especificaciones necesarias..." style="-fx-border-color: #eaebee; -fx-background-color: #ffffff;">
+                                    <TextField id="txtDetalles" fx:id="txtDetalles" alignment="TOP_LEFT" layoutX="40.0" layoutY="84.0" prefHeight="194.0" prefWidth="609.0" promptText="Escribe aqui todas las especificaciones necesarias..." style="-fx-border-color: #eaebee; -fx-background-color: #ffffff;">
                                        <font>
                                           <Font name="Poppins Regular" size="12.0" />
                                        </font>
@@ -386,7 +386,7 @@
                                           <Font name="Poppins Light Italic" size="12.0" />
                                        </font>
                                     </Button>
-                                    <TextField id="txtUsuario" layoutX="293.0" layoutY="130.0" prefHeight="36.0" prefWidth="350.0" promptText="\$0.00" style="-fx-border-color: #eaebee; -fx-background-color: #ffffff;">
+                                    <TextField id="txtprecio" fx:id="txtprecio" layoutX="293.0" layoutY="130.0" prefHeight="36.0" prefWidth="350.0" promptText="\$0.00" style="-fx-border-color: #eaebee; -fx-background-color: #ffffff;">
                                        <font>
                                           <Font name="Poppins Regular" size="12.0" />
                                        </font>
@@ -396,7 +396,7 @@
                                           <Font name="Poppins Regular" size="14.0" />
                                        </font>
                                     </Text>
-                                    <TextField id="txtUsuario" editable="false" layoutX="293.0" layoutY="225.0" prefHeight="36.0" prefWidth="350.0" promptText="No se ha seleccionado ninguna imagen" style="-fx-border-color: #eaebee; -fx-background-color: #ffffff;">
+                                    <TextField id="txtruta" fx:id="txtruta" editable="false" layoutX="293.0" layoutY="225.0" prefHeight="36.0" prefWidth="350.0" promptText="No se ha seleccionado ninguna imagen" style="-fx-border-color: #eaebee; -fx-background-color: #ffffff;">
                                        <font>
                                           <Font name="Poppins Regular" size="12.0" />
                                        </font>
@@ -404,17 +404,17 @@
                                           <Insets left="90.0" />
                                        </padding>
                                     </TextField>
-                                    <Button id="btLogin" layoutX="545.0" layoutY="288.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="98.0" style="-fx-background-color: #f6cd85; -fx-background-radius: 20; -fx-cursor: hand;" text="Finalizar">
+                                    <Button id="btnfinal" fx:id="btnfinal" layoutX="545.0" layoutY="288.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="98.0" style="-fx-background-color: #f6cd85; -fx-background-radius: 20; -fx-cursor: hand;" text="Finalizar">
                                        <font>
                                           <Font name="Poppins ExtraLight" size="12.0" />
                                        </font>
                                     </Button>
-                                    <ImageView fitHeight="277.0" fitWidth="224.0" layoutX="40.0" layoutY="53.0" pickOnBounds="true" preserveRatio="true">
+                                    <ImageView id="previsualizacion" fx:id="previsualizacion" fitHeight="277.0" fitWidth="224.0" layoutX="40.0" layoutY="53.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
                                           <Image url="@Media/Preview%20Image.png" />
                                        </image>
                                     </ImageView>
-                                    <Button layoutX="300.0" layoutY="233.0" mnemonicParsing="false" style="-fx-cursor: hand;" text="Subir archivo">
+                                    <Button id="botonfoto" fx:id="botonfoto" layoutX="300.0" layoutY="233.0" mnemonicParsing="false" style="-fx-cursor: hand;" text="Subir archivo">
                                        <font>
                                           <Font name="Poppins Regular" size="10.0" />
                                        </font>
@@ -730,7 +730,7 @@
                         </VBox>
                      </children>
                   </Pane>
-                  <Pane fx:id="panePerfilAdmin" layoutX="10.0" layoutY="10.0" prefHeight="359.0" prefWidth="660.0" style="-fx-background-color: #f0f0f0; -fx-background-radius: 8;">
+                  <Pane fx:id="panePerfilAdmin" layoutX="10.0" layoutY="10.0" prefHeight="359.0" prefWidth="660.0" style="-fx-background-color: #f0f0f0; -fx-background-radius: 8;" visible="false">
                      <children>
                         <ScrollPane hbarPolicy="NEVER" layoutX="24.0" layoutY="36.0" prefHeight="112.0" prefWidth="743.0" style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-background-radius: 15px; -fx-border-radius: 15px;" vbarPolicy="NEVER">
                           <content>

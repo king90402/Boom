@@ -12,7 +12,7 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<StackPane id="mother" minHeight="450.0" minWidth="800.0" prefHeight="450.0" prefWidth="800.0" stylesheets="@estilosbotones.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="boom.Controladora">
+<StackPane id="mother" minHeight="450.0" minWidth="800.0" prefHeight="450.0" prefWidth="800.0" stylesheets="@../Utilidades/estilos.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Raiz.Controladoras.LoginControladora">
    <children>
       <Pane id="paneLogin" fx:id="paneLogin" prefHeight="450.0" prefWidth="800.0" style="-fx-background-color: linear-gradient(to bottom, #f6f5f5, #f6daa7);">
          <children>
@@ -20,7 +20,7 @@
                <children>
                   <ImageView fitHeight="329.0" fitWidth="344.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@Media/Login.png" />
+                        <Image url="@../Media/Login.png" />
                      </image>
                   </ImageView>
                   <Text layoutX="362.0" layoutY="59.0" strokeType="OUTSIDE" strokeWidth="0.0" text="¡Bienvenido!">
@@ -33,7 +33,7 @@
                         <Font name="Poppins Regular" size="12.0" />
                      </font>
                   </TextField>
-                  <PasswordField id="password" fx:id="txtPasswordLogin" layoutX="362.0" layoutY="149.0" onAction="#iniciarSesion" prefHeight="43.0" prefWidth="302.0" promptText="Ingresa contraseña">
+                  <PasswordField id="password" fx:id="txtPasswordLogin" layoutX="362.0" layoutY="149.0" onAction="#iniciarSesion" prefHeight="43.0" prefWidth="302.0" promptText="Ingresa Contraseña">
                      <font>
                         <Font name="Poppins Regular" size="12.0" />
                      </font>
@@ -66,7 +66,7 @@
                <children>
                   <ImageView id="imageRegistro" fitHeight="403.0" fitWidth="415.0" layoutX="341.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@Media/Registro.png" />
+                        <Image url="@../Media/Registro.png" />
                      </image>
                   </ImageView>
                   <Text id="lblBienvenido" layoutX="24.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Correo electronico: *">
@@ -142,7 +142,7 @@
                <children>
                   <ImageView id="imageRegistro" fitHeight="403.0" fitWidth="415.0" layoutX="341.0" layoutY="1.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@Media/Registro.png" />
+                        <Image url="@../Media/Registro.png" />
                      </image>
                   </ImageView>
                   <Button id="btLogin" layoutX="62.0" layoutY="353.0" mnemonicParsing="false" onAction="#registrarCliente" prefHeight="36.0" prefWidth="233.0" style="-fx-background-color: #f6cd85; -fx-background-radius: 7; -fx-cursor: hand;" text="REGISTRATE">
@@ -160,7 +160,7 @@
                         <Font name="Poppins ExtraLight" size="12.0" />
                      </font>
                   </Text>
-                  <TextField id="txtTelefonoRegistro" fx:id="txtCelularRegistro" layoutX="27.0" layoutY="63.0" onKeyPressed="#irADepartamentoRegistro" prefHeight="38.0" prefWidth="302.0" promptText="+57">
+                  <TextField id="txtCelularRegistro" fx:id="txtCelularRegistro" layoutX="27.0" layoutY="63.0" onKeyPressed="#irADepartamentoRegistro" prefHeight="38.0" prefWidth="302.0" promptText="+57">
                      <font>
                         <Font name="Poppins Regular" size="12.0" />
                      </font>

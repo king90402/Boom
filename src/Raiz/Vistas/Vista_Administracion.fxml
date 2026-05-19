@@ -30,11 +30,11 @@
 <?import javafx.scene.text.Text?>
 <?import javafx.scene.text.TextFlow?>
 
-<StackPane id="mother" minHeight="450.0" minWidth="981.0" prefHeight="450.0" prefWidth="981.0" stylesheets="@estilosbotones.css" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="boom.Controladora">
+<StackPane id="mother" minHeight="450.0" minWidth="981.0" prefHeight="450.0" prefWidth="981.0" stylesheets="@../Utilidades/estilos.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Raiz.Controladoras.AdminControladora">
    <children>
       <Pane id="paneLogin" prefHeight="450.0" prefWidth="800.0" style="-fx-background-coor: linear-gradient(to bottom, #f6f5f5, #f6daa7);">
          <children>
-            <Pane prefHeight="450.0" prefWidth="178.0" style="-fx-background-color: #111111;" stylesheets="@estilosbotones.css">
+            <Pane prefHeight="450.0" prefWidth="178.0" style="-fx-background-color: #111111;">
                <children>
                   <Line endX="100.0" layoutX="101.0" layoutY="67.0" startX="-100.0" stroke="WHITE" />
                   <Button layoutX="-9.0" layoutY="5.0" mnemonicParsing="false" prefHeight="51.0" prefWidth="144.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="B O O M" textFill="WHITE">
@@ -324,12 +324,12 @@
                                           <Font name="Poppins Regular" size="14.0" />
                                        </font>
                                     </Text>
-                                    <CheckBox id="checknuevo" fx:id="checknuevo" graphicTextGap="10.0" layoutX="40.0" layoutY="263.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="82.0" style="-fx-border-color: transparent; -fx-label-padding: 0 0 0 6; -fx-background-radius: 5px;" stylesheets="@estilo.css" text="Nuevo">
+                                    <CheckBox id="checknuevo" fx:id="checknuevo" graphicTextGap="10.0" layoutX="40.0" layoutY="263.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="82.0" style="-fx-border-color: transparent; -fx-label-padding: 0 0 0 6; -fx-background-radius: 5px;" text="Nuevo">
                                        <font>
                                           <Font name="Poppins ExtraLight" size="12.0" />
                                        </font>
                                     </CheckBox>
-                                    <CheckBox id="checkviejo" fx:id="checkviejo" graphicTextGap="10.0" layoutX="40.0" layoutY="290.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="82.0" style="-fx-border-color: transparent; -fx-label-padding: 0 0 0 6; -fx-background-radius: 5px;" stylesheets="@estilo.css" text="Usado">
+                                    <CheckBox id="checkviejo" fx:id="checkviejo" graphicTextGap="10.0" layoutX="40.0" layoutY="290.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="82.0" style="-fx-border-color: transparent; -fx-label-padding: 0 0 0 6; -fx-background-radius: 5px;" text="Usado">
                                        <font>
                                           <Font name="Poppins ExtraLight" size="12.0" />
                                        </font>
@@ -411,7 +411,7 @@
                                     </Button>
                                     <ImageView id="previsualizacion" fx:id="previsualizacion" fitHeight="277.0" fitWidth="224.0" layoutX="40.0" layoutY="53.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@Media/Preview%20Image.png" />
+                                          <Image url="@../Media/Preview%20Image.png" />
                                        </image>
                                     </ImageView>
                                     <Button id="botonfoto" fx:id="botonfoto" layoutX="300.0" layoutY="233.0" mnemonicParsing="false" style="-fx-cursor: hand;" text="Subir archivo">
@@ -435,7 +435,7 @@
                               <Font name="Poppins SemiBold" size="25.0" />
                            </font>
                         </Text>
-                        <TableView layoutX="35.0" layoutY="79.0" prefHeight="296.0" prefWidth="736.0" stylesheets="@estilotabla.css">
+                        <TableView layoutX="35.0" layoutY="79.0" prefHeight="296.0" prefWidth="736.0">
                           <columns>
                               <TableColumn prefWidth="226.0" text="Producto" />
                               <TableColumn prefWidth="135.0" text="Marca" />
@@ -463,7 +463,7 @@
                               <Font name="Poppins SemiBold" size="25.0" />
                            </font>
                         </Text>
-                        <TableView layoutX="35.0" layoutY="79.0" prefHeight="296.0" prefWidth="736.0" stylesheets="@estilotabla.css">
+                        <TableView layoutX="35.0" layoutY="79.0" prefHeight="296.0" prefWidth="736.0">
                            <columns>
                               <TableColumn prefWidth="174.0" text="Cliente" />
                               <TableColumn prefWidth="166.0" text="Productos" />
@@ -637,7 +637,7 @@
                                                 <Font name="Inter 18pt Regular" size="12.0" />
                                              </font>
                                           </Text>
-                                          <TextField id="txtTelefonoPerfil" />
+                                          <TextField id="txtCelularPerfil" />
                                        </children>
                                        <padding>
                                           <Insets left="15.0" top="10.0" />
@@ -734,7 +734,7 @@
                      <children>
                         <ScrollPane hbarPolicy="NEVER" layoutX="24.0" layoutY="36.0" prefHeight="112.0" prefWidth="743.0" style="-fx-background-color: transparent; -fx-border-color: transparent; -fx-background-radius: 15px; -fx-border-radius: 15px;" vbarPolicy="NEVER">
                           <content>
-                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="108.0" prefWidth="732.0" style="-fx-background-radius: 15px; -fx-background-color: #111111;" stylesheets="@estilosbotones.css">
+                            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="108.0" prefWidth="732.0" style="-fx-background-radius: 15px; -fx-background-color: #111111;">
                                  <children>
                                     <Circle fill="#262110" layoutX="684.0" layoutY="54.0" radius="87.0" stroke="BLACK" strokeType="INSIDE" />
                                     <Circle fill="#feb900" layoutX="56.0" layoutY="54.0" radius="36.0" stroke="BLACK" strokeType="INSIDE" />

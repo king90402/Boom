@@ -1,24 +1,31 @@
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
-package boom;
+
+package Raiz;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
 /**
- *
  * @author alejo
  */
 
+// ---------- Clase principal e incial para la carga de la apliaccion 
+
+public class Main extends Application {
     
-    public class Main extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("Vista_Login-Registro.fxml"));
+        
+        // Carga de la Ventana de Registro e Inicio de Sesion
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/Raiz/Vistas/Vista_Login-Registro.fxml"));
         Scene scene = new Scene(loader.load());
+        
+        // Configuracion de la ventana
         stage.setScene(scene);
         stage.setTitle("Boom");
         stage.setMinWidth(800);
@@ -27,9 +34,8 @@ import javafx.stage.Stage;
         stage.centerOnScreen();
         stage.show();
     }
+    
     public static void main(String[] args) {
         launch(args);
     }
 }
-    
-

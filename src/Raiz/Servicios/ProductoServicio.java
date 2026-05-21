@@ -64,8 +64,7 @@ public class ProductoServicio {
                                    String estado, String marca, String categoria, 
                                    String imagen) {
         String id = listaProductos.obtenerSiguienteId();
-        Producto nuevoProducto = new Producto(nombre, id, cantidad, precio, 
-                                               estado, marca, categoria, imagen);
+        Producto nuevoProducto = new Producto(id, nombre, cantidad, precio, estado, marca, categoria, imagen);
         
         listaProductos.insertarAlFinal(nuevoProducto);
         guardarProductoEnArchivo(nuevoProducto);

@@ -12,7 +12,7 @@ import Raiz.Servicios.ProductoServicio;
 import Raiz.Servicios.SesionServicio;
 import Raiz.Servicios.UsuarioServicio;
 import Raiz.Utilidades.AlertaUtil;
-
+import Raiz.Utilidades.HistorialAcciones;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -28,7 +28,16 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.io.File;
 import java.util.ArrayList;
-
+import javafx.scene.layout.VBox;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 /**
  * @author alejo
  */
@@ -42,6 +51,7 @@ public class AdminControladora {
     private final SesionServicio sesionServicio = SesionServicio.getInstancia();
     private final ProductoServicio productoServicio = ProductoServicio.getInstancia();
     private final UsuarioServicio usuarioServicio = UsuarioServicio.getInstancia();
+    private final HistorialAcciones historialAcciones = new HistorialAcciones();
 
     // ----- Atributos de elementos FXML para su uso
     
@@ -101,6 +111,16 @@ public class AdminControladora {
     @FXML private Text lblFechaPerfilAdmin;
     @FXML private Text lblDireccionPerfilAdmin;
     @FXML private Text lblRol2PerfilAdmin;
+    
+    // tabla historial
+    
+    
+    @FXML private TableView<Producto> tablaInventario;
+    @FXML private TableColumn<Producto, String> colNombre;
+    @FXML private TableColumn<Producto, String> colMarca;
+    @FXML private TableColumn<Producto, Integer> colStock;
+    @FXML private TableColumn<Producto, Double> colPrecio;
+    @FXML private TableColumn<Producto, String> colCondicion;
     
     // ----- Inicializacion
     
@@ -171,7 +191,11 @@ public class AdminControladora {
     @FXML private void irPerfilAdmin() { mostrarPaneAdmin(panePerfilAdmin); }
     @FXML private void irEstadisticasAdmin() { mostrarPaneAdmin(paneEstadisticasAdmin); }
     @FXML private void irRestaStockAdmin() { mostrarPaneAdmin(paneRestaStockAdmin); }
-    @FXML private void irInventarioAdmin() { mostrarPaneAdmin(paneInventarioAdmin); }
+    @FXML
+    private void irInventarioAdmin() {
+    mostrarPaneAdmin(paneInventarioAdmin);
+    cargarTablaInventario();
+}
     @FXML private void irPedidosAdmin() { mostrarPaneAdmin(panePedidosAdmin); }
     @FXML private void irIngresoPersonalAdmin() { mostrarPaneAdmin(paneIngrePersoAdmin); }
     @FXML private void irEditarInfoAdmin() { mostrarPaneAdmin(paneEditarInfoAdmin); }
@@ -268,6 +292,9 @@ public class AdminControladora {
         // Agregar producto via servicio
         productoServicio.agregarProducto(nombre, 1, precio, estado, marca, "General", rutaImagenSeleccionada);
         
+        String idGenerado = productoServicio.obtenerSiguienteId();
+        historialAcciones.registrar("AGREGAR", "Producto: " + nombre, idGenerado);
+        
         AlertaUtil.mostrarInformacion("Producto agregado", 
             "El producto " + nombre + " ha sido agregado al inventario.");
         
@@ -307,6 +334,8 @@ public class AdminControladora {
         );
         
         if (resultado) {
+            historialAcciones.registrar("MODIFICAR", "Stock actualizado: " + nombre, nombre);
+            
             AlertaUtil.mostrarInformacion("Inventario actualizado", 
                 "Stock actualizado correctamente.");
         }
@@ -327,6 +356,88 @@ public class AdminControladora {
         rutaImagenSeleccionada = "Preview Image.png";
     }
     
+    private void cargarTablaInventario() {
+    colNombre.setCellValueFactory(new PropertyValueFactory<>("nombreProducto"));
+    colMarca.setCellValueFactory(new PropertyValueFactory<>("marcaProducto"));
+    colStock.setCellValueFactory(new PropertyValueFactory<>("cantidadProducto"));
+    colPrecio.setCellValueFactory(new PropertyValueFactory<>("precioProducto"));
+   colPrecio.setCellFactory(col -> new TableCell<Producto, Double>() {
+    @Override
+    protected void updateItem(Double precio, boolean empty) {
+        super.updateItem(precio, empty);
+        if (empty || precio == null) {
+            setText(null);
+        } else {
+            setText(String.format("$%,.0f", precio));
+        }
+    }
+});
+    colCondicion.setCellValueFactory(new PropertyValueFactory<>("estadoProducto"));
+
+    ObservableList<Producto> productos =
+        FXCollections.observableArrayList(productoServicio.obtenerTodos());
+    tablaInventario.setItems(productos);
+}
+
+@FXML
+private void visualizarProducto() {
+    Producto seleccionado = tablaInventario.getSelectionModel().getSelectedItem();
+    if (seleccionado == null) {
+        AlertaUtil.mostrarAdvertencia("Sin selección", "Selecciona un producto de la tabla.");
+        return;
+    }
+
+    Stage ventana = new Stage();
+    ventana.setTitle("Detalle del Producto");
+    ventana.setResizable(false);
+
+    // Imagen
+    ImageView imagen = new ImageView();
+    imagen.setFitWidth(180);
+    imagen.setFitHeight(180);
+    imagen.setPreserveRatio(true);
+    try {
+        Image img = new Image(seleccionado.getImagenProducto());
+        imagen.setImage(img);
+    } catch (Exception e) {
+        // Si no carga la imagen, queda vacío
+    }
+
+    // Datos
+    VBox datos = new VBox(8);
+    datos.setStyle("-fx-padding: 10;");
+    datos.getChildren().addAll(
+        new Label("Nombre: "    + seleccionado.getNombreProducto()),
+        new Label("Marca: "     + seleccionado.getMarcaProducto()),
+        new Label("Stock: "     + seleccionado.getCantidadProducto()),
+        new Label("Precio: "    + seleccionado.getPrecioFormateado()),
+        new Label("Condición: " + seleccionado.getEstadoProducto())
+    );
+
+    // Layout
+    HBox contenedor = new HBox(20);
+    contenedor.setStyle("-fx-padding: 20; -fx-background-color: #f6f6f6;");
+    contenedor.getChildren().addAll(imagen, datos);
+
+    ventana.setScene(new Scene(contenedor));
+    ventana.show();
+}
+
+@FXML
+private void borrarProducto() {
+    Producto seleccionado = tablaInventario.getSelectionModel().getSelectedItem();
+    if (seleccionado == null) {
+        AlertaUtil.mostrarAdvertencia("Sin selección", "Selecciona un producto de la tabla.");
+        return;
+    }
+    productoServicio.eliminarProducto(seleccionado.getIdProducto());
+    historialAcciones.registrar("ELIMINAR",
+        "Producto: " + seleccionado.getNombreProducto(),
+        seleccionado.getIdProducto());
+    cargarTablaInventario();
+    AlertaUtil.mostrarInformacion("Eliminado",
+        "Producto " + seleccionado.getNombreProducto() + " eliminado.");
+}
     // ----- Estadisticas
     
     public void actualizarEstadisticas() {
@@ -368,4 +479,44 @@ public class AdminControladora {
             e.printStackTrace();
         }
     }
+    
+    
+@FXML
+private void mostrarHistorialAcciones() {
+    ArrayList<String> acciones = historialAcciones.getHistorialLegible();
+
+    Stage ventana = new Stage();
+    ventana.setTitle("Historial de Acciones");
+    ventana.setResizable(false);
+
+    VBox contenedor = new VBox(10);
+    contenedor.setStyle("-fx-padding: 20; -fx-background-color: #f6f6f6;");
+
+    if (acciones.isEmpty()) {
+        Label vacio = new Label("No hay acciones registradas aún.");
+        vacio.setStyle("-fx-font-size: 13px;");
+        contenedor.getChildren().add(vacio);
+    } else {
+        for (String accion : acciones) {
+            Label lblAccion = new Label(accion);
+            lblAccion.setStyle(
+                "-fx-background-color: #ffffff;" +
+                "-fx-padding: 8 12 8 12;" +
+                "-fx-background-radius: 6;" +
+                "-fx-font-size: 12px;" +
+                "-fx-max-width: infinity;"
+            );
+            lblAccion.setMaxWidth(Double.MAX_VALUE);
+            contenedor.getChildren().add(lblAccion);
+        }
+    }
+
+    ScrollPane scroll = new ScrollPane(contenedor);
+    scroll.setFitToWidth(true);
+    scroll.setStyle("-fx-background-color: #f6f6f6;");
+
+    Scene escena = new Scene(scroll, 380, 300);
+    ventana.setScene(escena);
+    ventana.show();
+}
 }

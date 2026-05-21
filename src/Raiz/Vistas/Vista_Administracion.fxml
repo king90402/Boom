@@ -98,6 +98,7 @@
                               <Insets left="15.0" />
                            </padding>
                         </ToggleButton>
+<Button maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#mostrarHistorialAcciones" prefHeight="54.0" prefWidth="178.0" styleClass="menu-btnC" text="Historial" style="-fx-alignment: CENTER_LEFT; -fx-text-fill: white; -fx-background-color: transparent; -fx-cursor: hand;" VBox.vgrow="ALWAYS" /> 
                      </children>
                   </VBox>
                </children>
@@ -404,7 +405,7 @@
                                           <Insets left="90.0" />
                                        </padding>
                                     </TextField>
-                                    <Button id="btnfinal" fx:id="btnfinal" layoutX="545.0" layoutY="288.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="98.0" style="-fx-background-color: #f6cd85; -fx-background-radius: 20; -fx-cursor: hand;" text="Finalizar">
+                                    <Button id="btnfinal" fx:id="btnfinal" layoutX="545.0" layoutY="288.0" mnemonicParsing="false" onAction="#agregarProducto" prefHeight="27.0" prefWidth="98.0" style="-fx-background-color: #f6cd85; -fx-background-radius: 20; -fx-cursor: hand;" text="Finalizar">
                                        <font>
                                           <Font name="Poppins ExtraLight" size="12.0" />
                                        </font>
@@ -414,7 +415,7 @@
                                           <Image url="@../Media/Preview%20Image.png" />
                                        </image>
                                     </ImageView>
-                                    <Button id="botonfoto" fx:id="botonfoto" layoutX="300.0" layoutY="233.0" mnemonicParsing="false" style="-fx-cursor: hand;" text="Subir archivo">
+                                    <Button id="botonfoto" fx:id="botonfoto" layoutX="300.0" layoutY="233.0" mnemonicParsing="false" onAction="#seleccionarImagen" style="-fx-cursor: hand;" text="Subir archivo">
                                        <font>
                                           <Font name="Poppins Regular" size="10.0" />
                                        </font>
@@ -428,34 +429,30 @@
                         </StackPane>
                      </children>
                   </Pane>
-                  <Pane id="contenedor1" fx:id="paneInventarioAdmin" prefHeight="450.0" prefWidth="693.0" style="-fx-background-color: #ffffff;" visible="false">
-                     <children>
-                        <Text id="lblBienvenido" layoutX="35.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Inventario general">
-                           <font>
-                              <Font name="Poppins SemiBold" size="25.0" />
-                           </font>
-                        </Text>
-                        <TableView layoutX="35.0" layoutY="79.0" prefHeight="296.0" prefWidth="736.0">
-                          <columns>
-                              <TableColumn prefWidth="226.0" text="Producto" />
-                              <TableColumn prefWidth="135.0" text="Marca" />
-                            <TableColumn prefWidth="99.0" text="Stock" />
-                            <TableColumn prefWidth="151.0" text="Precio" />
-                              <TableColumn prefWidth="123.0" text="Condición" />
-                          </columns>
-                        </TableView>
-                        <Button id="btLogin" layoutX="673.0" layoutY="395.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="98.0" style="-fx-background-color: #f6cd85; -fx-background-radius: 20;" text="Borrar">
-                           <font>
-                              <Font name="Poppins ExtraLight" size="14.0" />
-                           </font>
-                        </Button>
-                        <Button id="btLogin" layoutX="561.0" layoutY="395.0" mnemonicParsing="false" prefHeight="27.0" prefWidth="98.0" style="-fx-background-color: #f6cd85; -fx-background-radius: 20;" text="Visualizar">
-                           <font>
-                              <Font name="Poppins ExtraLight" size="14.0" />
-                           </font>
-                        </Button>
-                     </children>
-                  </Pane>
+<Pane id="contenedor1" fx:id="paneInventarioAdmin" prefHeight="450.0" prefWidth="693.0" style="-fx-background-color: #ffffff;" visible="false">
+   <children>
+      <Text id="lblBienvenido" layoutX="35.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Inventario general">
+         <font>
+            <Font name="Poppins SemiBold" size="25.0" />
+         </font>
+      </Text>
+      <TableView fx:id="tablaInventario" layoutX="35.0" layoutY="79.0" prefHeight="296.0" prefWidth="736.0">
+        <columns>
+            <TableColumn fx:id="colNombre"    prefWidth="226.0" text="Producto" />
+            <TableColumn fx:id="colMarca"     prefWidth="135.0" text="Marca" />
+            <TableColumn fx:id="colStock"     prefWidth="99.0"  text="Stock" />
+            <TableColumn fx:id="colPrecio"    prefWidth="151.0" text="Precio" />
+            <TableColumn fx:id="colCondicion" prefWidth="123.0" text="Condición" />
+        </columns>
+      </TableView>
+      <Button id="btLogin" layoutX="673.0" layoutY="395.0" mnemonicParsing="false" onAction="#borrarProducto" prefHeight="27.0" prefWidth="98.0" style="-fx-background-color: #f6cd85; -fx-background-radius: 20;" text="Borrar">
+         <font><Font name="Poppins ExtraLight" size="14.0" /></font>
+      </Button>
+      <Button id="btLogin" layoutX="561.0" layoutY="395.0" mnemonicParsing="false" onAction="#visualizarProducto" prefHeight="27.0" prefWidth="98.0" style="-fx-background-color: #f6cd85; -fx-background-radius: 20;" text="Visualizar">
+         <font><Font name="Poppins ExtraLight" size="14.0" /></font>
+      </Button>
+   </children>
+</Pane>
                   <Pane id="contenedor1" fx:id="panePedidosAdmin" prefHeight="450.0" prefWidth="693.0" style="-fx-background-color: #ffffff;" visible="false">
                      <children>
                         <Text id="lblBienvenido" layoutX="35.0" layoutY="58.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Pedidos">

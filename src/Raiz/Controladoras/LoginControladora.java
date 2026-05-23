@@ -60,7 +60,7 @@ public class LoginControladora {
     @FXML private TextField txtIdClienteRegistro;
     @FXML private TextField txtFechaRegistro;
     
-    // Textfields registro paso 1
+    // Textfields registro paso 2
     
     @FXML private TextField txtCelularRegistro;
     @FXML private ComboBox<String> comboDepartamento;

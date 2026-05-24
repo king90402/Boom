@@ -1,5 +1,6 @@
 /*
- * Servicio de Favoritos - Proyecto Boom Sincronizado
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/FavoritosServicio.java to edit this template
  */
 
 package Raiz.Servicios;
@@ -11,15 +12,18 @@ import java.io.*;
 import java.util.ArrayList;
 
 /**
- * @author BoomTeam
- * Gestiona los productos favoritos del usuario
+ * @author alejo
  */
+
+// --------- Clase encargada de gestionar todas las operaciones relacionadas con favoritos
 
 public class FavoritosServicio {
     
     // Singleton
+
     private static FavoritosServicio instancia;
     
+
     public static FavoritosServicio getInstancia() {
         if (instancia == null) {
             synchronized (FavoritosServicio.class) {
@@ -32,9 +36,11 @@ public class FavoritosServicio {
     }
     
     // Constantes
+
     private static final String ARCHIVO_FAVORITOS = "favoritos.txt";
     
     // Atributos
+
     private ListaFavoritos idProductosFavoritos;
     private String idUsuarioActual;
     private HistorialServicio historialServicio;
@@ -50,12 +56,14 @@ public class FavoritosServicio {
     
     // ----- Inicializacion por usuario -----
     
+
     public void cargarFavoritosUsuario(String idUsuario) {
         this.idUsuarioActual = idUsuario;
         this.idProductosFavoritos.vaciar();
         cargarDesdeArchivo();
     }
     
+
     public void reiniciar() {
         this.idProductosFavoritos.vaciar();
         this.idUsuarioActual = null;
@@ -63,6 +71,7 @@ public class FavoritosServicio {
     
     // ----- Operaciones de favoritos -----
     
+
     public boolean agregarFavorito(Producto producto) {
         if (producto == null || idUsuarioActual == null) return false;
         
@@ -75,6 +84,7 @@ public class FavoritosServicio {
         return true;
     }
     
+
     public boolean eliminarFavorito(String idProducto) {
         if (idProducto == null || idUsuarioActual == null) return false;
         if (!esFavorito(idProducto)) return false;
@@ -91,6 +101,7 @@ public class FavoritosServicio {
         return eliminado;
     }
     
+
     public boolean toggleFavorito(Producto producto) {
         if (producto == null) return false;
         
@@ -103,10 +114,12 @@ public class FavoritosServicio {
     
     // ----- Consultas -----
     
+
     public boolean esFavorito(String idProducto) {
         return idProductosFavoritos.contiene(idProducto);
     }
     
+
     public ArrayList<Producto> obtenerFavoritos() {
         ArrayList<Producto> favoritos = new ArrayList<>();
         ArrayList<String> ids = idProductosFavoritos.obtenerTodos();
@@ -118,15 +131,23 @@ public class FavoritosServicio {
         return favoritos;
     }
     
+
     public ArrayList<String> obtenerIdsFavoritos() {
         return idProductosFavoritos.obtenerTodos();
     }
     
-    public int getCantidadFavoritos() { return idProductosFavoritos.getTamaño(); }
-    public boolean tieneFavoritos() { return !idProductosFavoritos.estaVacia(); }
+
+    public int getCantidadFavoritos() {
+        return idProductosFavoritos.getTamaño();
+    }
+
+    public boolean tieneFavoritos() {
+        return !idProductosFavoritos.estaVacia();
+    }
     
     // ----- Persistencia -----
     
+
     private void cargarDesdeArchivo() {
         if (idUsuarioActual == null) return;
         
@@ -154,6 +175,7 @@ public class FavoritosServicio {
         }
     }
     
+
     private void guardarEnArchivo() {
         if (idUsuarioActual == null) return;
         
@@ -193,6 +215,7 @@ public class FavoritosServicio {
         }
     }
     
+
     private String crearLineaFavoritos() {
         ArrayList<String> ids = idProductosFavoritos.obtenerTodos();
         return idUsuarioActual + ";" + String.join(",", ids);
@@ -200,9 +223,10 @@ public class FavoritosServicio {
     
     // ----- Metodos auxiliares -----
     
+
     private void registrarAccion(Historial.TipoAccion tipo, Producto producto) {
-        Historial h = new Historial(tipo, producto.getNombreProducto(), idUsuarioActual,
-                                    producto.getIdProducto(), producto.getPrecioProducto());
-        historialServicio.registrarAccion(h);
+        historialServicio.registrar(tipo, producto.getNombreProducto(),
+                                    idUsuarioActual, producto.getIdProducto(),
+                                    producto.getPrecioProducto());
     }
 }

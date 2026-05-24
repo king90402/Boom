@@ -14,17 +14,19 @@ package Raiz.Modelos;
 public class Producto {
     
     // Atributos
-    
+
     private String idProducto;
     private String nombreProducto;
     private int cantidadProducto;
     private double precioProducto;
     private String estadoProducto;      
+
     private String marcaProducto;
     private String categoriaProducto;   
+
     private String imagenProducto;      
     
-    // Constructor vacio - inicializado con valores por defecto
+    // Constructor vacio
 
     public Producto() {
         this.idProducto = "";
@@ -37,9 +39,10 @@ public class Producto {
         this.imagenProducto = "";
     }
     
-    // Constructor
+    // Constructor completo
 
-    public Producto(String idProducto, String nombreProducto, int cantidadProducto, double precioProducto, String estadoProducto, String marcaProducto, String categoriaProducto, String imagenProducto) {
+    public Producto(String idProducto, String nombreProducto, int cantidadProducto, double precioProducto, 
+                    String estadoProducto, String marcaProducto, String categoriaProducto, String imagenProducto) {
         this.idProducto = idProducto;
         this.nombreProducto = nombreProducto;
         this.cantidadProducto = cantidadProducto;
@@ -118,27 +121,24 @@ public class Producto {
         this.imagenProducto = imagenProducto;
     }
     
-    // ----- Metodos auxiliares
+    // ----- Metodos auxiliares -----
     
-    // Verifica si el producto tiene stock disponible
-    
+
     public boolean tieneStock() {
         return cantidadProducto > 0;
     }
     
-    // Verifica si el producto es nuevo
 
     public boolean esNuevo() {
         return "Nuevo".equalsIgnoreCase(estadoProducto);
     }
     
-    // Retorna el precio del producto con formato de moneda
+
     public String getPrecioFormateado() {
         return String.format("$%,.2f", precioProducto);
     }
     
-    // Reduce el stock si hay el suficiente disponible
-    
+
     public boolean reducirStock(int cantidad) {
         if (cantidadProducto >= cantidad) {
             cantidadProducto -= cantidad;
@@ -147,18 +147,16 @@ public class Producto {
         return false;
     }
     
-    // Aumenta el stock
-    
+
     public void aumentarStock(int cantidad) {
         if (cantidad > 0) {
             cantidadProducto += cantidad;
         }
     }
     
-    // ----- Serializacion de los datos (atributos) de producto 
+    // ----- Serializacion -----
     
-    // COnvierte los datos en linea de texto para su respectivo guardado en archivo productos
-    
+
     public String toArchivoLinea() {
         return String.join(";",
             idProducto != null ? idProducto : "",
@@ -172,8 +170,7 @@ public class Producto {
         );
     }
     
-    // Crea productos a partir de lineas de texto en el archivo productos
-    
+
     public static Producto fromArchivoLinea(String linea) {
         if (linea == null || linea.trim().isEmpty()) {
             return null;
@@ -184,32 +181,31 @@ public class Producto {
         if (datos.length >= 8) {
             try {
                 return new Producto(
-                    datos[1].trim(),                    // nombre
-                    datos[0].trim(),                    // id
-                    Integer.parseInt(datos[2].trim()),  // cantidad
-                    Double.parseDouble(datos[3].trim()),// precio
-                    datos[4].trim(),                    // estado
-                    datos[5].trim(),                    // marca
-                    datos[6].trim(),                    // categoria
-                    datos[7].trim()                     // imagen
+                    datos[0].trim(),
+                    datos[1].trim(),
+                    Integer.parseInt(datos[2].trim()),
+                    Double.parseDouble(datos[3].trim()),
+                    datos[4].trim(),
+                    datos[5].trim(),
+                    datos[6].trim(),
+                    datos[7].trim()
                 );
             } catch (NumberFormatException e) {
                 return null;
             }
         }
-        
         return null;
     }
     
-    // ----- Metodos override
-    
     @Override
+
     public String toString() {
         return "ID: " + idProducto + " | Nombre: " + nombreProducto + 
                " | Precio: " + getPrecioFormateado() + " | Stock: " + cantidadProducto;
     }
     
     @Override
+
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
@@ -218,6 +214,7 @@ public class Producto {
     }
     
     @Override
+
     public int hashCode() {
         return idProducto != null ? idProducto.hashCode() : 0;
     }

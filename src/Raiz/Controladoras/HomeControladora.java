@@ -10,6 +10,7 @@ import Raiz.Modelos.Usuario;
 import Raiz.Servicios.ProductoServicio;
 import Raiz.Servicios.SesionServicio;
 import Raiz.Utilidades.AlertaUtil;
+import Raiz.Utilidades.Ordenamiento;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -20,6 +21,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.util.ArrayList;
@@ -45,11 +47,11 @@ public class HomeControladora {
     @FXML private Pane panePerfilHome;
     @FXML private Pane paneCarritoHome;
     
-    // Subpaneles perfil
+    // Subpaneles perfil (pueden ser VBox en el FXML)
     
-    @FXML private Pane paneFavoritosPerfilHome;
-    @FXML private Pane panePedidosPerfilHome;
-    @FXML private Pane paneMiCuentaPerfilHome;
+    @FXML private VBox paneFavoritosPerfilHome;
+    @FXML private VBox panePedidosPerfilHome;
+    @FXML private VBox paneMiCuentaPerfilHome;
     
     // Toggle buttons
     
@@ -145,12 +147,13 @@ public class HomeControladora {
     
     private void cargarProductos() {
         if (contenedorProductosHome == null) return;
-        
-        contenedorProductosHome.getChildren().clear();
-        ArrayList<Producto> productos = productoService.obtenerTodos();
-        
-        for (Producto p : productos) {
 
+        contenedorProductosHome.getChildren().clear();
+        // Productos ordenados por nombre A→Z usando Ordenamiento.quickSort
+        ArrayList<Producto> productos = productoService.obtenerOrdenadosPorNombre();
+
+        for (Producto p : productos) {
+            // TODO: renderizar tarjeta de producto en contenedorProductosHome
         }
     }
     
@@ -159,18 +162,20 @@ public class HomeControladora {
     @FXML
     private void filtrarPorCategoria(ActionEvent event) {
         if (contenedorProductosHome == null) return;
-        
+
         ToggleButton seleccionado = (ToggleButton) menuHome.getSelectedToggle();
         if (seleccionado == null) {
             cargarProductos(); // Mostrar todos
             return;
         }
-        
+
         String categoria = seleccionado.getText();
-        ArrayList<Producto> filtrados = productoService.buscarPorCategoria(categoria);
-        
+        // Categoria filtrada y ordenada por precio ascendente usando Ordenamiento
+        ArrayList<Producto> filtrados = productoService.buscarPorCategoriaOrdenadoPorPrecio(categoria);
+
         contenedorProductosHome.getChildren().clear();
         for (Producto p : filtrados) {
+            // TODO: renderizar tarjeta de producto en contenedorProductosHome
         }
     }
     
@@ -215,8 +220,8 @@ public class HomeControladora {
     }
     
     private void ocultarSubPanesPerfil() {
-        Pane[] panes = {paneFavoritosPerfilHome, panePedidosPerfilHome, paneMiCuentaPerfilHome};
-        for (Pane p : panes) {
+        VBox[] panes = {paneFavoritosPerfilHome, panePedidosPerfilHome, paneMiCuentaPerfilHome};
+        for (VBox p : panes) {
             if (p != null) {
                 p.setVisible(false);
                 p.setManaged(false);

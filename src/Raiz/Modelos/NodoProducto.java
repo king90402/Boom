@@ -13,13 +13,11 @@ package Raiz.Modelos;
 
 public class NodoProducto {
     
-    // Atributos
-    
+
     private Producto producto;
     private NodoProducto siguiente;
     private NodoProducto anterior;
     
-    // Constructor
 
     public NodoProducto(Producto producto) {
         this.producto = producto;
@@ -28,45 +26,30 @@ public class NodoProducto {
     }
     
     // Getters
-    
+
     public Producto getProducto() {
         return producto;
     }
-    
+
     public NodoProducto getSiguiente() {
         return siguiente;
     }
-    
+
     public NodoProducto getAnterior() {
         return anterior;
     }
     
     // Setters
-    
+
     public void setProducto(Producto producto) {
         this.producto = producto;
     }
-    
+
     public void setSiguiente(NodoProducto siguiente) {
         this.siguiente = siguiente;
     }
-    
+
     public void setAnterior(NodoProducto anterior) {
         this.anterior = anterior;
-    }
-    
-    // Metodos auxiliares
-    
-    public boolean tieneSiguiente() {
-        return siguiente != null;
-    }
-
-    public boolean tieneAnterior() {
-        return anterior != null;
-    }
-    
-    @Override
-    public String toString() {
-        return "Nodo[" + (producto != null ? producto.getNombreProducto() : "null") + "]";
     }
 }

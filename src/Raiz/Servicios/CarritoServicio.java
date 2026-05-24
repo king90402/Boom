@@ -1,5 +1,6 @@
 /*
- * Servicio de Carrito - Proyecto Boom Sincronizado
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/CarritoServicio.java to edit this template
  */
 
 package Raiz.Servicios;
@@ -11,15 +12,18 @@ import Raiz.Modelos.Historial;
 import java.util.ArrayList;
 
 /**
- * @author BoomTeam
- * Gestiona el carrito de compras del usuario actual
+ * @author alejo
  */
+
+// --------- Clase encargada de gestionar todas las operaciones relacionadas con el carrito
 
 public class CarritoServicio {
     
     // Singleton
+
     private static CarritoServicio instancia;
     
+
     public static CarritoServicio getInstancia() {
         if (instancia == null) {
             synchronized (CarritoServicio.class) {
@@ -32,6 +36,7 @@ public class CarritoServicio {
     }
     
     // Atributos
+
     private ListaCarrito items;
     private HistorialServicio historialServicio;
     
@@ -43,10 +48,12 @@ public class CarritoServicio {
     
     // ----- Operaciones del carrito -----
     
+
     public boolean agregarProducto(Producto producto) {
         return agregarProducto(producto, 1);
     }
     
+
     public boolean agregarProducto(Producto producto, int cantidad) {
         if (producto == null || cantidad <= 0) return false;
         if (producto.getCantidadProducto() < cantidad) return false;
@@ -67,6 +74,7 @@ public class CarritoServicio {
         return true;
     }
     
+
     public boolean eliminarProducto(String idProducto) {
         ArrayList<ItemCarrito> listaItems = items.obtenerTodos();
         
@@ -80,6 +88,7 @@ public class CarritoServicio {
         return false;
     }
     
+
     public boolean actualizarCantidad(String idProducto, int nuevaCantidad) {
         if (nuevaCantidad <= 0) return eliminarProducto(idProducto);
         
@@ -94,6 +103,7 @@ public class CarritoServicio {
         return false;
     }
     
+
     public boolean incrementarCantidad(String idProducto) {
         ArrayList<ItemCarrito> listaItems = items.obtenerTodos();
         for (ItemCarrito item : listaItems) {
@@ -108,6 +118,7 @@ public class CarritoServicio {
         return false;
     }
     
+
     public boolean decrementarCantidad(String idProducto) {
         ArrayList<ItemCarrito> listaItems = items.obtenerTodos();
         for (ItemCarrito item : listaItems) {
@@ -123,8 +134,12 @@ public class CarritoServicio {
     
     // ----- Consultas -----
     
-    public ArrayList<ItemCarrito> obtenerItems() { return items.obtenerTodos(); }
+
+    public ArrayList<ItemCarrito> obtenerItems() {
+        return items.obtenerTodos();
+    }
     
+
     public boolean contieneProducto(String idProducto) {
         ArrayList<ItemCarrito> listaItems = items.obtenerTodos();
         for (ItemCarrito item : listaItems) {
@@ -133,6 +148,7 @@ public class CarritoServicio {
         return false;
     }
     
+
     public ItemCarrito obtenerItem(String idProducto) {
         ArrayList<ItemCarrito> listaItems = items.obtenerTodos();
         for (ItemCarrito item : listaItems) {
@@ -141,6 +157,7 @@ public class CarritoServicio {
         return null;
     }
     
+
     public double calcularTotal() {
         double total = 0;
         ArrayList<ItemCarrito> listaItems = items.obtenerTodos();
@@ -150,12 +167,17 @@ public class CarritoServicio {
         return total;
     }
     
+
     public String getTotalFormateado() {
         return String.format("$%,.2f", calcularTotal());
     }
     
-    public int getCantidadItems() { return items.getTamaño(); }
+
+    public int getCantidadItems() {
+        return items.getTamaño();
+    }
     
+
     public int getCantidadTotalProductos() {
         int total = 0;
         ArrayList<ItemCarrito> listaItems = items.obtenerTodos();
@@ -165,8 +187,12 @@ public class CarritoServicio {
         return total;
     }
     
-    public boolean estaVacio() { return items.estaVacia(); }
+
+    public boolean estaVacio() {
+        return items.estaVacia();
+    }
     
+
     public boolean tieneStockSuficiente() {
         ArrayList<ItemCarrito> listaItems = items.obtenerTodos();
         for (ItemCarrito item : listaItems) {
@@ -177,18 +203,20 @@ public class CarritoServicio {
     
     // ----- Operaciones de limpieza -----
     
+
     public void vaciarCarrito() { items.vaciar(); }
+
     public void reiniciar() { items.vaciar(); }
     
     // ----- Metodos auxiliares -----
     
+
     private void registrarAccion(Historial.TipoAccion tipo, Producto producto) {
-        String idUsuario = SesionServicio.getInstancia().getUsuarioActual() != null 
-            ? SesionServicio.getInstancia().getUsuarioActual().getId() 
+        String idUsuario = SesionServicio.getInstancia().getUsuarioActual() != null
+            ? SesionServicio.getInstancia().getUsuarioActual().getId()
             : "anonimo";
-            
-        Historial h = new Historial(tipo, producto.getNombreProducto(), idUsuario,
-                                    producto.getIdProducto(), producto.getPrecioProducto());
-        historialServicio.registrarAccion(h);
+        historialServicio.registrar(tipo, producto.getNombreProducto(),
+                                    idUsuario, producto.getIdProducto(),
+                                    producto.getPrecioProducto());
     }
 }

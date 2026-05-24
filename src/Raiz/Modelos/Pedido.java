@@ -1,5 +1,6 @@
 /*
- * Modelo Pedido - Proyecto Boom Sincronizado
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Pedido.java to edit this template
  */
 
 package Raiz.Modelos;
@@ -9,179 +10,154 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 /**
- * @author BoomTeam
- * Representa un pedido realizado por un usuario
+ * @author alejo
  */
 
+// --------- Clase tipo POJO de pedido con todos sus atributos
+
 public class Pedido {
-    
-    public enum EstadoPedido {
-        PENDIENTE,
-        PROCESANDO,
-        ENVIADO,
-        ENTREGADO,
-        CANCELADO
-    }
-    
+
     // Atributos
+
     private String idPedido;
     private String idUsuario;
     private String nombreUsuario;
     private String direccionEnvio;
     private ArrayList<ItemCarrito> items;
     private double total;
-    private EstadoPedido estado;
-    private LocalDateTime fechaCreacion;
-    private LocalDateTime fechaActualizacion;
-    
+    private LocalDateTime fechaCompra;
     private static int contadorId = 0;
-    
+
     // Constructor
+
     public Pedido(String idUsuario, String nombreUsuario, String direccionEnvio) {
-        this.idPedido = generarId();
-        this.idUsuario = idUsuario;
-        this.nombreUsuario = nombreUsuario;
+        this.idPedido       = generarId();
+        this.idUsuario      = idUsuario;
+        this.nombreUsuario  = nombreUsuario;
         this.direccionEnvio = direccionEnvio;
-        this.items = new ArrayList<>();
-        this.total = 0;
-        this.estado = EstadoPedido.PENDIENTE;
-        this.fechaCreacion = LocalDateTime.now();
-        this.fechaActualizacion = LocalDateTime.now();
+        this.items          = new ArrayList<>();
+        this.total          = 0;
+        this.fechaCompra    = LocalDateTime.now();
     }
-    
+
+
     private String generarId() {
         return "P" + String.format("%08d", ++contadorId);
     }
-    
+
     // Getters
-    public String getIdPedido() { return idPedido; }
-    public String getIdUsuario() { return idUsuario; }
-    public String getNombreUsuario() { return nombreUsuario; }
-    public String getDireccionEnvio() { return direccionEnvio; }
-    public ArrayList<ItemCarrito> getItems() { return items; }
-    public double getTotal() { return total; }
-    public EstadoPedido getEstado() { return estado; }
-    public LocalDateTime getFechaCreacion() { return fechaCreacion; }
-    public LocalDateTime getFechaActualizacion() { return fechaActualizacion; }
-    
-    // Setters
-    public void setEstado(EstadoPedido estado) {
-        this.estado = estado;
-        this.fechaActualizacion = LocalDateTime.now();
+
+    public String getIdPedido() {
+        return idPedido;
     }
-    
-    public void setDireccionEnvio(String direccionEnvio) {
-        this.direccionEnvio = direccionEnvio;
+
+    public String getIdUsuario() {
+        return idUsuario;
     }
-    
-    // Metodos para items
+
+    public String getNombreUsuario() {
+        return nombreUsuario;
+    }
+
+    public String getDireccionEnvio() {
+        return direccionEnvio;
+    }
+
+    public ArrayList<ItemCarrito> getItems() {
+        return items;
+    }
+
+    public double getTotal() {
+        return total;
+    }
+
+    public LocalDateTime getFechaCompra() {
+        return fechaCompra;
+    }
+
+    // Items
+
     public void agregarItem(ItemCarrito item) {
         items.add(item);
-        calcularTotal();
+        recalcularTotal();
     }
-    
+
+
     public void setItems(ArrayList<ItemCarrito> items) {
         this.items = items;
-        calcularTotal();
+        recalcularTotal();
     }
-    
-    private void calcularTotal() {
+
+
+    private void recalcularTotal() {
         total = 0;
-        for (ItemCarrito item : items) {
-            total += item.getSubtotal();
-        }
+        for (ItemCarrito item : items) total += item.getSubtotal();
     }
-    
+
+
     public int getCantidadItems() {
         int cantidad = 0;
-        for (ItemCarrito item : items) {
-            cantidad += item.getCantidad();
-        }
+        for (ItemCarrito item : items) cantidad += item.getCantidad();
         return cantidad;
     }
-    
-    // Metodos auxiliares
+
+    // Formato
+
     public String getTotalFormateado() {
         return String.format("$%,.2f", total);
     }
-    
-    public String getFechaCreacionFormateada() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-        return fechaCreacion.format(formatter);
+
+
+    public String getFechaFormateada() {
+        return fechaCompra.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"));
     }
-    
+
+
     public String getFechaCorta() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-        return fechaCreacion.format(formatter);
+        return fechaCompra.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     }
-    
-    public String getEstadoTexto() {
-        switch (estado) {
-            case PENDIENTE: return "Pendiente";
-            case PROCESANDO: return "Procesando";
-            case ENVIADO: return "Enviado";
-            case ENTREGADO: return "Entregado";
-            case CANCELADO: return "Cancelado";
-            default: return "Desconocido";
-        }
-    }
-    
-    public String getEstadoColor() {
-        switch (estado) {
-            case PENDIENTE: return "#FFA500";
-            case PROCESANDO: return "#3498DB";
-            case ENVIADO: return "#9B59B6";
-            case ENTREGADO: return "#27AE60";
-            case CANCELADO: return "#E74C3C";
-            default: return "#95A5A6";
-        }
-    }
-    
-    public boolean puedeSerCancelado() {
-        return estado == EstadoPedido.PENDIENTE || estado == EstadoPedido.PROCESANDO;
-    }
-    
-    // Serializacion
+
+    // Serialización
+
     public String toArchivoLinea() {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
-        
+        DateTimeFormatter f = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
         StringBuilder itemsStr = new StringBuilder();
         for (int i = 0; i < items.size(); i++) {
             ItemCarrito item = items.get(i);
             itemsStr.append(item.getProducto().getIdProducto())
-                    .append(":")
-                    .append(item.getCantidad());
+                    .append(":").append(item.getCantidad())
+                    .append(":").append(item.getProducto().getPrecioProducto());
             if (i < items.size() - 1) itemsStr.append(",");
         }
-        
         return String.join(";",
             idPedido,
             idUsuario,
-            nombreUsuario != null ? nombreUsuario : "",
-            direccionEnvio != null ? direccionEnvio.replace(";", ",") : "",
+            nombreUsuario   != null ? nombreUsuario.replace(";", ",")  : "",
+            direccionEnvio  != null ? direccionEnvio.replace(";", ",") : "",
             itemsStr.toString(),
             String.valueOf(total),
-            estado.name(),
-            fechaCreacion.format(formatter),
-            fechaActualizacion.format(formatter)
+            fechaCompra.format(f)
         );
     }
-    
+
     @Override
+
     public String toString() {
-        return String.format("Pedido[%s] %s - %s items - %s - %s", 
-            idPedido, nombreUsuario, getCantidadItems(), getTotalFormateado(), getEstadoTexto());
+        return String.format("Pedido[%s] %s - %d productos - %s - %s",
+                idPedido, nombreUsuario, getCantidadItems(),
+                getTotalFormateado(), getFechaFormateada());
     }
-    
+
     @Override
+
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (obj == null || getClass() != obj.getClass()) return false;
-        Pedido pedido = (Pedido) obj;
-        return idPedido != null && idPedido.equals(pedido.idPedido);
+        if (!(obj instanceof Pedido)) return false;
+        return idPedido != null && idPedido.equals(((Pedido) obj).idPedido);
     }
-    
+
     @Override
+
     public int hashCode() {
         return idPedido != null ? idPedido.hashCode() : 0;
     }

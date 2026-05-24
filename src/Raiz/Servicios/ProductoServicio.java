@@ -6,7 +6,9 @@
 package Raiz.Servicios;
 
 import Raiz.Estructuras.ListaProductos;
+import Raiz.Modelos.Historial;
 import Raiz.Modelos.Producto;
+import Raiz.Utilidades.Ordenamiento;
 import java.io.*;
 import java.util.ArrayList;
 
@@ -17,306 +19,329 @@ import java.util.ArrayList;
 // --------- Clase encargada de gestionar todas las operaciones relacionadas con productos
 
 public class ProductoServicio {
-    
+
     // Singleton
-    
+
     private static ProductoServicio instancia;
-    
     public static ProductoServicio getInstancia() {
         if (instancia == null) {
             synchronized (ProductoServicio.class) {
-                if (instancia == null) {
-                    instancia = new ProductoServicio();
-                }
+                if (instancia == null) instancia = new ProductoServicio();
             }
         }
         return instancia;
     }
-    
-    // Constantes
-    
+
+
     private static final String ARCHIVO_PRODUCTOS = "productos.txt";
-    
     public static final String[] CATEGORIAS = {
         "Tecnologia", "Hogar", "Deportes", "Moda y Belleza", "Ofertas"
     };
-    
+
     public static final String[] ESTADOS = {"Nuevo", "Usado"};
-    
-    // Atributos
-    
+
+
     private ListaProductos listaProductos;
-    private boolean datosInicializados;
-    
-    // Constructor privado
-    
+
+
     private ProductoServicio() {
         this.listaProductos = new ListaProductos();
-        this.datosInicializados = false;
-        cargarProductosDesdeArchivo();
+        cargarDesdeArchivo();
     }
-    
-    // ----- Metodos CRUD
-    
-    // Agrega un nuevo producto al inventario - ID Automatico
 
-    public boolean agregarProducto(String nombre, int cantidad, double precio, 
-                                   String estado, String marca, String categoria, 
-                                   String imagen) {
+    // ----------------------------------------------------------------
+    //  CRUD (con historial)
+    // ----------------------------------------------------------------
+
+    /**
+     * Crea un producto nuevo. Solo el admin llega aquí.
+     */
+
+    public boolean agregarProducto(String nombre, int cantidad, double precio,
+                                   String estado, String marca, String categoria,
+                                   String imagen, String idAdmin) {
         String id = listaProductos.obtenerSiguienteId();
-        Producto nuevoProducto = new Producto(id, nombre, cantidad, precio, estado, marca, categoria, imagen);
-        
-        listaProductos.insertarAlFinal(nuevoProducto);
-        guardarProductoEnArchivo(nuevoProducto);
-        
+        Producto p = new Producto(id, nombre, cantidad, precio, estado, marca, categoria, imagen);
+        listaProductos.insertarAlFinal(p);
+        appendAlArchivo(p);
+
+        HistorialServicio.getInstancia().registrar(
+            Historial.TipoAccion.PRODUCTO_CREADO,
+            "Producto creado: " + nombre + " (stock: " + cantidad + ", $" + precio + ")",
+            idAdmin, id, precio
+        );
         return true;
     }
-    
-    // Agrega un producto existente (con ID)
+
+    /** Sobrecarga sin idAdmin (compatibilidad interna). */
+
+    public boolean agregarProducto(String nombre, int cantidad, double precio,
+                                   String estado, String marca, String categoria,
+                                   String imagen) {
+        return agregarProducto(nombre, cantidad, precio, estado, marca, categoria, imagen, "sistema");
+    }
+
 
     public boolean agregarProducto(Producto producto) {
-        if (listaProductos.existeProducto(producto.getIdProducto())) {
-            return false;
-        }
-        
+        if (listaProductos.existeProducto(producto.getIdProducto())) return false;
         listaProductos.insertarAlFinal(producto);
-        guardarProductoEnArchivo(producto);
+        appendAlArchivo(producto);
         return true;
     }
-    
-    // Elimina un producto por ID
+
+    /**
+     * Elimina un producto. Registra en historial.
+     */
+
+    public boolean eliminarProducto(String id, String idAdmin) {
+        Producto p = listaProductos.buscarPorId(id);
+        if (p == null) return false;
+
+        boolean ok = listaProductos.eliminarPorId(id);
+        if (ok) {
+            reescribirArchivo();
+            HistorialServicio.getInstancia().registrar(
+                Historial.TipoAccion.PRODUCTO_ELIMINADO,
+                "Producto eliminado: " + p.getNombreProducto(),
+                idAdmin, id, p.getPrecioProducto()
+            );
+        }
+        return ok;
+    }
+
 
     public boolean eliminarProducto(String id) {
-        boolean eliminado = listaProductos.eliminarPorId(id);
-        if (eliminado) {
-            reescribirArchivoProductos();
-        }
-        return eliminado;
+        return eliminarProducto(id, "admin");
     }
-    
-    // Actualiza un producto existente
+
+    /**
+     * Actualiza los datos de un producto. Registra en historial.
+     */
+
+    public boolean actualizarProducto(String id, Producto nuevosDatos, String idAdmin) {
+        boolean ok = listaProductos.modificarProducto(id, nuevosDatos);
+        if (ok) {
+            reescribirArchivo();
+            HistorialServicio.getInstancia().registrar(
+                Historial.TipoAccion.PRODUCTO_EDITADO,
+                "Producto editado: " + nuevosDatos.getNombreProducto(),
+                idAdmin, id, nuevosDatos.getPrecioProducto()
+            );
+        }
+        return ok;
+    }
+
 
     public boolean actualizarProducto(String id, Producto nuevosDatos) {
-        boolean actualizado = listaProductos.modificarProducto(id, nuevosDatos);
-        if (actualizado) {
-            reescribirArchivoProductos();
-        }
-        return actualizado;
+        return actualizarProducto(id, nuevosDatos, "admin");
     }
-    
-    // ----- Metodos busquedad y filtro
-    
-    // Busca un producto por ID
+
+    // ----------------------------------------------------------------
+    //  GESTIÓN DE STOCK (sincronizada)
+    // ----------------------------------------------------------------
+
+    /**
+     * Reduce el stock de un producto tras una compra.
+     * Llamado por PedidoServicio.realizarCompra().
+     */
+
+    public synchronized boolean reducirStock(String id, int cantidad) {
+        boolean ok = listaProductos.reducirStock(id, cantidad);
+        if (ok) reescribirArchivo();
+        return ok;
+    }
+
+    /**
+     * Aumenta el stock (ingreso de mercancía por parte del admin).
+     */
+
+    public synchronized boolean aumentarStock(String id, int cantidad) {
+        boolean ok = listaProductos.aumentarStock(id, cantidad);
+        if (ok) reescribirArchivo();
+        return ok;
+    }
+
+
+    public boolean actualizarPrecio(String id, double nuevoPrecio) {
+        boolean ok = listaProductos.actualizarPrecio(id, nuevoPrecio);
+        if (ok) reescribirArchivo();
+        return ok;
+    }
+
+    /**
+     * Gestiona el ingreso: si el producto ya existe, suma stock; si no, lo crea.
+     */
+
+    public boolean gestionarIngreso(String nombre, int cantidad, double precio,
+                                    String estado, String marca, String categoria,
+                                    String imagen, String idAdmin) {
+        for (Producto p : listaProductos.obtenerTodos()) {
+            if (p.getNombreProducto().equalsIgnoreCase(nombre)) {
+                p.setCantidadProducto(p.getCantidadProducto() + cantidad);
+                p.setPrecioProducto(precio);
+                reescribirArchivo();
+                HistorialServicio.getInstancia().registrar(
+                    Historial.TipoAccion.PRODUCTO_EDITADO,
+                    "Stock aumentado: " + nombre + " +" + cantidad,
+                    idAdmin, p.getIdProducto(), precio
+                );
+                return true;
+            }
+        }
+        return agregarProducto(nombre, cantidad, precio, estado, marca, categoria, imagen, idAdmin);
+    }
+
+    // ----------------------------------------------------------------
+    //  BÚSQUEDA Y FILTROS
+    // ----------------------------------------------------------------
+
 
     public Producto buscarPorId(String id) {
         return listaProductos.buscarPorId(id);
     }
-    
-    // Busca productos por nombre 
 
-    public ArrayList<Producto> buscarPorNombre(String nombre) {
-        return listaProductos.buscarPorNombre(nombre);
+    public ArrayList<Producto> buscarPorNombre(String n) {
+        return listaProductos.buscarPorNombre(n);
     }
-    
-    // Busca productos por categoria
 
-    public ArrayList<Producto> buscarPorCategoria(String categoria) {
-        return listaProductos.buscarPorCategoria(categoria);
+    public ArrayList<Producto> buscarPorCategoria(String c) {
+        return listaProductos.buscarPorCategoria(c);
     }
-    
-    // Busca productos por marca
-    
-    public ArrayList<Producto> buscarPorMarca(String marca) {
-        return listaProductos.buscarPorMarca(marca);
+
+    public ArrayList<Producto> buscarPorMarca(String m) {
+        return listaProductos.buscarPorMarca(m);
     }
-    
-    // Busca productos con stock disponible
 
     public ArrayList<Producto> obtenerConStock() {
         return listaProductos.buscarConStock();
     }
-    
-    // Busca productos por rango de precio
 
     public ArrayList<Producto> buscarPorRangoPrecio(double min, double max) {
         return listaProductos.buscarPorRangoPrecio(min, max);
     }
-    
-    // Obtiene todos los productos
 
     public ArrayList<Producto> obtenerTodos() {
         return listaProductos.obtenerTodos();
     }
-    
-    // ----- Gestion de inventario
-    
-    // Gestiona el ingreso de productos. Si existe aumenta stock, sino lo crea
 
-    public boolean gestionarIngresoProducto(String nombre, int cantidad, double precio,
-                                            String estado, String marca, String categoria,
-                                            String imagen) {
+    // ----------------------------------------------------------------
+    //  ORDENAMIENTO
+    // ----------------------------------------------------------------
 
-        ArrayList<Producto> encontrados = buscarPorNombre(nombre);
-        
-        for (Producto p : encontrados) {
-            if (p.getNombreProducto().equalsIgnoreCase(nombre)) {
 
-                int nuevoStock = p.getCantidadProducto() + cantidad;
-                p.setCantidadProducto(nuevoStock);
-                p.setPrecioProducto(precio);
-                reescribirArchivoProductos();
-                return true;
-            }
-        }
-        
-        return agregarProducto(nombre, cantidad, precio, estado, marca, categoria, imagen);
+    public ArrayList<Producto> obtenerOrdenadosPorNombre() {
+        ArrayList<Producto> lista = listaProductos.obtenerTodos();
+        Ordenamiento.quickSort(lista, Ordenamiento.COMPARAR_POR_NOMBRE);
+        return lista;
     }
-    
-    // Aumenta stock del producto
-    
-    public boolean aumentarStock(String id, int cantidad) {
-        boolean resultado = listaProductos.aumentarStock(id, cantidad);
-        if (resultado) {
-            reescribirArchivoProductos();
-        }
-        return resultado;
+
+
+    public ArrayList<Producto> obtenerOrdenadosPorPrecioAsc() {
+        ArrayList<Producto> lista = listaProductos.obtenerTodos();
+        Ordenamiento.quickSort(lista, Ordenamiento.COMPARAR_POR_PRECIO_ASC);
+        return lista;
     }
-    
-    // Reduce stock del producto (Venta)
-    
-    public boolean reducirStock(String id, int cantidad) {
-        boolean resultado = listaProductos.reducirStock(id, cantidad);
-        if (resultado) {
-            reescribirArchivoProductos();
-        }
-        return resultado;
+
+
+    public ArrayList<Producto> obtenerOrdenadosPorPrecioDesc() {
+        ArrayList<Producto> lista = listaProductos.obtenerTodos();
+        Ordenamiento.quickSort(lista, Ordenamiento.COMPARAR_POR_PRECIO_DESC);
+        return lista;
     }
-    
-    // Actualiza el precio del producto
-    
-    public boolean actualizarPrecio(String id, double nuevoPrecio) {
-        boolean resultado = listaProductos.actualizarPrecio(id, nuevoPrecio);
-        if (resultado) {
-            reescribirArchivoProductos();
-        }
-        return resultado;
+
+
+    public ArrayList<Producto> buscarPorNombreConOrdenamiento(String nombre) {
+        return Ordenamiento.busquedaSecuencialPorNombre(listaProductos.obtenerTodos(), nombre);
     }
-    
-    // ----- Estadisticas
-    
-    // Retorna total productos
-    
+
+
+    public ArrayList<Producto> buscarPorCategoriaOrdenadoPorPrecio(String categoria) {
+        ArrayList<Producto> filtrados = listaProductos.buscarPorCategoria(categoria);
+        Ordenamiento.quickSort(filtrados, Ordenamiento.COMPARAR_POR_PRECIO_ASC);
+        return filtrados;
+    }
+
+    // ----------------------------------------------------------------
+    //  ESTADÍSTICAS
+    // ----------------------------------------------------------------
+
+
     public int getCantidadProductos() {
         return listaProductos.getTamaño();
     }
-    
-    // Retorna cantidad productos sin stock
-    
+
     public int getCantidadSinStock() {
         return listaProductos.contarSinStock();
     }
-    
-    // Retorna el valor total del inventario
-    
+
     public double getValorInventario() {
         return listaProductos.calcularValorInventario();
     }
-    
-    // Retorna cantidad productos por categoria
-    
+
     public int contarPorCategoria(String categoria) {
         return buscarPorCategoria(categoria).size();
     }
-    
-    // ----- Persistencia
-    
-    // Guarda producto en su archivo
-    
-    private boolean guardarProductoEnArchivo(Producto p) {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(ARCHIVO_PRODUCTOS, true))) {
-            writer.write(p.toArchivoLinea());
-            writer.newLine();
-            return true;
+
+    // ----------------------------------------------------------------
+    //  PERSISTENCIA
+    // ----------------------------------------------------------------
+
+
+    private void appendAlArchivo(Producto p) {
+        try (BufferedWriter w = new BufferedWriter(new FileWriter(ARCHIVO_PRODUCTOS, true))) {
+            w.write(p.toArchivoLinea());
+            w.newLine();
         } catch (IOException e) {
-            System.err.println("[ProductoService] Error al guardar producto: " + e.getMessage());
-            return false;
+            System.err.println("[ProductoServicio] Error al guardar: " + e.getMessage());
         }
     }
-    
-    // Reescribe todo el archivo de productos
-     
-    private void reescribirArchivoProductos() {
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(ARCHIVO_PRODUCTOS))) {
-            ArrayList<Producto> productos = listaProductos.obtenerTodos();
-            for (Producto p : productos) {
-                writer.write(p.toArchivoLinea());
-                writer.newLine();
+
+
+    private void reescribirArchivo() {
+        try (BufferedWriter w = new BufferedWriter(new FileWriter(ARCHIVO_PRODUCTOS))) {
+            for (Producto p : listaProductos.obtenerTodos()) {
+                w.write(p.toArchivoLinea());
+                w.newLine();
             }
         } catch (IOException e) {
-            System.err.println("[ProductoService] Error al reescribir archivo: " + e.getMessage());
+            System.err.println("[ProductoServicio] Error al reescribir: " + e.getMessage());
         }
     }
-    
-    // Carga productos desde archivo al iniciar
-    
-    private void cargarProductosDesdeArchivo() {
+
+
+    private void cargarDesdeArchivo() {
         File archivo = new File(ARCHIVO_PRODUCTOS);
-        
-        if (!archivo.exists()) {
-            datosInicializados = true;
-            return;
-        }
-        
-        try (BufferedReader reader = new BufferedReader(new FileReader(ARCHIVO_PRODUCTOS))) {
+        if (!archivo.exists()) return;
+        try (BufferedReader r = new BufferedReader(new FileReader(ARCHIVO_PRODUCTOS))) {
             String linea;
-            int cargados = 0;
-            
-            while ((linea = reader.readLine()) != null) {
+            while ((linea = r.readLine()) != null) {
                 if (linea.trim().isEmpty()) continue;
-                
                 Producto p = Producto.fromArchivoLinea(linea);
-                
                 if (p != null && !listaProductos.existeProducto(p.getIdProducto())) {
                     listaProductos.insertarAlFinal(p);
-                    cargados++;
                 }
             }
-            
-            datosInicializados = true;
-            
         } catch (IOException e) {
-            System.err.println("[ProductoService] Error al cargar productos: " + e.getMessage());
+            System.err.println("[ProductoServicio] Error al cargar: " + e.getMessage());
         }
     }
-    
-    // ------ Metodos funcionales
-    
-    // Verifica existe un producto
-    
+
+
     public boolean existeProducto(String id) {
         return listaProductos.existeProducto(id);
     }
-    
-    // Genera el siguiente ID disponible
-    
+
     public String obtenerSiguienteId() {
         return listaProductos.obtenerSiguienteId();
     }
-    
-    // Limpia todo el inventario
-    
-    public void limpiarTodo() {
-        listaProductos.vaciarLista();
-        try {
-            new FileWriter(ARCHIVO_PRODUCTOS).close();
-        } catch (IOException e) {
-            System.err.println("[ProductoService] Error al limpiar archivo");
-        }
-    }
- 
-    // Retorna la lista interna
-    
+
     public ListaProductos getListaProductos() {
         return listaProductos;
+    }
+
+
+    public void limpiarTodo() {
+        listaProductos.vaciarLista();
+        try { new FileWriter(ARCHIVO_PRODUCTOS).close(); } catch (IOException e) {}
     }
 }

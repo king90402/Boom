@@ -136,7 +136,7 @@
             </Pane>
          </children>
       </Pane>
-      <Pane id="paneRegistroFinal" fx:id="paneRegistroFinal" layoutX="10.0" layoutY="10.0" prefHeight="450.0" prefWidth="800.0" style="-fx-background-color: linear-gradient(to bottom, #f6f5f5, #f6daa7);">
+      <Pane id="paneRegistroFinal" fx:id="paneRegistroFinal" layoutX="10.0" layoutY="10.0" prefHeight="450.0" prefWidth="800.0" style="-fx-background-color: linear-gradient(to bottom, #f6f5f5, #f6daa7);" visible="false">
          <children>
             <Pane id="contenedor1" layoutX="22.0" layoutY="24.0" prefHeight="403.0" prefWidth="756.0" style="-fx-background-color: #f6f6f6; -fx-background-radius: 17;">
                <children>

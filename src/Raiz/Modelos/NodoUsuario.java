@@ -13,13 +13,11 @@ package Raiz.Modelos;
 
 public class NodoUsuario {
     
-    // Atributos
-    
+
     private Usuario usuario;
     private NodoUsuario siguiente;
     private NodoUsuario anterior;
     
-    // Constructor
 
     public NodoUsuario(Usuario usuario) {
         this.usuario = usuario;
@@ -28,45 +26,30 @@ public class NodoUsuario {
     }
     
     // Getters
-    
+
     public Usuario getUsuario() {
         return usuario;
     }
-    
+
     public NodoUsuario getSiguiente() {
         return siguiente;
     }
-    
+
     public NodoUsuario getAnterior() {
         return anterior;
     }
     
     // Setters
-    
+
     public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
-    
+
     public void setSiguiente(NodoUsuario siguiente) {
         this.siguiente = siguiente;
     }
-    
+
     public void setAnterior(NodoUsuario anterior) {
         this.anterior = anterior;
-    }
-    
-    // Metodos auxiliares
-
-    public boolean tieneSiguiente() {
-        return siguiente != null;
-    }
-
-    public boolean tieneAnterior() {
-        return anterior != null;
-    }
-    
-    @Override
-    public String toString() {
-        return "Nodo[" + (usuario != null ? usuario.getNombreCompleto() : "null") + "]";
     }
 }

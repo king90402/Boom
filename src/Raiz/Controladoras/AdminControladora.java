@@ -3,108 +3,130 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/AdminControladora.java to edit this template
  */
 
-
 package Raiz.Controladoras;
 
 import Raiz.Modelos.Producto;
 import Raiz.Modelos.Usuario;
+import Raiz.Modelos.Historial;
+import Raiz.Modelos.Pedido;
 import Raiz.Servicios.ProductoServicio;
 import Raiz.Servicios.SesionServicio;
 import Raiz.Servicios.UsuarioServicio;
+import Raiz.Servicios.HistorialServicio;
+import Raiz.Servicios.PedidoServicio;
 import Raiz.Utilidades.AlertaUtil;
-import Raiz.Utilidades.HistorialAcciones;
+import Raiz.Utilidades.DepartamentosColombia;
+import Raiz.Utilidades.Validaciones;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.PieChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.io.File;
 import java.util.ArrayList;
-import javafx.scene.layout.VBox;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.Label;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
+import java.util.Optional;
+
 /**
  * @author alejo
  */
 
-// --------- Clase encargada del manejo total de la vista_administracion
+// -------------------- Clase encargada del manejo total de la vista_administracion
 
 public class AdminControladora {
     
-    // Servicios compartidos de unica instancia paa evitar sobrecarga
-    
+    // ---------- Servicios
     private final SesionServicio sesionServicio = SesionServicio.getInstancia();
     private final ProductoServicio productoServicio = ProductoServicio.getInstancia();
     private final UsuarioServicio usuarioServicio = UsuarioServicio.getInstancia();
-    private final HistorialAcciones historialAcciones = new HistorialAcciones();
+    private final HistorialServicio historialServicio = HistorialServicio.getInstancia();
+    private final PedidoServicio pedidoServicio = PedidoServicio.getInstancia();
 
-    // ----- Atributos de elementos FXML para su uso
-    
-    // Paneles principales
-    
+    // -------------------- Paneles principales
     @FXML private Pane panePerfilAdmin;
+    @FXML private Pane paneEditarInfoAdmin;
     @FXML private Pane paneEstadisticasAdmin;
-    @FXML private Pane paneRestaStockAdmin;
     @FXML private Pane paneInventarioAdmin;
     @FXML private Pane panePedidosAdmin;
-    @FXML private Pane paneIngrePersoAdmin;
-    @FXML private Pane paneEditarInfoAdmin;
+    @FXML private Pane paneAdminPersoAdmin;        
+    @FXML private Pane paneHistorialAdmin;        
     
-    // Paneles nuevo producto
-    
+    // ---------- Paneles secundarios
     @FXML private Pane paneRestaNuevo_Producto;
     @FXML private Pane paneRestaNuevo_ProductoPaso1;
     @FXML private Pane paneRestaNuevo_ProductoPaso2;
     @FXML private Pane paneRestaNuevo_ProductoPaso3;
+    @FXML private Pane paneEditarUsuario;
     
-    // Toggle buttons
-    
+    // ---------- Toggle buttons
     @FXML private ToggleButton tbtnPerfilAdmin;
     @FXML private ToggleButton tbtnEstadisticasAdmin;
-    @FXML private ToggleButton tbtnRestaStockAdmin;
     @FXML private ToggleButton tbtnInventarioAdmin;
     @FXML private ToggleButton tbtnPedidosAdmin;
-    @FXML private ToggleButton tbtnIngrePersoAdmin;
+    @FXML private ToggleButton tbtnAdminPersoAdmin;
+    @FXML private ToggleButton tbtnHistorialAdmin;
     
     private ToggleGroup barraAdmin;
     
-    // Textfields nuevo producto
-    
+    // ---------- Campos nuevo/editar producto
     @FXML private TextField txtnombreproductO;
     @FXML private TextField txtmarca;
     @FXML private TextField txtDetalles;
     @FXML private TextField txtprecio;
+    @FXML private TextField txtStock;
     @FXML private TextField txtruta;
     @FXML private CheckBox checknuevo;
     @FXML private CheckBox checkviejo;
     @FXML private ImageView previsualizacion;
+    @FXML private Button btnGuardarProducto;
     
-    private String rutaImagenSeleccionada = "Preview Image.png";
+    private String rutaImagenSeleccionada = "";
+    private Producto productoEditando = null;
     
-    // Labels
+    // ---------- Campos edicion usuario/cliente
+    @FXML private TextField txtCorreoEditarUsuario;
+    @FXML private TextField txtNombreEditarUsuario;
+    @FXML private TextField txtApellidoEditarUsuario;
+    @FXML private TextField txtCelularEditarUsuario;
+    @FXML private TextField txtDocumentoEditarUsuario;
+    @FXML private TextField txtFechaNacimientoEditarUsuario;
+    @FXML private ComboBox<String> comboDepartamentoEditarUsuario;
+    @FXML private ComboBox<String> comboCiudadEditarUsuario;
+    @FXML private TextField txtDireccionEditarUsuario;
     
-    @FXML private Text lblUsuarioAdmin;
+    // ---------- Campos edicion info propia 
+    @FXML private TextField txtCorreoMiCuenta;
+    @FXML private TextField txtNombreMiCuenta;
+    @FXML private TextField txtApellidoMiCuenta;
+    @FXML private TextField txtCelularMiCuenta;
+    @FXML private TextField txtDocumentoMiCuenta;
+    @FXML private TextField txtFechaNacimientoMiCuenta;
+    @FXML private ComboBox<String> comboDepartamentoMiCuenta;
+    @FXML private ComboBox<String> comboCiudadMiCuenta;
+    @FXML private TextField txtDireccionMiCuenta;
+    
+    // ---------- Labels perfil admin
     @FXML private Text lblNombrePerfilAdmin;
     @FXML private Text lblAbreNombrePerfilAdmin;
     @FXML private Text lblCorreoPerfilAdmin;
     @FXML private Text lblRolPerfilAdmin;
-    
     @FXML private Text lblNombre2PerfilAdmin;
     @FXML private Text lblCorreo2PerfilAdmin;
     @FXML private Text lblCelularPerfilAdmin;
@@ -113,49 +135,163 @@ public class AdminControladora {
     @FXML private Text lblDireccionPerfilAdmin;
     @FXML private Text lblRol2PerfilAdmin;
     
-    // tabla historial
+    // ---------- Labels estadisticas
+    @FXML private Text lblBienvenidoEstadisticas;
+    @FXML private Text lblVentasMes;
+    @FXML private Text lblClientesActivos;
+    @FXML private Text lblPedidosRealizados;
+    @FXML private Text lblMejorCliente;
+    @FXML private BarChart<String, Number> chartVentas;
+    @FXML private PieChart chartCategorias;
     
+    // ---------- Tabla de productos
+    @FXML private TableView<Producto> tablaProductos;
+    @FXML private TableColumn<Producto, String> colNombreProducto;
+    @FXML private TableColumn<Producto, String> colMarcaProducto;
+    @FXML private TableColumn<Producto, Integer> colStockProducto;
+    @FXML private TableColumn<Producto, Double> colPrecioProducto;
+    @FXML private TableColumn<Producto, String> colEstadoProducto;
     
-    @FXML private TableView<Producto> tablaInventario;
-    @FXML private TableColumn<Producto, String> colNombre;
-    @FXML private TableColumn<Producto, String> colMarca;
-    @FXML private TableColumn<Producto, Integer> colStock;
-    @FXML private TableColumn<Producto, Double> colPrecio;
-    @FXML private TableColumn<Producto, String> colCondicion;
+    // ---------- Tabla de pedidos
+    @FXML private TableView<Pedido> tablaPedidos;
+    @FXML private TableColumn<Pedido, String> colIdPedido;
+    @FXML private TableColumn<Pedido, String> colClientePedido;
+    @FXML private TableColumn<Pedido, String> colProductosPedido;
+    @FXML private TableColumn<Pedido, String> colTotalPedido;
+    @FXML private TableColumn<Pedido, String> colFechaPedido;
     
-    // ----- Inicializacion
+    // ---------- Tabla de usuarios
+    @FXML private TableView<Usuario> tablaUsuarios;
+    @FXML private TableColumn<Usuario, String> colIdUsuario;
+    @FXML private TableColumn<Usuario, String> colNombreUsuario;
+    @FXML private TableColumn<Usuario, String> colCorreoUsuario;
+    @FXML private TableColumn<Usuario, String> colCelularUsuario;
     
+    // ---------- Tabla historial
+    @FXML private TableView<Historial> tablaHistorial;
+    @FXML private TableColumn<Historial, String> colTipoHistorial;
+    @FXML private TableColumn<Historial, String> colDescripcionHistorial;
+    @FXML private TableColumn<Historial, String> colUsuarioHistorial;
+    @FXML private TableColumn<Historial, String> colFechaHistorial;
+    @FXML private ComboBox<String> comboFiltroHistorial;
+    
+    // ---- Usuario seleccionado para edicion
+    private Usuario usuarioSeleccionado;
+    
+    // -------------------- Inicializacion
     @FXML
     public void initialize() {
         inicializarToggleGroups();
+        inicializarComboBoxes();
+        inicializarTablas();
         cargarDatosUsuario();
         mostrarPaneAdmin(panePerfilAdmin);
     }
     
-    // Toggle buttons asigandos a su grupo
-    
+    // ---------- Inicializacion de ToggleGroups
     private void inicializarToggleGroups() {
         barraAdmin = new ToggleGroup();
         if (tbtnPerfilAdmin != null) tbtnPerfilAdmin.setToggleGroup(barraAdmin);
         if (tbtnEstadisticasAdmin != null) tbtnEstadisticasAdmin.setToggleGroup(barraAdmin);
-        if (tbtnRestaStockAdmin != null) tbtnRestaStockAdmin.setToggleGroup(barraAdmin);
         if (tbtnInventarioAdmin != null) tbtnInventarioAdmin.setToggleGroup(barraAdmin);
         if (tbtnPedidosAdmin != null) tbtnPedidosAdmin.setToggleGroup(barraAdmin);
-        if (tbtnIngrePersoAdmin != null) tbtnIngrePersoAdmin.setToggleGroup(barraAdmin);
+        if (tbtnAdminPersoAdmin != null) tbtnAdminPersoAdmin.setToggleGroup(barraAdmin);
+        if (tbtnHistorialAdmin != null) tbtnHistorialAdmin.setToggleGroup(barraAdmin);
     }
     
-    // Carga de datos de usuario logeado
+    // ---------- Inicializacion de ComboBoxes
+    private void inicializarComboBoxes() {
+        if (comboDepartamentoEditarUsuario != null) {
+            comboDepartamentoEditarUsuario.getItems().addAll(DepartamentosColombia.getDepartamentos());
+            comboDepartamentoEditarUsuario.setOnAction(e -> {
+                String depto = comboDepartamentoEditarUsuario.getValue();
+                if (depto != null && comboCiudadEditarUsuario != null) {
+                    comboCiudadEditarUsuario.getItems().clear();
+                    comboCiudadEditarUsuario.getItems().addAll(DepartamentosColombia.getCiudades(depto));
+                }
+            });
+        }
+        
+        if (comboDepartamentoMiCuenta != null) {
+            comboDepartamentoMiCuenta.getItems().addAll(DepartamentosColombia.getDepartamentos());
+            comboDepartamentoMiCuenta.setOnAction(e -> {
+                String depto = comboDepartamentoMiCuenta.getValue();
+                if (depto != null && comboCiudadMiCuenta != null) {
+                    comboCiudadMiCuenta.getItems().clear();
+                    comboCiudadMiCuenta.getItems().addAll(DepartamentosColombia.getCiudades(depto));
+                }
+            });
+        }
+        
+        if (comboFiltroHistorial != null) {
+            comboFiltroHistorial.getItems().addAll(
+                "Todos", "Compras", "Carrito", "Favoritos", "Busquedas", 
+                "Sesiones", "Acciones Admin"
+            );
+            comboFiltroHistorial.setValue("Todos");
+            comboFiltroHistorial.setOnAction(e -> cargarHistorial());
+        }
+    }
     
+    // ---------- Inicializacion de todas las tablas
+    private void inicializarTablas() {
+        inicializarTablaUsuarios();
+        inicializarTablaProductos();
+        inicializarTablaPedidos();
+        inicializarTablaHistorial();
+    }
+    
+    // ---- Tabla de usuarios
+    private void inicializarTablaUsuarios() {
+        if (tablaUsuarios != null) {
+            if (colIdUsuario != null) colIdUsuario.setCellValueFactory(new PropertyValueFactory<>("id"));
+            if (colNombreUsuario != null) colNombreUsuario.setCellValueFactory(new PropertyValueFactory<>("nombreCompleto"));
+            if (colCorreoUsuario != null) colCorreoUsuario.setCellValueFactory(new PropertyValueFactory<>("correo"));
+            if (colCelularUsuario != null) colCelularUsuario.setCellValueFactory(new PropertyValueFactory<>("celular"));
+        }
+    }
+    
+    // ---- Tabla de productos
+    private void inicializarTablaProductos() {
+        if (tablaProductos != null) {
+            if (colNombreProducto != null) colNombreProducto.setCellValueFactory(new PropertyValueFactory<>("nombreProducto"));
+            if (colMarcaProducto != null) colMarcaProducto.setCellValueFactory(new PropertyValueFactory<>("marcaProducto"));
+            if (colStockProducto != null) colStockProducto.setCellValueFactory(new PropertyValueFactory<>("cantidadProducto"));
+            if (colPrecioProducto != null) colPrecioProducto.setCellValueFactory(new PropertyValueFactory<>("precioFormateado"));
+            if (colEstadoProducto != null) colEstadoProducto.setCellValueFactory(new PropertyValueFactory<>("estadoProducto"));
+        }
+    }
+    
+    // ---- Tabla de pedidos
+    private void inicializarTablaPedidos() {
+        if (tablaPedidos != null) {
+            if (colIdPedido != null) colIdPedido.setCellValueFactory(new PropertyValueFactory<>("idPedido"));
+            if (colClientePedido != null) colClientePedido.setCellValueFactory(new PropertyValueFactory<>("nombreUsuario"));
+            if (colProductosPedido != null) colProductosPedido.setCellValueFactory(new PropertyValueFactory<>("cantidadItems"));
+            if (colTotalPedido != null) colTotalPedido.setCellValueFactory(new PropertyValueFactory<>("totalFormateado"));
+            if (colFechaPedido != null) colFechaPedido.setCellValueFactory(new PropertyValueFactory<>("fechaFormateada"));
+        }
+    }
+    
+    // ---- Tabla de historial
+    private void inicializarTablaHistorial() {
+        if (tablaHistorial != null) {
+            if (colTipoHistorial != null) colTipoHistorial.setCellValueFactory(new PropertyValueFactory<>("tipoTexto"));
+            if (colDescripcionHistorial != null) colDescripcionHistorial.setCellValueFactory(new PropertyValueFactory<>("descripcion"));
+            if (colUsuarioHistorial != null) colUsuarioHistorial.setCellValueFactory(new PropertyValueFactory<>("idUsuario"));
+            if (colFechaHistorial != null) colFechaHistorial.setCellValueFactory(new PropertyValueFactory<>("fechaFormateada"));
+        }
+    }
+    
+    // ---------- Cargar datos del usuario actual en el perfil
     private void cargarDatosUsuario() {
         Usuario usuario = sesionServicio.getUsuarioActual();
         if (usuario == null) return;
         
-        if (lblUsuarioAdmin != null) lblUsuarioAdmin.setText(usuario.getNombre());
         if (lblNombrePerfilAdmin != null) lblNombrePerfilAdmin.setText(usuario.getNombreCompleto());
         if (lblCorreoPerfilAdmin != null) lblCorreoPerfilAdmin.setText(usuario.getCorreo());
         if (lblAbreNombrePerfilAdmin != null) lblAbreNombrePerfilAdmin.setText(usuario.getIniciales());
         if (lblRolPerfilAdmin != null) lblRolPerfilAdmin.setText(usuario.getRol().name());
-        
         if (lblNombre2PerfilAdmin != null) lblNombre2PerfilAdmin.setText(usuario.getNombreCompleto());
         if (lblCorreo2PerfilAdmin != null) lblCorreo2PerfilAdmin.setText(usuario.getCorreo());
         if (lblCelularPerfilAdmin != null) lblCelularPerfilAdmin.setText(usuario.getCelular());
@@ -165,13 +301,15 @@ public class AdminControladora {
         if (lblRol2PerfilAdmin != null) lblRol2PerfilAdmin.setText(usuario.getRol().name());
     }
     
-    // ----- Navegacion
+    // -------------------- Navegacion entre paneles
     
+    // ---------- Ocultar todos los paneles
     private void ocultarPanesAdmin() {
         Pane[] panes = {
-            panePerfilAdmin, paneEstadisticasAdmin, paneRestaStockAdmin,
-            paneInventarioAdmin, panePedidosAdmin, paneIngrePersoAdmin,
-            paneEditarInfoAdmin, paneRestaNuevo_Producto
+            panePerfilAdmin, paneEstadisticasAdmin,
+            paneInventarioAdmin, panePedidosAdmin,
+            paneEditarInfoAdmin, paneRestaNuevo_Producto, paneAdminPersoAdmin,
+            paneHistorialAdmin, paneEditarUsuario
         };
         for (Pane p : panes) {
             if (p != null) {
@@ -181,6 +319,7 @@ public class AdminControladora {
         }
     }
     
+    // ---------- Mostrar un panel especifico
     private void mostrarPaneAdmin(Pane paneMostrar) {
         ocultarPanesAdmin();
         if (paneMostrar != null) {
@@ -189,20 +328,212 @@ public class AdminControladora {
         }
     }
     
-    @FXML private void irPerfilAdmin() { mostrarPaneAdmin(panePerfilAdmin); }
-    @FXML private void irEstadisticasAdmin() { mostrarPaneAdmin(paneEstadisticasAdmin); }
-    @FXML private void irRestaStockAdmin() { mostrarPaneAdmin(paneRestaStockAdmin); }
+    // ---- Metodos de navegacion
+    @FXML private void irPerfilAdmin() { 
+        mostrarPaneAdmin(panePerfilAdmin); 
+        cargarDatosUsuario();
+    }
+    
+    @FXML private void irEditarInfoAdmin() { 
+        mostrarPaneAdmin(paneEditarInfoAdmin); 
+        cargarDatosMiCuenta();
+    }
+    
+    @FXML private void irEstadisticasAdmin() { 
+        mostrarPaneAdmin(paneEstadisticasAdmin); 
+        cargarEstadisticas();
+    }
+    
+    @FXML private void irInventarioAdmin() { 
+        mostrarPaneAdmin(paneInventarioAdmin); 
+        cargarListaProductos();
+    }
+    
+    @FXML private void irPedidosAdmin() { 
+        mostrarPaneAdmin(panePedidosAdmin); 
+        cargarListaPedidos();
+    }
+    
+    @FXML private void irAdministracionPersonalAdmin() { 
+        mostrarPaneAdmin(paneAdminPersoAdmin);
+        cargarListaClientes();
+    }
+    
+    @FXML private void irHistorialAdmin() { 
+        mostrarPaneAdmin(paneHistorialAdmin);
+        cargarHistorial();
+    }
+    
+    // ==================== ESTADISTICAS ====================
+    
+    // ---------- Cargar todas las estadisticas
+    private void cargarEstadisticas() {
+        Usuario admin = sesionServicio.getUsuarioActual();
+        if (admin != null && lblBienvenidoEstadisticas != null) {
+            lblBienvenidoEstadisticas.setText("Bienvenido, " + admin.getNombre());
+        }
+        
+        // ---- Ventas del mes
+        double ventasMes = pedidoServicio.obtenerVentasTotales();
+        if (lblVentasMes != null) {
+            lblVentasMes.setText(String.format("$%,.0f", ventasMes));
+        }
+        
+        // ---- Clientes activos
+        int clientesActivos = usuarioServicio.contarClientes();
+        if (lblClientesActivos != null) {
+            lblClientesActivos.setText(String.valueOf(clientesActivos));
+        }
+        
+        // ---- Pedidos realizados
+        int totalPedidos = pedidoServicio.obtenerTotalPedidos();
+        if (lblPedidosRealizados != null) {
+            lblPedidosRealizados.setText(String.valueOf(totalPedidos));
+        }
+        
+        // ---- Mejor cliente
+        String mejorCliente = pedidoServicio.obtenerMejorCliente();
+        if (lblMejorCliente != null) {
+            lblMejorCliente.setText(mejorCliente != null ? mejorCliente : "N/A");
+        }
+        
+        // ---- Cargar graficos
+        cargarGraficoVentas();
+        cargarGraficoCategorias();
+    }
+    
+    // ---- Grafico de barras de ventas
+    private void cargarGraficoVentas() {
+        if (chartVentas == null) return;
+        
+        chartVentas.getData().clear();
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName("Ventas");
+        
+        // Datos de ejemplo
+        series.getData().add(new XYChart.Data<>("Ene", 1200000));
+        series.getData().add(new XYChart.Data<>("Feb", 1500000));
+        series.getData().add(new XYChart.Data<>("Mar", 1100000));
+        series.getData().add(new XYChart.Data<>("Abr", 1800000));
+        series.getData().add(new XYChart.Data<>("May", 2100000));
+        
+        chartVentas.getData().add(series);
+    }
+    
+    // ---- Grafico de categorias
+    private void cargarGraficoCategorias() {
+        if (chartCategorias == null) return;
+        
+        chartCategorias.getData().clear();
+        chartCategorias.getData().add(new PieChart.Data("Tecnologia", 45));
+        chartCategorias.getData().add(new PieChart.Data("Hogar", 25));
+        chartCategorias.getData().add(new PieChart.Data("Moda", 20));
+        chartCategorias.getData().add(new PieChart.Data("Otros", 10));
+    }
+    
+    // ==================== GESTION DE PRODUCTOS ====================
+    
+    // ---------- Cargar lista de productos en la tabla
+    private void cargarListaProductos() {
+        if (tablaProductos == null) return;
+        
+        ArrayList<Producto> productos = productoServicio.obtenerTodos();
+        ObservableList<Producto> listaObservable = FXCollections.observableArrayList(productos);
+        tablaProductos.setItems(listaObservable);
+    }
+    
+    // ---------- Agregar nuevo producto
     @FXML
-    private void irInventarioAdmin() {
-    mostrarPaneAdmin(paneInventarioAdmin);
-    cargarTablaInventario();
-}
-    @FXML private void irPedidosAdmin() { mostrarPaneAdmin(panePedidosAdmin); }
-    @FXML private void irIngresoPersonalAdmin() { mostrarPaneAdmin(paneIngrePersoAdmin); }
-    @FXML private void irEditarInfoAdmin() { mostrarPaneAdmin(paneEditarInfoAdmin); }
+    private void agregarNuevoProducto(ActionEvent event) {
+        productoEditando = null;
+        limpiarCamposProducto();
+        mostrarPaneAdmin(paneRestaNuevo_Producto);
+        mostrarPasoNuevoProducto(paneRestaNuevo_ProductoPaso1);
+    }
     
-    // Nav. nuevo producto
+    // ---------- Editar producto seleccionado
+    @FXML
+    private void editarProductoSeleccionado(ActionEvent event) {
+        Producto seleccionado = tablaProductos.getSelectionModel().getSelectedItem();
+        
+        if (seleccionado == null) {
+            AlertaUtil.mostrarAdvertencia("Seleccione un producto", "Debe seleccionar un producto de la lista.");
+            return;
+        }
+        
+        productoEditando = seleccionado;
+        cargarDatosProductoEdicion();
+        mostrarPaneAdmin(paneRestaNuevo_Producto);
+        mostrarPasoNuevoProducto(paneRestaNuevo_ProductoPaso1);
+    }
     
+    // ---- Cargar datos del producto para edicion
+    private void cargarDatosProductoEdicion() {
+        if (productoEditando == null) return;
+        
+        if (txtnombreproductO != null) txtnombreproductO.setText(productoEditando.getNombreProducto());
+        if (txtmarca != null) txtmarca.setText(productoEditando.getMarcaProducto());
+        if (txtDetalles != null) txtDetalles.setText(productoEditando.getCategoriaProducto());
+        if (txtprecio != null) txtprecio.setText(String.valueOf(productoEditando.getPrecioProducto()));
+        if (txtStock != null) txtStock.setText(String.valueOf(productoEditando.getCantidadProducto()));
+        
+        if (checknuevo != null && checkviejo != null) {
+            checknuevo.setSelected("Nuevo".equalsIgnoreCase(productoEditando.getEstadoProducto()));
+            checkviejo.setSelected("Usado".equalsIgnoreCase(productoEditando.getEstadoProducto()));
+        }
+        
+        rutaImagenSeleccionada = productoEditando.getImagenProducto();
+        if (txtruta != null) txtruta.setText(rutaImagenSeleccionada);
+    }
+    
+    // ---------- Visualizar informacion completa del producto
+    @FXML
+    private void visualizarProductoSeleccionado(ActionEvent event) {
+        Producto seleccionado = tablaProductos.getSelectionModel().getSelectedItem();
+        
+        if (seleccionado == null) {
+            AlertaUtil.mostrarAdvertencia("Seleccione un producto", "Debe seleccionar un producto de la lista.");
+            return;
+        }
+        
+        String info = String.format(
+            "ID: %s\nNombre: %s\nMarca: %s\nPrecio: %s\nStock: %d\nEstado: %s\nCategoria: %s",
+            seleccionado.getIdProducto(),
+            seleccionado.getNombreProducto(),
+            seleccionado.getMarcaProducto(),
+            seleccionado.getPrecioFormateado(),
+            seleccionado.getCantidadProducto(),
+            seleccionado.getEstadoProducto(),
+            seleccionado.getCategoriaProducto()
+        );
+        
+        AlertaUtil.mostrarInformacion("Informacion del Producto", info);
+    }
+    
+    // ---------- Eliminar producto seleccionado
+    @FXML
+    private void eliminarProductoSeleccionado(ActionEvent event) {
+        Producto seleccionado = tablaProductos.getSelectionModel().getSelectedItem();
+        
+        if (seleccionado == null) {
+            AlertaUtil.mostrarAdvertencia("Seleccione un producto", "Debe seleccionar un producto de la lista.");
+            return;
+        }
+        
+        if (AlertaUtil.confirmarAccion("Eliminar Producto", 
+            "¿Esta seguro de eliminar el producto: " + seleccionado.getNombreProducto() + "?")) {
+            
+            String idAdmin = sesionServicio.getIdUsuarioActual();
+            if (productoServicio.eliminarProducto(seleccionado.getIdProducto(), idAdmin)) {
+                AlertaUtil.mostrarInformacion("Producto eliminado", "El producto ha sido eliminado correctamente.");
+                cargarListaProductos();
+            } else {
+                AlertaUtil.mostrarError("Error", "No se pudo eliminar el producto.");
+            }
+        }
+    }
+    
+    // ---------- Navegacion entre pasos de nuevo producto
     private void ocultarPasosNuevoProducto() {
         Pane[] pasos = {paneRestaNuevo_ProductoPaso1, paneRestaNuevo_ProductoPaso2, paneRestaNuevo_ProductoPaso3};
         for (Pane p : pasos) {
@@ -221,26 +552,11 @@ public class AdminControladora {
         }
     }
     
-    @FXML
-    private void irPaso1NuevoProducto() {
-        mostrarPaneAdmin(paneRestaNuevo_Producto);
-        mostrarPasoNuevoProducto(paneRestaNuevo_ProductoPaso1);
-    }
+    @FXML private void irPaso1NuevoProducto() { mostrarPasoNuevoProducto(paneRestaNuevo_ProductoPaso1); }
+    @FXML private void irPaso2NuevoProducto() { mostrarPasoNuevoProducto(paneRestaNuevo_ProductoPaso2); }
+    @FXML private void irPaso3NuevoProducto() { mostrarPasoNuevoProducto(paneRestaNuevo_ProductoPaso3); }
     
-    @FXML
-    private void irPaso2NuevoProducto() {
-        mostrarPasoNuevoProducto(paneRestaNuevo_ProductoPaso2);
-    }
-    
-    @FXML
-    private void irPaso3NuevoProducto() {
-        mostrarPasoNuevoProducto(paneRestaNuevo_ProductoPaso3);
-    }
-    
-    // ----- Gestion productos
-    
-    // Seleccion de imagen para producto
-    
+    // ---------- Seleccionar imagen del producto
     @FXML
     private void seleccionarImagen(ActionEvent event) {
         FileChooser fileChooser = new FileChooser();
@@ -253,15 +569,20 @@ public class AdminControladora {
         if (archivo != null) {
             rutaImagenSeleccionada = archivo.toURI().toString();
             if (txtruta != null) txtruta.setText(archivo.getName());
-            if (previsualizacion != null) previsualizacion.setImage(new Image(rutaImagenSeleccionada));
+            if (previsualizacion != null) {
+                try {
+                    previsualizacion.setImage(new Image(rutaImagenSeleccionada));
+                } catch (Exception e) {
+                    System.err.println("Error cargando imagen: " + e.getMessage());
+                }
+            }
         }
     }
     
-    // Nuevo producto al invetario
-  
+    // ---------- Guardar producto (nuevo o editado)
     @FXML
-    private void agregarProducto(ActionEvent event) {
-        // Validar campos
+    private void guardarProducto(ActionEvent event) {
+        // Validaciones
         if (txtnombreproductO == null || txtnombreproductO.getText().trim().isEmpty()) {
             AlertaUtil.mostrarAdvertencia("Campo requerido", "Ingrese el nombre del producto.");
             return;
@@ -274,13 +595,23 @@ public class AdminControladora {
         
         String nombre = txtnombreproductO.getText().trim();
         String marca = txtmarca != null ? txtmarca.getText().trim() : "";
+        String detalles = txtDetalles != null ? txtDetalles.getText().trim() : "";
         
         double precio;
         try {
-            precio = Double.parseDouble(txtprecio.getText().trim());
+            precio = Double.parseDouble(txtprecio.getText().trim().replace(",", ""));
         } catch (NumberFormatException e) {
             AlertaUtil.mostrarAdvertencia("Precio invalido", "Ingrese un precio numerico valido.");
             return;
+        }
+        
+        int stock = 1;
+        if (txtStock != null && !txtStock.getText().trim().isEmpty()) {
+            try {
+                stock = Integer.parseInt(txtStock.getText().trim());
+            } catch (NumberFormatException e) {
+                stock = 1;
+            }
         }
         
         String estado = "Nuevo";
@@ -290,171 +621,440 @@ public class AdminControladora {
             estado = "Usado";
         }
         
-        // Agregar producto via servicio
-        productoServicio.agregarProducto(nombre, 1, precio, estado, marca, "General", rutaImagenSeleccionada);
+        String idAdmin = sesionServicio.getIdUsuarioActual();
         
-        String idGenerado = productoServicio.obtenerSiguienteId();
-        historialAcciones.registrar("AGREGAR", "Producto: " + nombre, idGenerado);
-        
-        AlertaUtil.mostrarInformacion("Producto agregado", 
-            "El producto " + nombre + " ha sido agregado al inventario.");
-        
-        limpiarCamposProducto();
-    }
-    
-    // Gestion de stock
-    
-    @FXML
-    private void gestionarIngresoProducto(ActionEvent event) {
-        if (txtnombreproductO == null || txtnombreproductO.getText().trim().isEmpty()) {
-            AlertaUtil.mostrarAdvertencia("Campo requerido", "Ingrese el nombre del producto.");
-            return;
-        }
-        
-        String nombre = txtnombreproductO.getText().trim();
-        String marca = txtmarca != null ? txtmarca.getText().trim() : "";
-        
-        double precio = 0;
-        try {
-            if (txtprecio != null && !txtprecio.getText().trim().isEmpty()) {
-                precio = Double.parseDouble(txtprecio.getText().trim());
-            }
-        } catch (NumberFormatException e) {
-            AlertaUtil.mostrarAdvertencia("Precio invalido", "Ingrese un precio numerico valido.");
-            return;
-        }
-        
-        String estado = "Nuevo";
-        if (checkviejo != null && checkviejo.isSelected()) {
-            estado = "Usado";
-        }
-        
-        // Gestionar via servicio
-        boolean resultado = productoServicio.gestionarIngresoProducto(
-            nombre, 1, precio, estado, marca, "General", rutaImagenSeleccionada
-        );
-        
-        if (resultado) {
-            historialAcciones.registrar("MODIFICAR", "Stock actualizado: " + nombre, nombre);
+        if (productoEditando != null) {
+            // Actualizar producto existente
+            Producto actualizado = new Producto(
+                productoEditando.getIdProducto(),
+                nombre, stock, precio, estado, marca, detalles, rutaImagenSeleccionada
+            );
             
-            AlertaUtil.mostrarInformacion("Inventario actualizado", 
-                "Stock actualizado correctamente.");
+            if (productoServicio.actualizarProducto(productoEditando.getIdProducto(), actualizado, idAdmin)) {
+                AlertaUtil.mostrarInformacion("Producto actualizado", "El producto ha sido actualizado correctamente.");
+            } else {
+                AlertaUtil.mostrarError("Error", "No se pudo actualizar el producto.");
+            }
+        } else {
+            // Crear nuevo producto
+            if (productoServicio.agregarProducto(nombre, stock, precio, estado, marca, detalles, rutaImagenSeleccionada, idAdmin)) {
+                AlertaUtil.mostrarInformacion("Producto agregado", "El producto ha sido agregado al inventario.");
+            } else {
+                AlertaUtil.mostrarError("Error", "No se pudo agregar el producto.");
+            }
         }
         
         limpiarCamposProducto();
+        productoEditando = null;
+        irInventarioAdmin();
     }
     
-    // Limpiar formulario de nuevo producto
-    
+    // ---- Limpiar campos del formulario de producto
     private void limpiarCamposProducto() {
         if (txtnombreproductO != null) txtnombreproductO.clear();
         if (txtmarca != null) txtmarca.clear();
         if (txtDetalles != null) txtDetalles.clear();
         if (txtprecio != null) txtprecio.clear();
+        if (txtStock != null) txtStock.clear();
         if (txtruta != null) txtruta.clear();
-        if (checknuevo != null) checknuevo.setSelected(false);
+        if (checknuevo != null) checknuevo.setSelected(true);
         if (checkviejo != null) checkviejo.setSelected(false);
-        rutaImagenSeleccionada = "Preview Image.png";
+        if (previsualizacion != null) previsualizacion.setImage(null);
+        rutaImagenSeleccionada = "";
     }
     
-    private void cargarTablaInventario() {
-    colNombre.setCellValueFactory(new PropertyValueFactory<>("nombreProducto"));
-    colMarca.setCellValueFactory(new PropertyValueFactory<>("marcaProducto"));
-    colStock.setCellValueFactory(new PropertyValueFactory<>("cantidadProducto"));
-    colPrecio.setCellValueFactory(new PropertyValueFactory<>("precioProducto"));
-   colPrecio.setCellFactory(col -> new TableCell<Producto, Double>() {
-    @Override
-    protected void updateItem(Double precio, boolean empty) {
-        super.updateItem(precio, empty);
-        if (empty || precio == null) {
-            setText(null);
-        } else {
-            setText(String.format("$%,.0f", precio));
+    // ==================== GESTION DE PEDIDOS ====================
+    
+    // ---------- Cargar lista de pedidos
+    private void cargarListaPedidos() {
+        if (tablaPedidos == null) return;
+        
+        ArrayList<Pedido> pedidos = pedidoServicio.obtenerTodosPedidos();
+        ObservableList<Pedido> listaObservable = FXCollections.observableArrayList(pedidos);
+        tablaPedidos.setItems(listaObservable);
+    }
+    
+    // ---------- Visualizar pedido seleccionado
+    @FXML
+    private void visualizarPedidoSeleccionado(ActionEvent event) {
+        Pedido seleccionado = tablaPedidos.getSelectionModel().getSelectedItem();
+        
+        if (seleccionado == null) {
+            AlertaUtil.mostrarAdvertencia("Seleccione un pedido", "Debe seleccionar un pedido de la lista.");
+            return;
+        }
+        
+        StringBuilder productos = new StringBuilder();
+        if (seleccionado.getItems() != null) {
+            seleccionado.getItems().forEach(item -> {
+                productos.append("- ").append(item.getProducto().getNombreProducto())
+                         .append(" x").append(item.getCantidad())
+                         .append(" ($").append(String.format("%,.0f", item.getSubtotal())).append(")\n");
+            });
+        }
+        
+        String info = String.format(
+            "ID Pedido: %s\nCliente: %s\nDireccion: %s\nFecha: %s\nTotal: %s\n\nProductos:\n%s",
+            seleccionado.getIdPedido(),
+            seleccionado.getNombreUsuario(),
+            seleccionado.getDireccionEnvio(),
+            seleccionado.getFechaFormateada(),
+            seleccionado.getTotalFormateado(),
+            productos.toString()
+        );
+        
+        AlertaUtil.mostrarInformacion("Detalle del Pedido", info);
+    }
+    
+    // ==================== GESTION DE CLIENTES ====================
+    
+    // ---------- Cargar lista de clientes
+    private void cargarListaClientes() {
+        if (tablaUsuarios == null) return;
+        
+        String idAdminActual = sesionServicio.getIdUsuarioActual();
+        ArrayList<Usuario> clientes = usuarioServicio.obtenerClientesParaAdmin(idAdminActual);
+        
+        ObservableList<Usuario> listaObservable = FXCollections.observableArrayList(clientes);
+        tablaUsuarios.setItems(listaObservable);
+    }
+    
+    // ---------- Visualizar informacion del cliente
+    @FXML
+    private void visualizarUsuarioSeleccionado(ActionEvent event) {
+        Usuario seleccionado = tablaUsuarios.getSelectionModel().getSelectedItem();
+        
+        if (seleccionado == null) {
+            AlertaUtil.mostrarAdvertencia("Seleccione un cliente", "Debe seleccionar un cliente de la lista.");
+            return;
+        }
+        
+        String info = String.format(
+            "Documento: %s\nNombre: %s\nCorreo: %s\nCelular: %s\nFecha Nacimiento: %s\nDireccion: %s",
+            seleccionado.getId(),
+            seleccionado.getNombreCompleto(),
+            seleccionado.getCorreo(),
+            seleccionado.getCelular(),
+            seleccionado.getFechaNacimiento(),
+            seleccionado.getDireccionCompleta()
+        );
+        
+        AlertaUtil.mostrarInformacion("Informacion del Cliente", info);
+    }
+    
+    // ---------- Editar cliente seleccionado
+    @FXML
+    private void editarUsuarioSeleccionado(ActionEvent event) {
+        usuarioSeleccionado = tablaUsuarios.getSelectionModel().getSelectedItem();
+        
+        if (usuarioSeleccionado == null) {
+            AlertaUtil.mostrarAdvertencia("Seleccione un cliente", "Debe seleccionar un cliente de la lista.");
+            return;
+        }
+        
+        if (usuarioSeleccionado.esAdmin()) {
+            AlertaUtil.mostrarError("Error", "No puede editar a otro administrador.");
+            return;
+        }
+        
+        mostrarPaneAdmin(paneEditarUsuario);
+        cargarDatosUsuarioEdicion();
+    }
+    
+    // ---- Cargar datos del usuario en el formulario de edicion
+    private void cargarDatosUsuarioEdicion() {
+        if (usuarioSeleccionado == null) return;
+        
+        if (txtCorreoEditarUsuario != null) txtCorreoEditarUsuario.setText(usuarioSeleccionado.getCorreo());
+        if (txtNombreEditarUsuario != null) txtNombreEditarUsuario.setText(usuarioSeleccionado.getNombre());
+        if (txtApellidoEditarUsuario != null) txtApellidoEditarUsuario.setText(usuarioSeleccionado.getApellido());
+        if (txtCelularEditarUsuario != null) txtCelularEditarUsuario.setText(usuarioSeleccionado.getCelular());
+        if (txtDocumentoEditarUsuario != null) txtDocumentoEditarUsuario.setText(usuarioSeleccionado.getId());
+        if (txtFechaNacimientoEditarUsuario != null) txtFechaNacimientoEditarUsuario.setText(usuarioSeleccionado.getFechaNacimiento());
+        if (txtDireccionEditarUsuario != null) txtDireccionEditarUsuario.setText(usuarioSeleccionado.getDireccion());
+        
+        if (comboDepartamentoEditarUsuario != null) {
+            comboDepartamentoEditarUsuario.getItems().clear();
+            comboDepartamentoEditarUsuario.getItems().addAll(DepartamentosColombia.getDepartamentos());
+            comboDepartamentoEditarUsuario.setValue(usuarioSeleccionado.getDepartamento());
+        }
+        
+        if (comboCiudadEditarUsuario != null && usuarioSeleccionado.getDepartamento() != null) {
+            comboCiudadEditarUsuario.getItems().clear();
+            comboCiudadEditarUsuario.getItems().addAll(DepartamentosColombia.getCiudades(usuarioSeleccionado.getDepartamento()));
+            comboCiudadEditarUsuario.setValue(usuarioSeleccionado.getCiudad());
         }
     }
-});
-    colCondicion.setCellValueFactory(new PropertyValueFactory<>("estadoProducto"));
-
-    ObservableList<Producto> productos =
-        FXCollections.observableArrayList(productoServicio.obtenerTodos());
-    tablaInventario.setItems(productos);
-}
-
-@FXML
-private void visualizarProducto() {
-    Producto seleccionado = tablaInventario.getSelectionModel().getSelectedItem();
-    if (seleccionado == null) {
-        AlertaUtil.mostrarAdvertencia("Sin selección", "Selecciona un producto de la tabla.");
-        return;
-    }
-
-    Stage ventana = new Stage();
-    ventana.setTitle("Detalle del Producto");
-    ventana.setResizable(false);
-
-    // Imagen
-    ImageView imagen = new ImageView();
-    imagen.setFitWidth(180);
-    imagen.setFitHeight(180);
-    imagen.setPreserveRatio(true);
-    try {
-        Image img = new Image(seleccionado.getImagenProducto());
-        imagen.setImage(img);
-    } catch (Exception e) {
-        // Si no carga la imagen, queda vacío
-    }
-
-    // Datos
-    VBox datos = new VBox(8);
-    datos.setStyle("-fx-padding: 10;");
-    datos.getChildren().addAll(
-        new Label("Nombre: "    + seleccionado.getNombreProducto()),
-        new Label("Marca: "     + seleccionado.getMarcaProducto()),
-        new Label("Stock: "     + seleccionado.getCantidadProducto()),
-        new Label("Precio: "    + seleccionado.getPrecioFormateado()),
-        new Label("Condición: " + seleccionado.getEstadoProducto())
-    );
-
-    // Layout
-    HBox contenedor = new HBox(20);
-    contenedor.setStyle("-fx-padding: 20; -fx-background-color: #f6f6f6;");
-    contenedor.getChildren().addAll(imagen, datos);
-
-    ventana.setScene(new Scene(contenedor));
-    ventana.show();
-}
-
-@FXML
-private void borrarProducto() {
-    Producto seleccionado = tablaInventario.getSelectionModel().getSelectedItem();
-    if (seleccionado == null) {
-        AlertaUtil.mostrarAdvertencia("Sin selección", "Selecciona un producto de la tabla.");
-        return;
-    }
-    productoServicio.eliminarProducto(seleccionado.getIdProducto());
-    historialAcciones.registrar("ELIMINAR",
-        "Producto: " + seleccionado.getNombreProducto(),
-        seleccionado.getIdProducto());
-    cargarTablaInventario();
-    AlertaUtil.mostrarInformacion("Eliminado",
-        "Producto " + seleccionado.getNombreProducto() + " eliminado.");
-}
-    // ----- Estadisticas
     
-    public void actualizarEstadisticas() {
-        int totalProductos = productoServicio.getCantidadProductos();
-        int sinStock = productoServicio.getCantidadSinStock();
-        double valorInventario = productoServicio.getValorInventario();
-        int totalUsuarios = usuarioServicio.getCantidadUsuarios();
-        int totalClientes = usuarioServicio.getCantidadClientes();
-        int totalAdmins = usuarioServicio.getCantidadAdmins();
+    // ---------- Guardar cambios del cliente
+    @FXML
+    private void guardarCambiosUsuario(ActionEvent event) {
+        if (usuarioSeleccionado == null) return;
         
+        String correo = txtCorreoEditarUsuario.getText().trim();
+        String nombre = txtNombreEditarUsuario.getText().trim();
+        String apellido = txtApellidoEditarUsuario.getText().trim();
+        String celular = txtCelularEditarUsuario.getText().trim();
+        String fechaNacimiento = txtFechaNacimientoEditarUsuario != null ? txtFechaNacimientoEditarUsuario.getText().trim() : usuarioSeleccionado.getFechaNacimiento();
+        String departamento = comboDepartamentoEditarUsuario.getValue();
+        String ciudad = comboCiudadEditarUsuario.getValue();
+        String direccion = txtDireccionEditarUsuario.getText().trim();
+        
+        if (correo.isEmpty() || nombre.isEmpty() || apellido.isEmpty()) {
+            AlertaUtil.mostrarCamposVacios();
+            return;
+        }
+        
+        Usuario actualizado = new Usuario(
+            correo, nombre, apellido, 
+            usuarioSeleccionado.getId(),
+            fechaNacimiento,
+            celular, departamento, ciudad, direccion,
+            usuarioSeleccionado.getContraseña(),
+            Usuario.Rol.CLIENTE
+        );
+        
+        String idAdmin = sesionServicio.getIdUsuarioActual();
+        if (usuarioServicio.editarCliente(usuarioSeleccionado.getId(), actualizado, idAdmin)) {
+            AlertaUtil.mostrarInformacion("Cliente actualizado", "Los datos del cliente han sido actualizados.");
+            irAdministracionPersonalAdmin();
+        } else {
+            AlertaUtil.mostrarError("Error", "No se pudieron guardar los cambios.");
+        }
     }
     
-    // ----- Estadisticas
+    // ---------- Cancelar edicion de cliente
+    @FXML
+    private void cancelarEdicionUsuario(ActionEvent event) {
+        usuarioSeleccionado = null;
+        irAdministracionPersonalAdmin();
+    }
+    
+    // ---------- Eliminar cliente seleccionado
+    @FXML
+    private void eliminarUsuarioSeleccionado(ActionEvent event) {
+        Usuario usuario = tablaUsuarios.getSelectionModel().getSelectedItem();
+        
+        if (usuario == null) {
+            AlertaUtil.mostrarAdvertencia("Seleccione un cliente", "Debe seleccionar un cliente de la lista.");
+            return;
+        }
+        
+        if (usuario.esAdmin()) {
+            AlertaUtil.mostrarError("Error", "No puede eliminar a otro administrador.");
+            return;
+        }
+        
+        if (AlertaUtil.confirmarEliminacionUsuario(usuario.getNombreCompleto())) {
+            String idAdmin = sesionServicio.getIdUsuarioActual();
+            if (usuarioServicio.eliminarCliente(usuario.getId(), idAdmin)) {
+                AlertaUtil.mostrarInformacion("Cliente eliminado", 
+                    "El cliente " + usuario.getNombreCompleto() + " ha sido eliminado.");
+                cargarListaClientes();
+            } else {
+                AlertaUtil.mostrarError("Error", "No se pudo eliminar el cliente.");
+            }
+        }
+    }
+    
+    // ==================== MI CUENTA (EDITAR INFO PROPIA) ====================
+    
+    // ---------- Cargar datos propios para edicion
+    private void cargarDatosMiCuenta() {
+        Usuario usuario = sesionServicio.getUsuarioActual();
+        if (usuario == null) return;
+        
+        if (txtCorreoMiCuenta != null) txtCorreoMiCuenta.setText(usuario.getCorreo());
+        if (txtNombreMiCuenta != null) txtNombreMiCuenta.setText(usuario.getNombre());
+        if (txtApellidoMiCuenta != null) txtApellidoMiCuenta.setText(usuario.getApellido());
+        if (txtCelularMiCuenta != null) txtCelularMiCuenta.setText(usuario.getCelular());
+        if (txtDocumentoMiCuenta != null) txtDocumentoMiCuenta.setText(usuario.getId());
+        if (txtFechaNacimientoMiCuenta != null) txtFechaNacimientoMiCuenta.setText(usuario.getFechaNacimiento());
+        if (txtDireccionMiCuenta != null) txtDireccionMiCuenta.setText(usuario.getDireccion());
+        
+        if (comboDepartamentoMiCuenta != null) {
+            comboDepartamentoMiCuenta.getItems().clear();
+            comboDepartamentoMiCuenta.getItems().addAll(DepartamentosColombia.getDepartamentos());
+            comboDepartamentoMiCuenta.setValue(usuario.getDepartamento());
+        }
+        
+        if (comboCiudadMiCuenta != null && usuario.getDepartamento() != null) {
+            comboCiudadMiCuenta.getItems().clear();
+            comboCiudadMiCuenta.getItems().addAll(DepartamentosColombia.getCiudades(usuario.getDepartamento()));
+            comboCiudadMiCuenta.setValue(usuario.getCiudad());
+        }
+    }
+    
+    // ---------- Guardar cambios de mi cuenta
+    @FXML
+    private void guardarCambiosMiCuenta(ActionEvent event) {
+        Usuario usuario = sesionServicio.getUsuarioActual();
+        if (usuario == null) return;
+        
+        String correo = txtCorreoMiCuenta.getText().trim();
+        String nombre = txtNombreMiCuenta.getText().trim();
+        String apellido = txtApellidoMiCuenta.getText().trim();
+        String celular = txtCelularMiCuenta.getText().trim();
+        String fechaNacimiento = txtFechaNacimientoMiCuenta != null ? txtFechaNacimientoMiCuenta.getText().trim() : usuario.getFechaNacimiento();
+        String departamento = comboDepartamentoMiCuenta.getValue();
+        String ciudad = comboCiudadMiCuenta.getValue();
+        String direccion = txtDireccionMiCuenta.getText().trim();
+        
+        if (correo.isEmpty() || nombre.isEmpty() || apellido.isEmpty()) {
+            AlertaUtil.mostrarCamposVacios();
+            return;
+        }
+        
+        Usuario actualizado = new Usuario(
+            correo, nombre, apellido, 
+            usuario.getId(), fechaNacimiento,
+            celular, departamento, ciudad, direccion,
+            usuario.getContraseña(), usuario.getRol()
+        );
+        
+        if (usuarioServicio.actualizarPerfilPropio(usuario.getId(), actualizado)) {
+            sesionServicio.actualizarUsuarioActual(actualizado);
+            cargarDatosUsuario();
+            AlertaUtil.mostrarInformacion("Datos actualizados", "Tu informacion ha sido actualizada.");
+            irPerfilAdmin();
+        } else {
+            AlertaUtil.mostrarError("Error", "No se pudieron guardar los cambios.");
+        }
+    }
+    
+    // ---------- Cancelar edicion de mi cuenta
+    @FXML
+    private void cancelarEdicionMiCuenta(ActionEvent event) {
+        irPerfilAdmin();
+    }
+    
+    // ---------- Mostrar dialogo para cambiar contraseña
+    @FXML
+    private void mostrarDialogoCambiarPassword(ActionEvent event) {
+        Dialog<ButtonType> dialog = new Dialog<>();
+        dialog.setTitle("Cambiar Contraseña");
+        dialog.setHeaderText("Ingrese su contraseña actual y la nueva contraseña");
+        
+        // ---- Crear campos de contraseña
+        PasswordField passwordActual = new PasswordField();
+        passwordActual.setPromptText("Contraseña actual");
+        
+        PasswordField passwordNueva = new PasswordField();
+        passwordNueva.setPromptText("Nueva contraseña");
+        
+        PasswordField passwordConfirmar = new PasswordField();
+        passwordConfirmar.setPromptText("Confirmar nueva contraseña");
+        
+        // ---- Crear layout
+        GridPane grid = new GridPane();
+        grid.setHgap(10);
+        grid.setVgap(10);
+        grid.setPadding(new Insets(20, 150, 10, 10));
+        
+        grid.add(new Label("Contraseña actual:"), 0, 0);
+        grid.add(passwordActual, 1, 0);
+        grid.add(new Label("Nueva contraseña:"), 0, 1);
+        grid.add(passwordNueva, 1, 1);
+        grid.add(new Label("Confirmar:"), 0, 2);
+        grid.add(passwordConfirmar, 1, 2);
+        
+        dialog.getDialogPane().setContent(grid);
+        dialog.getDialogPane().getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+        
+        Optional<ButtonType> result = dialog.showAndWait();
+        
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            String actual = passwordActual.getText();
+            String nueva = passwordNueva.getText();
+            String confirmar = passwordConfirmar.getText();
+            
+            Usuario usuario = sesionServicio.getUsuarioActual();
+            
+            // Validaciones
+            if (!usuario.getContraseña().equals(actual)) {
+                AlertaUtil.mostrarError("Error", "La contraseña actual es incorrecta.");
+                return;
+            }
+            
+            if (!nueva.equals(confirmar)) {
+                AlertaUtil.mostrarError("Error", "Las contraseñas nuevas no coinciden.");
+                return;
+            }
+            
+            if (!Validaciones.validarContraseña(nueva)) {
+                AlertaUtil.mostrarAdvertencia("Contraseña invalida", 
+                    "La contraseña debe tener entre 8 y 32 caracteres.");
+                return;
+            }
+            
+            // Actualizar contraseña
+            Usuario actualizado = new Usuario(
+                usuario.getCorreo(), usuario.getNombre(), usuario.getApellido(),
+                usuario.getId(), usuario.getFechaNacimiento(),
+                usuario.getCelular(), usuario.getDepartamento(), usuario.getCiudad(),
+                usuario.getDireccion(), nueva, usuario.getRol()
+            );
+            
+            if (usuarioServicio.actualizarPerfilPropio(usuario.getId(), actualizado)) {
+                sesionServicio.actualizarUsuarioActual(actualizado);
+                AlertaUtil.mostrarInformacion("Contraseña actualizada", 
+                    "Tu contraseña ha sido cambiada exitosamente.");
+            } else {
+                AlertaUtil.mostrarError("Error", "No se pudo cambiar la contraseña.");
+            }
+        }
+    }
+    
+    // ==================== HISTORIAL ====================
+    
+    // ---------- Cargar historial de movimientos
+    private void cargarHistorial() {
+        if (tablaHistorial == null) return;
+        
+        String filtro = comboFiltroHistorial != null ? comboFiltroHistorial.getValue() : "Todos";
+        ArrayList<Historial> historial;
+        
+        switch (filtro) {
+            case "Compras":
+                historial = historialServicio.filtrarHistorialCompletoPorTipo(Historial.TipoAccion.COMPRA);
+                break;
+            case "Carrito":
+                historial = new ArrayList<>();
+                historial.addAll(historialServicio.filtrarHistorialCompletoPorTipo(Historial.TipoAccion.AGREGAR_CARRITO));
+                historial.addAll(historialServicio.filtrarHistorialCompletoPorTipo(Historial.TipoAccion.QUITAR_CARRITO));
+                break;
+            case "Favoritos":
+                historial = new ArrayList<>();
+                historial.addAll(historialServicio.filtrarHistorialCompletoPorTipo(Historial.TipoAccion.AGREGAR_FAVORITO));
+                historial.addAll(historialServicio.filtrarHistorialCompletoPorTipo(Historial.TipoAccion.QUITAR_FAVORITO));
+                break;
+            case "Busquedas":
+                historial = historialServicio.filtrarHistorialCompletoPorTipo(Historial.TipoAccion.BUSQUEDA);
+                break;
+            case "Sesiones":
+                historial = new ArrayList<>();
+                historial.addAll(historialServicio.filtrarHistorialCompletoPorTipo(Historial.TipoAccion.INICIO_SESION));
+                historial.addAll(historialServicio.filtrarHistorialCompletoPorTipo(Historial.TipoAccion.CIERRE_SESION));
+                break;
+            case "Acciones Admin":
+                historial = historialServicio.obtenerHistorialAdmin();
+                break;
+            default:
+                historial = historialServicio.obtenerHistorialCompleto();
+        }
+        
+        ObservableList<Historial> listaObservable = FXCollections.observableArrayList(historial);
+        tablaHistorial.setItems(listaObservable);
+    }
+    
+    // ==================== CERRAR SESION ====================
     
     @FXML
     private void cerrarSesion(ActionEvent event) {
+        if (!AlertaUtil.confirmarAccion("Cerrar Sesion", "¿Esta seguro de cerrar sesion?")) {
+            return;
+        }
+        
         try {
             sesionServicio.cerrarSesion();
             
@@ -471,53 +1071,13 @@ private void borrarProducto() {
             stage.centerOnScreen();
             stage.show();
             
-            MenuItem menuItem = (MenuItem) event.getSource();
-            Stage currentStage = (Stage) menuItem.getParentPopup().getOwnerWindow();
-            currentStage.close();
+            // Cerrar ventana actual
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            if (currentStage != null) currentStage.close();
             
         } catch (Exception e) {
             AlertaUtil.mostrarError("Error", "Error al cerrar sesion: " + e.getMessage());
             e.printStackTrace();
         }
     }
-    
-    
-@FXML
-private void mostrarHistorialAcciones() {
-    ArrayList<String> acciones = historialAcciones.getHistorialLegible();
-
-    Stage ventana = new Stage();
-    ventana.setTitle("Historial de Acciones");
-    ventana.setResizable(false);
-
-    VBox contenedor = new VBox(10);
-    contenedor.setStyle("-fx-padding: 20; -fx-background-color: #f6f6f6;");
-
-    if (acciones.isEmpty()) {
-        Label vacio = new Label("No hay acciones registradas aún.");
-        vacio.setStyle("-fx-font-size: 13px;");
-        contenedor.getChildren().add(vacio);
-    } else {
-        for (String accion : acciones) {
-            Label lblAccion = new Label(accion);
-            lblAccion.setStyle(
-                "-fx-background-color: #ffffff;" +
-                "-fx-padding: 8 12 8 12;" +
-                "-fx-background-radius: 6;" +
-                "-fx-font-size: 12px;" +
-                "-fx-max-width: infinity;"
-            );
-            lblAccion.setMaxWidth(Double.MAX_VALUE);
-            contenedor.getChildren().add(lblAccion);
-        }
-    }
-
-    ScrollPane scroll = new ScrollPane(contenedor);
-    scroll.setFitToWidth(true);
-    scroll.setStyle("-fx-background-color: #f6f6f6;");
-
-    Scene escena = new Scene(scroll, 380, 300);
-    ventana.setScene(escena);
-    ventana.show();
-}
 }

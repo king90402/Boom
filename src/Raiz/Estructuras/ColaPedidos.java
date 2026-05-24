@@ -1,9 +1,6 @@
 /*
- * Estructura de Datos: COLA (FIFO) para pedidos pendientes
- * Proyecto Boom Sincronizado
- * UNIDAD 6: COLAS
- *
- * Principio FIFO: el primer pedido en entrar es el primero en procesarse.
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/ColaPedidos.java to edit this template
  */
 
 package Raiz.Estructuras;
@@ -13,14 +10,18 @@ import Raiz.Modelos.Pedido;
 import java.util.ArrayList;
 
 /**
- * @author BoomTeam
- * Cola específica para manejar los pedidos pendientes del sistema
+ * @author alejo
  */
-public class ColaPedidos {
 
-    private NodoPedido frente; // primer pedido en entrar (sale primero)
-    private NodoPedido final_; // último pedido en entrar
+// --------- Clase encargada del manejo de los pedidos mediante una cola
+
+public class ColaPedidos {
+    
+    private NodoPedido frente; 
+    private NodoPedido final_; 
+
     private int tamaño;
+
 
     public ColaPedidos() {
         this.frente = null;
@@ -30,14 +31,17 @@ public class ColaPedidos {
 
     // ----- Consulta general -----
 
-    public boolean estaVacia() { return frente == null; }
-    public int getTamaño()     { return tamaño; }
+
+    public boolean estaVacia() {
+        return frente == null;
+    }
+
+    public int getTamaño() {
+        return tamaño;
+    }
 
     // ----- Operaciones FIFO -----
 
-    /**
-     * ENCOLAR — Agrega un pedido al final de la cola. O(1)
-     */
     public void encolar(Pedido pedido) {
         NodoPedido nuevo = new NodoPedido(pedido);
         if (estaVacia()) {
@@ -50,10 +54,6 @@ public class ColaPedidos {
         tamaño++;
     }
 
-    /**
-     * DESENCOLAR — Extrae y retorna el pedido del frente. O(1)
-     * @return null si la cola está vacía
-     */
     public Pedido desencolar() {
         if (estaVacia()) return null;
         Pedido pedido = frente.getPedido();
@@ -63,17 +63,12 @@ public class ColaPedidos {
         return pedido;
     }
 
-    /**
-     * VER FRENTE — Consulta el siguiente pedido a procesar sin extraerlo. O(1)
-     * @return null si la cola está vacía
-     */
     public Pedido verFrente() {
         return frente != null ? frente.getPedido() : null;
     }
 
     // ----- Búsqueda -----
 
-    /** Busca un pedido por su ID. O(n) */
     public Pedido buscarPorId(String idPedido) {
         NodoPedido actual = frente;
         while (actual != null) {
@@ -85,16 +80,14 @@ public class ColaPedidos {
         return null;
     }
 
-    /** Indica si existe un pedido con ese ID en la cola. O(n) */
+    /** Indica si existe un pedido con ese ID en la cola. */
+
     public boolean contienePedido(String idPedido) {
         return buscarPorId(idPedido) != null;
     }
 
     // ----- Eliminación -----
 
-    /**
-     * Elimina un pedido específico de la cola (p. ej. cuando se cancela). O(n)
-     */
     public boolean eliminarPorId(String idPedido) {
         if (estaVacia()) return false;
 
@@ -120,7 +113,6 @@ public class ColaPedidos {
 
     // ----- Obtención -----
 
-    /** Devuelve todos los pedidos en orden FIFO (frente primero). O(n) */
     public ArrayList<Pedido> obtenerTodos() {
         ArrayList<Pedido> lista = new ArrayList<>();
         NodoPedido actual = frente;
@@ -133,16 +125,24 @@ public class ColaPedidos {
 
     // ----- Limpieza -----
 
+
     public void vaciar() {
         frente = null;
         final_ = null;
         tamaño = 0;
     }
 
-    public NodoPedido getFrente() { return frente; }
-    public NodoPedido getFinal()  { return final_; }
+
+    public NodoPedido getFrente() {
+        return frente;
+    }
+
+    public NodoPedido getFinal() {
+        return final_;
+    }
 
     @Override
+
     public String toString() {
         return "ColaPedidos[tamaño=" + tamaño +
                ", frente=" + (frente != null ? frente.getPedido().getIdPedido() : "vacía") + "]";

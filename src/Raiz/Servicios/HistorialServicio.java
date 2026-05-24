@@ -1,6 +1,6 @@
 /*
- * Servicio de Historial - Proyecto Boom Sincronizado
- * IMPORTANTE: El historial solo es visible para ADMINISTRADORES
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/HistorialServicio.java to edit this template
  */
 
 package Raiz.Servicios;
@@ -11,334 +11,191 @@ import java.io.*;
 import java.util.ArrayList;
 
 /**
- * @author BoomTeam
- * Gestiona el historial de acciones del sistema usando estructura PILA
- * NOTA: Solo los administradores pueden ver el historial
+ * @author alejo
  */
 
+// --------- Clase encargada de gestionar todas las operaciones relacionadas con el historial
+
 public class HistorialServicio {
-    
+
     // Singleton
+
     private static HistorialServicio instancia;
-    
     public static HistorialServicio getInstancia() {
         if (instancia == null) {
             synchronized (HistorialServicio.class) {
-                if (instancia == null) {
-                    instancia = new HistorialServicio();
-                }
+                if (instancia == null) instancia = new HistorialServicio();
             }
         }
         return instancia;
     }
-    
+
     // Constantes
+
     private static final String ARCHIVO_HISTORIAL = "historial.txt";
-    private static final int MAX_HISTORIAL = 100;
-    
-    // Atributos
-    private PilaHistorial pilaHistorial;
-    private String idUsuarioActual;
-    
-    // Constructor privado
+
+    // La pila en memoria solo actúa como caché de escritura;
+    // para consultas completas siempre se lee el archivo.
+
+    private PilaHistorial pilaCache;
+
+
     private HistorialServicio() {
-        this.pilaHistorial = new PilaHistorial(MAX_HISTORIAL);
-        this.idUsuarioActual = null;
+        this.pilaCache = new PilaHistorial();
     }
-    
-    // ----- Inicializacion por usuario -----
-    
+
+    // ----------------------------------------------------------------
+    //  REGISTRO (todos los servicios llaman aquí)
+    // ----------------------------------------------------------------
+
     /**
-     * Carga el historial completo (solo para admins)
+     * Registra cualquier acción del sistema y la persiste inmediatamente.
      */
-    public void cargarHistorialCompleto() {
-        this.pilaHistorial.vaciar();
-        cargarTodoDesdeArchivo();
-    }
-    
-    /**
-     * Carga el historial de un usuario especifico
-     */
-    public void cargarHistorialUsuario(String idUsuario) {
-        this.idUsuarioActual = idUsuario;
-        this.pilaHistorial.vaciar();
-        cargarDesdeArchivo();
-    }
-    
-    /**
-     * Reinicia para cambio de usuario
-     */
-    public void reiniciar() {
-        guardarEnArchivo();
-        this.pilaHistorial.vaciar();
-        this.idUsuarioActual = null;
-    }
-    
-    // ----- Operaciones de Pila -----
-    
-    /**
-     * PUSH - Registra una nueva accion en el historial
-     */
+
     public void registrarAccion(Historial accion) {
         if (accion == null) return;
-        pilaHistorial.push(accion);
-        guardarEnArchivo();
+        pilaCache.push(accion);
+        appendAlArchivo(accion);
     }
-    
-    /**
-     * Registra una accion simple
-     */
-    public void registrarAccion(Historial.TipoAccion tipo, String descripcion) {
-        Historial h = new Historial(tipo, descripcion, idUsuarioActual);
-        registrarAccion(h);
+
+    /** Registra una acción pasando los datos directamente. */
+
+    public void registrar(Historial.TipoAccion tipo, String descripcion, String idUsuario) {
+        registrarAccion(new Historial(tipo, descripcion, idUsuario));
     }
-    
-    /**
-     * Registra una accion administrativa (para acciones de CRUD de usuarios)
-     */
-    public void registrarAccionAdmin(Historial.TipoAccion tipo, String descripcion, String idAdmin) {
-        Historial h = new Historial(tipo, descripcion, idAdmin);
-        registrarAccion(h);
+
+    /** Registra una acción con producto y monto asociados. */
+
+    public void registrar(Historial.TipoAccion tipo, String descripcion,
+                          String idUsuario, String idProducto, double monto) {
+        registrarAccion(new Historial(tipo, descripcion, idUsuario, idProducto, monto));
     }
-    
-    /**
-     * POP - Obtiene y elimina la ultima accion (para "deshacer")
-     */
-    public Historial deshacerUltimaAccion() {
-        Historial ultima = pilaHistorial.pop();
-        if (ultima != null) {
-            guardarEnArchivo();
-        }
-        return ultima;
+
+    // ----------------------------------------------------------------
+    //  CONSULTAS (solo para admin)
+    // ----------------------------------------------------------------
+
+    /** Devuelve TODAS las acciones del sistema (más reciente primero). */
+
+    public ArrayList<Historial> obtenerTodo() {
+        return cargarTodoDesdeArchivo();
     }
-    
-    /**
-     * PEEK - Obtiene la ultima accion sin eliminarla
-     */
-    public Historial verUltimaAccion() {
-        return pilaHistorial.peek();
-    }
-    
-    // ----- Consultas (SOLO PARA ADMINS) -----
-    
-    /**
-     * Obtiene todo el historial (del mas reciente al mas antiguo)
-     * NOTA: Este metodo debe ser llamado solo desde la vista de admin
-     */
+
+    /** Alias de obtenerTodo() para compatibilidad. */
+
     public ArrayList<Historial> obtenerHistorialCompleto() {
-        // Cargar todo el historial para admins
-        PilaHistorial pilaTemp = new PilaHistorial(MAX_HISTORIAL * 10);
-        
-        File archivo = new File(ARCHIVO_HISTORIAL);
-        if (!archivo.exists()) {
-            return new ArrayList<>();
-        }
-        
-        try (BufferedReader reader = new BufferedReader(new FileReader(ARCHIVO_HISTORIAL))) {
-            String linea;
-            while ((linea = reader.readLine()) != null) {
-                if (linea.trim().isEmpty()) continue;
-                Historial h = Historial.fromArchivoLinea(linea);
-                if (h != null) {
-                    pilaTemp.push(h);
-                }
-            }
-        } catch (IOException e) {
-            System.err.println("[HistorialServicio] Error al cargar historial: " + e.getMessage());
-        }
-        
-        return pilaTemp.obtenerTodos();
+        return obtenerTodo();
     }
-    
-    /**
-     * Obtiene el historial del usuario actual
-     */
-    public ArrayList<Historial> obtenerHistorial() {
-        return pilaHistorial.obtenerTodos();
-    }
-    
-    /**
-     * Obtiene las ultimas N acciones
-     */
-    public ArrayList<Historial> obtenerUltimas(int cantidad) {
-        ArrayList<Historial> todas = pilaHistorial.obtenerTodos();
-        ArrayList<Historial> ultimas = new ArrayList<>();
-        
-        int limite = Math.min(cantidad, todas.size());
-        for (int i = 0; i < limite; i++) {
-            ultimas.add(todas.get(i));
+
+    /** Devuelve las acciones de un usuario específico (más reciente primero). */
+
+    public ArrayList<Historial> obtenerPorUsuario(String idUsuario) {
+        ArrayList<Historial> resultado = new ArrayList<>();
+        for (Historial h : cargarTodoDesdeArchivo()) {
+            if (idUsuario.equals(h.getIdUsuario())) resultado.add(h);
         }
-        
-        return ultimas;
+        return resultado;
     }
-    
-    /**
-     * Filtra historial por tipo de accion
-     */
-    public ArrayList<Historial> filtrarPorTipo(Historial.TipoAccion tipo) {
-        ArrayList<Historial> todas = pilaHistorial.obtenerTodos();
-        ArrayList<Historial> filtradas = new ArrayList<>();
-        
-        for (Historial h : todas) {
-            if (h.getTipo() == tipo) {
-                filtradas.add(h);
-            }
+
+    /** Devuelve las acciones de un tipo específico. */
+
+    public ArrayList<Historial> obtenerPorTipo(Historial.TipoAccion tipo) {
+        ArrayList<Historial> resultado = new ArrayList<>();
+        for (Historial h : cargarTodoDesdeArchivo()) {
+            if (h.getTipo() == tipo) resultado.add(h);
         }
-        
-        return filtradas;
+        return resultado;
     }
-    
-    /**
-     * Filtra historial completo por tipo (para admins)
-     */
+
+    /** Alias de obtenerPorTipo() para compatibilidad. */
+
     public ArrayList<Historial> filtrarHistorialCompletoPorTipo(Historial.TipoAccion tipo) {
-        ArrayList<Historial> todas = obtenerHistorialCompleto();
-        ArrayList<Historial> filtradas = new ArrayList<>();
-        
-        for (Historial h : todas) {
-            if (h.getTipo() == tipo) {
-                filtradas.add(h);
-            }
+        return obtenerPorTipo(tipo);
+    }
+
+    /** Devuelve solo las acciones administrativas (CRUD usuarios y productos). */
+
+    public ArrayList<Historial> obtenerAccionesAdmin() {
+        ArrayList<Historial> resultado = new ArrayList<>();
+        for (Historial h : cargarTodoDesdeArchivo()) {
+            if (h.esAccionAdmin()) resultado.add(h);
         }
-        
-        return filtradas;
+        return resultado;
     }
-    
-    public ArrayList<Historial> obtenerHistorialCompras() {
-        return filtrarPorTipo(Historial.TipoAccion.COMPRA);
-    }
-    
-    public ArrayList<Historial> obtenerHistorialBusquedas() {
-        return filtrarPorTipo(Historial.TipoAccion.BUSQUEDA);
-    }
-    
-    /**
-     * Obtiene historial de acciones administrativas (para admins)
-     */
+
+    /** Alias de obtenerAccionesAdmin() para compatibilidad. */
+
     public ArrayList<Historial> obtenerHistorialAdmin() {
-        ArrayList<Historial> todas = obtenerHistorialCompleto();
-        ArrayList<Historial> adminAcciones = new ArrayList<>();
-        
-        for (Historial h : todas) {
-            if (h.getTipo() == Historial.TipoAccion.USUARIO_CREADO ||
-                h.getTipo() == Historial.TipoAccion.USUARIO_EDITADO ||
-                h.getTipo() == Historial.TipoAccion.USUARIO_ELIMINADO) {
-                adminAcciones.add(h);
-            }
+        return obtenerAccionesAdmin();
+    }
+
+    /** Devuelve las últimas N acciones del sistema. */
+
+    public ArrayList<Historial> obtenerUltimas(int n) {
+        ArrayList<Historial> todas = cargarTodoDesdeArchivo();
+        int limite = Math.min(n, todas.size());
+        return new ArrayList<>(todas.subList(0, limite));
+    }
+
+    /** Devuelve las últimas N acciones de un usuario. */
+
+    public ArrayList<Historial> obtenerUltimasPorUsuario(String idUsuario, int n) {
+        ArrayList<Historial> porUsuario = obtenerPorUsuario(idUsuario);
+        int limite = Math.min(n, porUsuario.size());
+        return new ArrayList<>(porUsuario.subList(0, limite));
+    }
+
+
+    public int getCantidadTotal() {
+        return cargarTodoDesdeArchivo().size();
+    }
+
+    // ----------------------------------------------------------------
+    //  Limpieza
+    // ----------------------------------------------------------------
+
+
+    public void limpiarTodo() {
+        pilaCache.vaciar();
+        try { new FileWriter(ARCHIVO_HISTORIAL).close(); }
+        catch (IOException e) { System.err.println("[HistorialServicio] Error al limpiar: " + e.getMessage()); }
+    }
+
+    // ----------------------------------------------------------------
+    //  Persistencia
+    // ----------------------------------------------------------------
+
+    /** Agrega una línea al final del archivo (append). O(1). */
+
+    private void appendAlArchivo(Historial h) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(ARCHIVO_HISTORIAL, true))) {
+            writer.write(h.toArchivoLinea());
+            writer.newLine();
+        } catch (IOException e) {
+            System.err.println("[HistorialServicio] Error al escribir: " + e.getMessage());
         }
-        
-        return adminAcciones;
     }
-    
-    public int getCantidadAcciones() {
-        return pilaHistorial.getTamaño();
-    }
-    
-    public boolean tieneHistorial() {
-        return !pilaHistorial.estaVacia();
-    }
-    
-    // ----- Operaciones de limpieza -----
-    
-    public void limpiarHistorial() {
-        pilaHistorial.vaciar();
-        guardarEnArchivo();
-    }
-    
-    // ----- Persistencia -----
-    
-    private void cargarDesdeArchivo() {
-        if (idUsuarioActual == null) return;
-        
+
+    /**
+     * Lee el archivo completo y retorna la lista con el más reciente primero
+     * (el archivo está en orden cronológico, así que invertimos).
+     */
+
+    private ArrayList<Historial> cargarTodoDesdeArchivo() {
+        ArrayList<Historial> lista = new ArrayList<>();
         File archivo = new File(ARCHIVO_HISTORIAL);
-        if (!archivo.exists()) return;
-        
-        PilaHistorial pilaTemp = new PilaHistorial(MAX_HISTORIAL);
-        
+        if (!archivo.exists()) return lista;
+
         try (BufferedReader reader = new BufferedReader(new FileReader(ARCHIVO_HISTORIAL))) {
             String linea;
             while ((linea = reader.readLine()) != null) {
                 if (linea.trim().isEmpty()) continue;
                 Historial h = Historial.fromArchivoLinea(linea);
-                if (h != null && h.getIdUsuario().equals(idUsuarioActual)) {
-                    pilaTemp.push(h);
-                }
+                if (h != null) lista.add(0, h); // insertar al inicio = más reciente primero
             }
         } catch (IOException e) {
-            System.err.println("[HistorialServicio] Error al cargar historial: " + e.getMessage());
+            System.err.println("[HistorialServicio] Error al leer: " + e.getMessage());
         }
-        
-        // Invertir para que el mas reciente quede en el tope
-        while (!pilaTemp.estaVacia()) {
-            pilaHistorial.push(pilaTemp.pop());
-        }
-    }
-    
-    private void cargarTodoDesdeArchivo() {
-        File archivo = new File(ARCHIVO_HISTORIAL);
-        if (!archivo.exists()) return;
-        
-        PilaHistorial pilaTemp = new PilaHistorial(MAX_HISTORIAL * 10);
-        
-        try (BufferedReader reader = new BufferedReader(new FileReader(ARCHIVO_HISTORIAL))) {
-            String linea;
-            while ((linea = reader.readLine()) != null) {
-                if (linea.trim().isEmpty()) continue;
-                Historial h = Historial.fromArchivoLinea(linea);
-                if (h != null) {
-                    pilaTemp.push(h);
-                }
-            }
-        } catch (IOException e) {
-            System.err.println("[HistorialServicio] Error al cargar historial: " + e.getMessage());
-        }
-        
-        while (!pilaTemp.estaVacia()) {
-            pilaHistorial.push(pilaTemp.pop());
-        }
-    }
-    
-    private void guardarEnArchivo() {
-        if (idUsuarioActual == null) return;
-        
-        // Leer historial de otros usuarios
-        ArrayList<String> lineasOtrosUsuarios = new ArrayList<>();
-        
-        File archivo = new File(ARCHIVO_HISTORIAL);
-        if (archivo.exists()) {
-            try (BufferedReader reader = new BufferedReader(new FileReader(ARCHIVO_HISTORIAL))) {
-                String linea;
-                while ((linea = reader.readLine()) != null) {
-                    if (!linea.trim().isEmpty()) {
-                        Historial h = Historial.fromArchivoLinea(linea);
-                        if (h != null && !h.getIdUsuario().equals(idUsuarioActual)) {
-                            lineasOtrosUsuarios.add(linea);
-                        }
-                    }
-                }
-            } catch (IOException e) {
-                System.err.println("[HistorialServicio] Error al leer archivo: " + e.getMessage());
-            }
-        }
-        
-        // Escribir todo
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(ARCHIVO_HISTORIAL))) {
-            for (String linea : lineasOtrosUsuarios) {
-                writer.write(linea);
-                writer.newLine();
-            }
-            
-            ArrayList<Historial> historialActual = pilaHistorial.obtenerTodos();
-            for (int i = historialActual.size() - 1; i >= 0; i--) {
-                writer.write(historialActual.get(i).toArchivoLinea());
-                writer.newLine();
-            }
-        } catch (IOException e) {
-            System.err.println("[HistorialServicio] Error al guardar historial: " + e.getMessage());
-        }
-    }
-    
-    public String getIdUsuarioActual() {
-        return idUsuarioActual;
+        return lista;
     }
 }

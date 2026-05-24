@@ -14,14 +14,14 @@ package Raiz.Modelos;
 public class Usuario {
     
     // Enum de roles
-    
+
     public enum Rol {
         CLIENTE,
         ADMIN
     }
     
     // Atributos
-    
+
     private String correo;
     private String nombre;
     private String apellido;
@@ -35,7 +35,7 @@ public class Usuario {
     private Rol rol;
     
     // Constructor vacio - inicializado con valores por defecto (CLIENTE)
-    
+
     public Usuario() {
         this.correo = "";
         this.nombre = "";
@@ -50,9 +50,10 @@ public class Usuario {
         this.rol = Rol.CLIENTE;
     }
     
-    // Constructor (CLIENTE)
-    
-    public Usuario(String correo, String nombre, String apellido, String id, String fechaNacimiento, String celular, String departamento, String ciudad, String direccion, String contraseña) {
+    // Constructor para CLIENTE (sin rol)
+
+    public Usuario(String correo, String nombre, String apellido, String id, String fechaNacimiento, 
+                   String celular, String departamento, String ciudad, String direccion, String contraseña) {
         this.correo = correo;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -66,9 +67,10 @@ public class Usuario {
         this.rol = Rol.CLIENTE;
     }
     
-    // Constructor
+    // Constructor completo con rol
 
-    public Usuario(String correo, String nombre, String apellido, String id, String fechaNacimiento, String celular, String departamento, String ciudad, String direccion, String contraseña, Rol rol) {
+    public Usuario(String correo, String nombre, String apellido, String id, String fechaNacimiento, 
+                   String celular, String departamento, String ciudad, String direccion, String contraseña, Rol rol) {
         this.correo = correo;
         this.nombre = nombre;
         this.apellido = apellido;
@@ -99,11 +101,11 @@ public class Usuario {
     public String getId() {
         return id;
     }
-    
+
     public String getFechaNacimiento() {
         return fechaNacimiento;
     }
-    
+
     public String getCelular() {
         return celular;
     }
@@ -123,7 +125,7 @@ public class Usuario {
     public String getContraseña() {
         return contraseña;
     }
-    
+
     public Rol getRol() {
         return rol;
     }
@@ -145,11 +147,11 @@ public class Usuario {
     public void setId(String id) {
         this.id = id;
     }
-    
+
     public void setFechaNacimiento(String fechaNacimiento) {
         this.fechaNacimiento = fechaNacimiento;
     }
-    
+
     public void setCelular(String celular) {
         this.celular = celular;
     }
@@ -166,26 +168,24 @@ public class Usuario {
         this.direccion = direccion;
     }
 
-    public void setContraseña(String Contraseña) {
-        this.contraseña = Contraseña;
+    public void setContraseña(String contraseña) {
+        this.contraseña = contraseña;
     }
 
     public void setRol(Rol rol) {
         this.rol = rol;
     }
     
-    // ----- Metodos auxiliares
+    // ----- Metodos auxiliares -----
     
-    // Retorna el nombre completo del usuario
-    
+
     public String getNombreCompleto() {
         if (apellido == null || apellido.isEmpty()) {
             return nombre;
         }
         return nombre + " " + apellido;
     }
-    
-    // Retorna las inciales del nombre del usuario
+
 
     public String getIniciales() {
         if (nombre == null || nombre.isEmpty()) {
@@ -198,8 +198,7 @@ public class Usuario {
         return inicial1 + inicial2;
     }
     
-    // Retorna la direccion completa formateada
-    
+
     public String getDireccionCompleta() {
         StringBuilder direccionCompleta = new StringBuilder();
         
@@ -207,36 +206,28 @@ public class Usuario {
             direccionCompleta.append(direccion);
         }
         if (ciudad != null && !ciudad.isEmpty()) {
-            if (direccionCompleta.length() > 0) {
-                direccionCompleta.append(", ");
-            }
+            if (direccionCompleta.length() > 0) direccionCompleta.append(", ");
             direccionCompleta.append(ciudad);
         }
         if (departamento != null && !departamento.isEmpty()) {
-            if (direccionCompleta.length() > 0) {
-                direccionCompleta.append(", ");
-            }
+            if (direccionCompleta.length() > 0) direccionCompleta.append(", ");
             direccionCompleta.append(departamento);
         }
         return direccionCompleta.toString();
     }
     
-    // Verifica si el usuario logeado es administrador
-    
+
     public boolean esAdmin() {
         return rol == Rol.ADMIN;
     }
-    
-    // Verifica si el usuario logeado es cliente
-    
+
     public boolean esCliente() {
         return rol == Rol.CLIENTE;
     }
     
-    // ----- Serializacion de los datos (atributos) de usuario
+    // ----- Serializacion -----
     
-    // COnvierte los datos en linea de texto para su respectivo guardado en archivo usuarios
-    
+
     public String toArchivoLinea() {
         return String.join(";",
             correo != null ? correo : "",
@@ -253,8 +244,7 @@ public class Usuario {
         );
     }
     
-    // Crea usuarios a partir de lineas de texto en el archivo usuarios
-    
+
     public static Usuario fromArchivoLinea(String linea) {
         if (linea == null || linea.trim().isEmpty()) {
             return null;
@@ -264,18 +254,11 @@ public class Usuario {
         
         if (datos.length >= 11) {
             Usuario u = new Usuario(
-                datos[0].trim(),  // correo
-                datos[1].trim(),  // nombre
-                datos[2].trim(),  // apellido
-                datos[3].trim(),  // id
-                datos[4].trim(),  // fechaNacimiento
-                datos[5].trim(),  // celular
-                datos[6].trim(),  // departamento
-                datos[7].trim(),  // ciudad
-                datos[8].trim(),  // direccion
-                datos[9].trim()   // contraseña
+                datos[0].trim(), datos[1].trim(), datos[2].trim(),
+                datos[3].trim(), datos[4].trim(), datos[5].trim(),
+                datos[6].trim(), datos[7].trim(), datos[8].trim(),
+                datos[9].trim()
             );
-            
             try {
                 u.setRol(Rol.valueOf(datos[10].trim().toUpperCase()));
             } catch (IllegalArgumentException e) {
@@ -283,7 +266,6 @@ public class Usuario {
             }
             return u;
         } else if (datos.length >= 10) {
-            // Formato sin rol (compatibilidad hacia atras)
             return new Usuario(
                 datos[0].trim(), datos[1].trim(), datos[2].trim(),
                 datos[3].trim(), datos[4].trim(), datos[5].trim(),
@@ -291,19 +273,18 @@ public class Usuario {
                 datos[9].trim()
             );
         }
-        
         return null;
     }
     
-    // ----- Metodos override
-    
     @Override
+
     public String toString() {
         return String.format("Usuario[nombre=%s %s, correo=%s, rol=%s]", 
                             nombre, apellido, correo, rol);
     }
     
     @Override
+
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
@@ -313,6 +294,7 @@ public class Usuario {
     }
     
     @Override
+
     public int hashCode() {
         int result = id != null ? id.hashCode() : 0;
         result = 31 * result + (correo != null ? correo.toLowerCase().hashCode() : 0);

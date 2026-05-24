@@ -1,6 +1,6 @@
 /*
- * Estructura de Datos: LISTA SIMPLEMENTE ENLAZADA para favoritos del usuario
- * Proyecto Boom Sincronizado
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/ListaFavoritos.java to edit this template
  */
 
 package Raiz.Estructuras;
@@ -9,13 +9,16 @@ import Raiz.Modelos.NodoFavorito;
 import java.util.ArrayList;
 
 /**
- * @author BoomTeam
- * Lista simplemente enlazada para manejar los IDs de productos favoritos de un usuario
+ * @author alejo
  */
-public class ListaFavoritos {
 
+// --------- Clase encargada del manejo de los favoritos mediante una lista doblemente enlazada
+
+public class ListaFavoritos {
+    
     private NodoFavorito cabeza;
     private int tamaño;
+
 
     public ListaFavoritos() {
         this.cabeza = null;
@@ -24,12 +27,17 @@ public class ListaFavoritos {
 
     // ----- Consulta general -----
 
-    public boolean estaVacia() { return cabeza == null; }
-    public int getTamaño()     { return tamaño; }
+
+    public boolean estaVacia() {
+        return cabeza == null;
+    }
+
+    public int getTamaño() {
+        return tamaño;
+    }
 
     // ----- Inserción -----
 
-    /** Agrega el ID al final de la lista. O(n) */
     public void insertarAlFinal(String idProducto) {
         NodoFavorito nuevo = new NodoFavorito(idProducto);
         if (estaVacia()) {
@@ -46,7 +54,6 @@ public class ListaFavoritos {
 
     // ----- Eliminación -----
 
-    /** Elimina el primer nodo con ese idProducto. O(n) */
     public boolean eliminar(String idProducto) {
         if (estaVacia()) return false;
 
@@ -70,7 +77,6 @@ public class ListaFavoritos {
 
     // ----- Búsqueda -----
 
-    /** Indica si el idProducto ya está en favoritos. O(n) */
     public boolean contiene(String idProducto) {
         NodoFavorito actual = cabeza;
         while (actual != null) {
@@ -82,7 +88,6 @@ public class ListaFavoritos {
 
     // ----- Obtención -----
 
-    /** Devuelve todos los IDs como ArrayList. O(n) */
     public ArrayList<String> obtenerTodos() {
         ArrayList<String> lista = new ArrayList<>();
         NodoFavorito actual = cabeza;
@@ -100,5 +105,8 @@ public class ListaFavoritos {
         tamaño = 0;
     }
 
-    public NodoFavorito getCabeza() { return cabeza; }
+
+    public NodoFavorito getCabeza() {
+        return cabeza;
+    }
 }

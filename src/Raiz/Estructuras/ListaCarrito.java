@@ -1,6 +1,6 @@
 /*
- * Estructura de Datos: LISTA DOBLEMENTE ENLAZADA para el carrito de compras
- * Proyecto Boom Sincronizado
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/ListaCarrito.java to edit this template
  */
 
 package Raiz.Estructuras;
@@ -10,14 +10,17 @@ import Raiz.Modelos.NodoItemCarrito;
 import java.util.ArrayList;
 
 /**
- * @author BoomTeam
- * Lista doblemente enlazada para manejar los ítems del carrito de compras
+ * @author alejo
  */
-public class ListaCarrito {
 
+// --------- Clase encargada del manejo del carrito mediante una lista doblemente enlazada
+
+public class ListaCarrito {
+    
     private NodoItemCarrito cabeza;
     private NodoItemCarrito cola;
     private int tamaño;
+
 
     public ListaCarrito() {
         this.cabeza = null;
@@ -27,12 +30,17 @@ public class ListaCarrito {
 
     // ----- Consulta general -----
 
-    public boolean estaVacia() { return cabeza == null; }
-    public int getTamaño()     { return tamaño; }
+
+    public boolean estaVacia() {
+        return cabeza == null;
+    }
+
+    public int getTamaño() {
+        return tamaño;
+    }
 
     // ----- Inserción -----
 
-    /** Agrega un ítem al final del carrito. O(1) */
     public void insertarAlFinal(ItemCarrito item) {
         NodoItemCarrito nuevo = new NodoItemCarrito(item);
         if (estaVacia()) {
@@ -48,7 +56,6 @@ public class ListaCarrito {
 
     // ----- Eliminación -----
 
-    /** Elimina el ítem igual al dado (usa equals de ItemCarrito). O(n) */
     public boolean eliminar(ItemCarrito item) {
         NodoItemCarrito actual = cabeza;
         while (actual != null) {
@@ -74,7 +81,6 @@ public class ListaCarrito {
         return false;
     }
 
-    /** Elimina el ítem que corresponde al idProducto dado. O(n) */
     public boolean eliminarPorIdProducto(String idProducto) {
         NodoItemCarrito actual = cabeza;
         while (actual != null) {
@@ -88,7 +94,6 @@ public class ListaCarrito {
 
     // ----- Búsqueda -----
 
-    /** Busca el ítem por idProducto. O(n) */
     public ItemCarrito buscarPorIdProducto(String idProducto) {
         NodoItemCarrito actual = cabeza;
         while (actual != null) {
@@ -100,14 +105,12 @@ public class ListaCarrito {
         return null;
     }
 
-    /** Indica si ya existe un ítem con ese idProducto. O(n) */
     public boolean contieneProducto(String idProducto) {
         return buscarPorIdProducto(idProducto) != null;
     }
 
     // ----- Obtención -----
 
-    /** Devuelve todos los ítems como ArrayList (de cabeza a cola). O(n) */
     public ArrayList<ItemCarrito> obtenerTodos() {
         ArrayList<ItemCarrito> lista = new ArrayList<>();
         NodoItemCarrito actual = cabeza;
@@ -120,7 +123,6 @@ public class ListaCarrito {
 
     // ----- Cálculos -----
 
-    /** Suma los subtotales de todos los ítems. O(n) */
     public double calcularTotal() {
         double total = 0;
         NodoItemCarrito actual = cabeza;
@@ -131,7 +133,6 @@ public class ListaCarrito {
         return total;
     }
 
-    /** Suma las cantidades de todos los ítems. O(n) */
     public int getCantidadTotalProductos() {
         int total = 0;
         NodoItemCarrito actual = cabeza;
@@ -142,7 +143,6 @@ public class ListaCarrito {
         return total;
     }
 
-    /** Verifica que todos los ítems tengan stock suficiente. O(n) */
     public boolean tieneStockSuficiente() {
         NodoItemCarrito actual = cabeza;
         while (actual != null) {
@@ -160,6 +160,12 @@ public class ListaCarrito {
         tamaño = 0;
     }
 
-    public NodoItemCarrito getCabeza() { return cabeza; }
-    public NodoItemCarrito getCola()   { return cola; }
+
+    public NodoItemCarrito getCabeza() {
+        return cabeza;
+    }
+
+    public NodoItemCarrito getCola() {
+        return cola;
+    }
 }

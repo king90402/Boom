@@ -1,5 +1,6 @@
 /*
- * Utilidad de Ordenamiento y Busqueda - Proyecto Boom Sincronizado
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Ordenamiento.java to edit this template
  */
 
 package Raiz.Utilidades;
@@ -9,18 +10,15 @@ import java.util.ArrayList;
 import java.util.Comparator;
 
 /**
- * @author BoomTeam
- * Metodos de ordenamiento y busqueda
+ * @author alejo
  */
+
+// --------- Clase de utilidad con algoritmos de ordenamiento
 
 public class Ordenamiento {
     
-    // ========================================
-    // METODOS DE ORDENAMIENTO
-    // ========================================
-    
     // ----- BURBUJA -----
-    
+
     public static void burbujaPorPrecio(ArrayList<Producto> lista) {
         int n = lista.size();
         for (int i = 0; i < n - 1; i++) {
@@ -48,6 +46,7 @@ public class Ordenamiento {
         }
     }
     
+
     public static <T> void burbuja(ArrayList<T> lista, Comparator<T> comparador) {
         int n = lista.size();
         for (int i = 0; i < n - 1; i++) {
@@ -117,6 +116,7 @@ public class Ordenamiento {
         quickSortPrecio(lista, 0, lista.size() - 1);
     }
     
+
     private static void quickSortPrecio(ArrayList<Producto> lista, int inicio, int fin) {
         if (inicio < fin) {
             int indicePivote = particionPrecio(lista, inicio, fin);
@@ -142,10 +142,12 @@ public class Ordenamiento {
         return i + 1;
     }
     
+
     public static <T> void quickSort(ArrayList<T> lista, Comparator<T> comparador) {
         quickSortGenerico(lista, 0, lista.size() - 1, comparador);
     }
     
+
     private static <T> void quickSortGenerico(ArrayList<T> lista, int inicio, int fin, Comparator<T> comparador) {
         if (inicio < fin) {
             int indicePivote = particionGenerica(lista, inicio, fin, comparador);
@@ -154,6 +156,7 @@ public class Ordenamiento {
         }
     }
     
+
     private static <T> int particionGenerica(ArrayList<T> lista, int inicio, int fin, Comparator<T> comparador) {
         T pivote = lista.get(fin);
         int i = inicio - 1;
@@ -170,10 +173,6 @@ public class Ordenamiento {
         lista.set(fin, temp);
         return i + 1;
     }
-    
-    // ========================================
-    // METODOS DE BUSQUEDA
-    // ========================================
     
     // ----- BUSQUEDA SECUENCIAL -----
     
@@ -229,23 +228,23 @@ public class Ordenamiento {
         }
         return -1;
     }
-    
-    // ========================================
-    // COMPARADORES PREDEFINIDOS
-    // ========================================
-    
+
     public static final Comparator<Producto> COMPARAR_POR_PRECIO_ASC = 
         (p1, p2) -> Double.compare(p1.getPrecioProducto(), p2.getPrecioProducto());
     
+
     public static final Comparator<Producto> COMPARAR_POR_PRECIO_DESC = 
         (p1, p2) -> Double.compare(p2.getPrecioProducto(), p1.getPrecioProducto());
     
+
     public static final Comparator<Producto> COMPARAR_POR_NOMBRE = 
         (p1, p2) -> p1.getNombreProducto().compareToIgnoreCase(p2.getNombreProducto());
     
+
     public static final Comparator<Producto> COMPARAR_POR_STOCK = 
         (p1, p2) -> Integer.compare(p1.getCantidadProducto(), p2.getCantidadProducto());
     
+
     public static final Comparator<Producto> COMPARAR_POR_CATEGORIA = 
         (p1, p2) -> p1.getCategoriaProducto().compareToIgnoreCase(p2.getCategoriaProducto());
 }

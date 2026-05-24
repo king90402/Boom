@@ -1,10 +1,6 @@
 /*
- * Estructura de Datos: PILA (LIFO) para el historial de acciones
- * Proyecto Boom Sincronizado
- * UNIDAD 5: PILAS
- *
- * Principio LIFO: la acción más reciente queda en el tope.
- * Solo visible para administradores del sistema.
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/PilaHistorial.java to edit this template
  */
 
 package Raiz.Estructuras;
@@ -14,20 +10,24 @@ import Raiz.Modelos.NodoHistorial;
 import java.util.ArrayList;
 
 /**
- * @author BoomTeam
- * Pila específica para el historial de acciones del sistema
+ * @author alejo
  */
-public class PilaHistorial {
 
+// --------- Clase encargada del manejo del historial mediante una pila
+
+public class PilaHistorial {
+    
     private NodoHistorial tope;
     private int tamaño;
-    private int capacidadMaxima; // -1 = ilimitada
+    private int capacidadMaxima; 
+
 
     public PilaHistorial() {
         this.tope             = null;
         this.tamaño           = 0;
         this.capacidadMaxima  = -1;
     }
+
 
     public PilaHistorial(int capacidadMaxima) {
         this.tope             = null;
@@ -37,16 +37,22 @@ public class PilaHistorial {
 
     // ----- Consulta general -----
 
-    public boolean estaVacia() { return tope == null; }
-    public boolean estaLlena() { return capacidadMaxima > 0 && tamaño >= capacidadMaxima; }
-    public int getTamaño()     { return tamaño; }
+    public boolean estaVacia() {
+        return tope == null;
+    }
+
+    public boolean estaLlena() {
+        return capacidadMaxima > 0 && tamaño >= capacidadMaxima;
+    }
+
+    public int getTamaño() {
+        return tamaño;
+    }
 
     // ----- Operaciones LIFO -----
 
-    /**
-     * PUSH — Registra una nueva acción en el tope. O(1)
-     * @return false si la pila está llena
-     */
+    // PUSH — Registra una nueva acción en el tope. 
+
     public boolean push(Historial accion) {
         if (estaLlena()) return false;
         NodoHistorial nuevo = new NodoHistorial(accion);
@@ -56,10 +62,8 @@ public class PilaHistorial {
         return true;
     }
 
-    /**
-     * POP — Extrae y retorna la acción más reciente (deshacer). O(1)
-     * @return null si está vacía
-     */
+    // POP — Extrae y retorna la acción más reciente (deshacer). 
+
     public Historial pop() {
         if (estaVacia()) return null;
         Historial accion = tope.getAccion();
@@ -68,17 +72,14 @@ public class PilaHistorial {
         return accion;
     }
 
-    /**
-     * PEEK — Consulta la acción más reciente sin extraerla. O(1)
-     * @return null si está vacía
-     */
+    //PEEK — Consulta la acción más reciente sin extraerla. 
+
     public Historial peek() {
         return tope != null ? tope.getAccion() : null;
     }
 
     // ----- Búsqueda y filtros -----
 
-    /** Filtra acciones por tipo. O(n) */
     public ArrayList<Historial> filtrarPorTipo(Historial.TipoAccion tipo) {
         ArrayList<Historial> resultado = new ArrayList<>();
         NodoHistorial actual = tope;
@@ -90,8 +91,7 @@ public class PilaHistorial {
         }
         return resultado;
     }
-
-    /** Filtra acciones por usuario. O(n) */
+    
     public ArrayList<Historial> filtrarPorUsuario(String idUsuario) {
         ArrayList<Historial> resultado = new ArrayList<>();
         NodoHistorial actual = tope;
@@ -104,7 +104,6 @@ public class PilaHistorial {
         return resultado;
     }
 
-    /** Devuelve solo acciones administrativas (CRUD de usuarios). O(n) */
     public ArrayList<Historial> obtenerAccionesAdmin() {
         ArrayList<Historial> resultado = new ArrayList<>();
         NodoHistorial actual = tope;
@@ -122,7 +121,6 @@ public class PilaHistorial {
 
     // ----- Obtención -----
 
-    /** Devuelve todas las acciones (más reciente primero). O(n) */
     public ArrayList<Historial> obtenerTodos() {
         ArrayList<Historial> lista = new ArrayList<>();
         NodoHistorial actual = tope;
@@ -133,7 +131,6 @@ public class PilaHistorial {
         return lista;
     }
 
-    /** Devuelve las últimas N acciones. O(n) */
     public ArrayList<Historial> obtenerUltimas(int n) {
         ArrayList<Historial> lista = new ArrayList<>();
         NodoHistorial actual = tope;
@@ -153,9 +150,13 @@ public class PilaHistorial {
         tamaño = 0;
     }
 
-    public NodoHistorial getTope() { return tope; }
+
+    public NodoHistorial getTope() {
+        return tope;
+    }
 
     @Override
+
     public String toString() {
         return "PilaHistorial[tamaño=" + tamaño +
                (capacidadMaxima > 0 ? "/" + capacidadMaxima : "") +

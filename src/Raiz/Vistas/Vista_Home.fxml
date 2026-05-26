@@ -217,7 +217,7 @@
                                     </StackPane>
                                     <HBox alignment="CENTER" prefHeight="157.0" prefWidth="1280.0">
                                        <children>
-                                          <Button id="btnModaBellezaImg" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="173.0" prefWidth="130.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
+                                          <Button id="btnModaBellezaImg" fx:id="btnModaBellezaImg" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#filtrarModaBelleza" prefHeight="173.0" prefWidth="130.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
                                              <font>
                                                 <Font name="Poppins Light" size="19.0" />
                                              </font>
@@ -247,7 +247,7 @@
                                              </HBox.margin>
                                           </Button>
                                           <Pane prefHeight="100.0" prefWidth="82.0" HBox.hgrow="ALWAYS" />
-                                          <Button id="btnOfertasImg" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="173.0" prefWidth="130.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
+                                         <Button id="btnOfertasImg" fx:id="btnOfertasImg" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#filtrarOfertas" prefHeight="173.0" prefWidth="130.0" style="-fx-background-color: transparent; -fx-cursor: hand;"> 
                                              <font>
                                                 <Font name="Poppins Light" size="19.0" />
                                              </font>
@@ -274,7 +274,7 @@
                                              </graphic>
                                           </Button>
                                           <Pane prefHeight="100.0" prefWidth="82.0" HBox.hgrow="ALWAYS" />
-                                          <Button id="btnTecnologiaImg" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="173.0" prefWidth="130.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
+                                          <Button id="btnTecnologiaImg" fx:id="btnTecnologiaImg" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#filtrarTecnologia" prefHeight="173.0" prefWidth="130.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
                                              <font>
                                                 <Font name="Poppins Light" size="19.0" />
                                              </font>
@@ -301,7 +301,7 @@
                                              </graphic>
                                           </Button>
                                           <Pane prefHeight="100.0" prefWidth="82.0" HBox.hgrow="ALWAYS" />
-                                          <Button id="btnHogarImg" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="173.0" prefWidth="130.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
+                                          <Button id="btnHogarImg" fx:id="btnHogarImg" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#filtrarHogar" prefHeight="173.0" prefWidth="130.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
                                              <font>
                                                 <Font name="Poppins Light" size="19.0" />
                                              </font>
@@ -328,7 +328,7 @@
                                              </graphic>
                                           </Button>
                                           <Pane prefHeight="100.0" prefWidth="82.0" HBox.hgrow="ALWAYS" />
-                                          <Button id="btnDeportesImg" maxWidth="1.7976931348623157E308" mnemonicParsing="false" prefHeight="173.0" prefWidth="130.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
+                                          <Button id="btnDeportesImg" fx:id="btnDeportesImg" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#filtrarDeportes" prefHeight="173.0" prefWidth="130.0" style="-fx-background-color: transparent; -fx-cursor: hand;">
                                              <font>
                                                 <Font name="Poppins Light" size="19.0" />
                                              </font>

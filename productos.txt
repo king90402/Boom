@@ -1,1 +1,1 @@
-1;A15;100;2000.0;Nuevo;Samsung;Verde;file:/C:/Users/alejo/Documents/NetBeansProjects/Boom/src/Raiz/Media/Productos/Samsung.jpeg
+1;Pintura de paisaje morado;5;100.0;Nuevo;Generico;Pintura especial enmarcada de imagen con tonos morados;file:/C:/Users/EQUIPO/Downloads/Imagenes/lighting-in-scenery_3840x2160_xtrafondos.com.jpg

@@ -54,6 +54,8 @@ public class HomeControladora {
     @FXML private Pane paneInicioHome;
     @FXML private Pane panePerfilHome;
     @FXML private Pane paneCarritoHome;
+    @FXML private Pane paneTodosProductosHome;
+    @FXML private Pane paneInfoProductosHome;
     
     // Subpaneles perfil (pueden ser VBox en el FXML)
     
@@ -397,7 +399,7 @@ public class HomeControladora {
     // ----- Navegacion
     
     private void ocultarTodosLosPaneles() {
-        Pane[] panes = {paneInicioHome, panePerfilHome, paneCarritoHome};
+        Pane[] panes = {paneInicioHome, panePerfilHome, paneCarritoHome, paneTodosProductosHome, paneInfoProductosHome};
         for (Pane p : panes) {
             if (p != null) {
                 p.setVisible(false);
@@ -405,7 +407,7 @@ public class HomeControladora {
             }
         }
     }
-    
+
     @FXML
     public void mostrarInicio() {
         ocultarTodosLosPaneles();
@@ -421,6 +423,26 @@ public class HomeControladora {
         if (panePerfilHome != null) {
             panePerfilHome.setVisible(true);
             panePerfilHome.setManaged(true);
+        }
+        mostrarMiCuentaPerfil();
+    }
+    
+    @FXML
+    public void mostrarTodosProductos() {
+        ocultarTodosLosPaneles();
+        if (paneTodosProductosHome != null) {
+            paneTodosProductosHome.setVisible(true);
+            paneTodosProductosHome.setManaged(true);
+        }
+        mostrarMiCuentaPerfil();
+    }
+    
+    @FXML
+    public void mostrarInfoProductos() {
+        ocultarTodosLosPaneles();
+        if (paneInfoProductosHome != null) {
+            paneInfoProductosHome.setVisible(true);
+            paneInfoProductosHome.setManaged(true);
         }
         mostrarMiCuentaPerfil();
     }

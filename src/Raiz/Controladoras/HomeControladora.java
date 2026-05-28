@@ -234,28 +234,10 @@ public class HomeControladora {
         sombra.setColor(Color.rgb(151, 151, 151)); // 0.592... * 255 ≈ 151
         imageView.setEffect(sombra);
 
-        // ── BOTÓN FAVORITO (ToggleButton con ícono CSS igual al FXML) ─────────
-        // El FXML usa una Region con styleClass "icon-corazonf" como graphic
-        Region iconoCorazon = new Region();
-        iconoCorazon.getStyleClass().add("icon-corazonf");
-        iconoCorazon.setMaxWidth(Region.USE_PREF_SIZE);
-        iconoCorazon.setMaxHeight(Region.USE_PREF_SIZE);
-        iconoCorazon.setMinWidth(Region.USE_PREF_SIZE);
-        iconoCorazon.setMinHeight(Region.USE_PREF_SIZE);
-
-        ToggleButton btnFavorito = new ToggleButton();
-        btnFavorito.setMnemonicParsing(false);
-        btnFavorito.setPrefWidth(40);
-        btnFavorito.setPrefHeight(40);
-        btnFavorito.getStyleClass().add("boton-favorito");
-        btnFavorito.setGraphic(iconoCorazon);
-        btnFavorito.setSelected(favoritosService.esFavorito(producto.getIdProducto()));
-
-        btnFavorito.setOnAction(e -> favoritosService.toggleFavorito(producto));
-
+         Button btnFavorito = crearBotonFavorito(producto);
         StackPane.setAlignment(btnFavorito, Pos.TOP_LEFT);
         StackPane.setMargin(btnFavorito, new Insets(10, 0, 0, 10));
-
+        
         // ── STACK IMAGEN + FAVORITO ───────────────────────────────────────────
         StackPane stackImagen = new StackPane(imageView, btnFavorito);
         stackImagen.setPrefWidth(280);
@@ -349,6 +331,49 @@ public class HomeControladora {
         btn.setStyle(btn.isSelected() ? "-fx-text-fill: #e74c3c;" : "-fx-text-fill: #aaaaaa;");
     }
 
+    private Button crearBotonFavorito(Producto producto) {
+    Region icono = new Region();
+    boolean esFav = favoritosService.esFavorito(producto.getIdProducto());
+    icono.getStyleClass().add(esFav ? "icon-corazonf" : "icon-corazon");
+    icono.setMaxWidth(Region.USE_PREF_SIZE);
+    icono.setMaxHeight(Region.USE_PREF_SIZE);
+    icono.setMinWidth(Region.USE_PREF_SIZE);
+    icono.setMinHeight(Region.USE_PREF_SIZE);
+
+    Button btn = new Button();
+    btn.setMnemonicParsing(false);
+    btn.setPrefWidth(40);
+    btn.setPrefHeight(40);
+    btn.getStyleClass().add("boton-favorito");
+    btn.setGraphic(icono);
+
+    aplicarColorCorazon(icono, esFav);
+
+    btn.setOnAction(e -> {
+        favoritosService.toggleFavorito(producto);
+        boolean ahora = favoritosService.esFavorito(producto.getIdProducto());
+        aplicarColorCorazon(icono, ahora);
+    });
+
+    return btn;
+    }
+
+    private void aplicarColorCorazon(Region icono, boolean esFavorito) {
+    if (esFavorito) {
+        icono.getStyleClass().remove("icon-corazon");
+        if (!icono.getStyleClass().contains("icon-corazonf")) {
+            icono.getStyleClass().add("icon-corazonf");
+        }
+        icono.setStyle("-fx-background-color: #FF3B5C; -fx-scale-x: 1.05; -fx-scale-y: 1.05;");
+    } else {
+        icono.getStyleClass().remove("icon-corazonf");
+        if (!icono.getStyleClass().contains("icon-corazon")) {
+            icono.getStyleClass().add("icon-corazon");
+        }
+      icono.setStyle("-fx-background-color: transparent; -fx-border-color: #111111; -fx-scale-x: 1.0; -fx-scale-y: 1.0;");
+    }
+}
+    
     private Label mensajeVacio(String texto) {
         Label lbl = new Label(texto);
         lbl.setStyle("-fx-font-size: 16px; -fx-text-fill: #aaaaaa;");
@@ -445,7 +470,6 @@ public class HomeControladora {
             "-58.5L74 58.5H24C10.7 58.5 0 47.8 0 34.5V24zM128 464a48 48 0 1 1 96 0 48 48 0 " +
             "1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z";
 
-        // Imagen — 246×278 igual al ejemplo del FXML de todos
         ImageView imageView = new ImageView();
         imageView.setFitWidth(246);
         imageView.setFitHeight(278);
@@ -463,19 +487,7 @@ public class HomeControladora {
         imageView.setEffect(sombra);
 
         // Botón favorito
-        Region iconoCorazon = new Region();
-        iconoCorazon.getStyleClass().add("icon-corazonf");
-        iconoCorazon.setMaxWidth(Region.USE_PREF_SIZE);
-        iconoCorazon.setMaxHeight(Region.USE_PREF_SIZE);
-        iconoCorazon.setMinWidth(Region.USE_PREF_SIZE);
-        iconoCorazon.setMinHeight(Region.USE_PREF_SIZE);
-        ToggleButton btnFavorito = new ToggleButton();
-        btnFavorito.setMnemonicParsing(false);
-        btnFavorito.setPrefWidth(40); btnFavorito.setPrefHeight(40);
-        btnFavorito.getStyleClass().add("boton-favorito");
-        btnFavorito.setGraphic(iconoCorazon);
-        btnFavorito.setSelected(favoritosService.esFavorito(producto.getIdProducto()));
-        btnFavorito.setOnAction(e -> favoritosService.toggleFavorito(producto));
+        Button btnFavorito = crearBotonFavorito(producto);
         StackPane.setAlignment(btnFavorito, Pos.TOP_LEFT);
         StackPane.setMargin(btnFavorito, new Insets(10, 0, 0, 10));
 
@@ -487,19 +499,16 @@ public class HomeControladora {
         HBox.setHgrow(stack, Priority.ALWAYS);
         VBox.setVgrow(stack, Priority.ALWAYS);
 
-        // Nombre — wrappingWidth 239 igual al FXML
         Text txtNombre = new Text(producto.getNombreProducto());
         txtNombre.setStrokeType(StrokeType.OUTSIDE); txtNombre.setStrokeWidth(0);
         txtNombre.setWrappingWidth(239.286);
         txtNombre.setFont(Font.font("Poppins Regular", 14));
         VBox.setMargin(txtNombre, new Insets(10, 0, 0, 0));
 
-        // Precio — size 20 igual al FXML de todos
         Text txtPrecio = new Text(producto.getPrecioFormateado());
         txtPrecio.setStrokeType(StrokeType.OUTSIDE); txtPrecio.setStrokeWidth(0);
         txtPrecio.setFont(Font.font("Poppins ExtraBold", 20));
 
-        // Botón carrito — 60px ancho igual al FXML de todos
         Region iconoCarrito = new Region();
         iconoCarrito.setPrefWidth(18); iconoCarrito.setPrefHeight(18);
         iconoCarrito.setMaxWidth(Region.USE_PREF_SIZE); iconoCarrito.setMaxHeight(Region.USE_PREF_SIZE);
@@ -541,49 +550,29 @@ public class HomeControladora {
     
     @FXML
     private void filtrarPorCategoria(ActionEvent event) {
-        if (contenedorProductosHome == null) return;
-
         ToggleButton seleccionado = (ToggleButton) menuHome.getSelectedToggle();
-        if (seleccionado == null) {
-            cargarProductos();
-            return;
-        }
+        if (seleccionado == null) return;
 
-        String categoria = seleccionado.getText();
-        ArrayList<Producto> filtrados = productoService.buscarPorCategoriaOrdenadoPorPrecio(categoria);
+        // Desmarcar para que el menú no quede "activo" al salir del inicio
+        seleccionado.setSelected(false);
 
-        contenedorProductosHome.getChildren().clear();
-        if (filtrados.isEmpty()) {
-            contenedorProductosHome.getChildren().add(mensajeVacio("No hay productos en \"" + categoria + "\"."));
-            return;
-        }
-        for (Producto p : filtrados) {
-            contenedorProductosHome.getChildren().add(crearTarjetaProducto(p));
-        }
+        irATodosConCategoria(seleccionado.getText());
     }
 
     // Los 5 métodos siguientes los usan los botones imagen de categoría del FXML
-    @FXML private void filtrarModaBelleza(ActionEvent event) { activarToggleYFiltrar(tbtnModaBellezaHome); }
-    @FXML private void filtrarOfertas(ActionEvent event)     { activarToggleYFiltrar(tbtnOfertasHome); }
-    @FXML private void filtrarTecnologia(ActionEvent event)  { activarToggleYFiltrar(tbtnTecnologiaHome); }
-    @FXML private void filtrarHogar(ActionEvent event)       { activarToggleYFiltrar(tbtnHogarHome); }
-    @FXML private void filtrarDeportes(ActionEvent event)    { activarToggleYFiltrar(tbtnDeportesHome); }
+    @FXML private void filtrarModaBelleza(ActionEvent event) { irATodosConCategoria("Moda y Belleza"); }
+    @FXML private void filtrarOfertas(ActionEvent event)     { irATodosConCategoria("Ofertas"); }
+    @FXML private void filtrarTecnologia(ActionEvent event)  { irATodosConCategoria("Tecnologia"); }
+    @FXML private void filtrarHogar(ActionEvent event)       { irATodosConCategoria("Hogar"); }
+    @FXML private void filtrarDeportes(ActionEvent event)    { irATodosConCategoria("Deportes"); }
 
-    private void activarToggleYFiltrar(ToggleButton toggle) {
-        if (toggle == null) return;
-        toggle.setSelected(true);
-        String categoria = toggle.getText();
-        ArrayList<Producto> filtrados = productoService.buscarPorCategoriaOrdenadoPorPrecio(categoria);
+    private void irATodosConCategoria(String categoria) {
 
-        if (contenedorProductosHome == null) return;
-        contenedorProductosHome.getChildren().clear();
-        if (filtrados.isEmpty()) {
-            contenedorProductosHome.getChildren().add(mensajeVacio("No hay productos en \"" + categoria + "\"."));
-        } else {
-            for (Producto p : filtrados) {
-                contenedorProductosHome.getChildren().add(crearTarjetaProducto(p));
-            }
-        }
+        if (comboCategoriaTodos != null) comboCategoriaTodos.setValue(categoria);
+        if (comboEstadoTodos != null)    comboEstadoTodos.setValue("Todos");
+        if (comboOrdenTodos  != null)    comboOrdenTodos.setValue(null);
+        
+        mostrarTodosProductos();
     }
     
     // ----- Navegacion
@@ -599,13 +588,15 @@ public class HomeControladora {
     }
 
     @FXML
-    public void mostrarInicio() {
-        ocultarTodosLosPaneles();
-        if (paneInicioHome != null) {
-            paneInicioHome.setVisible(true);
-            paneInicioHome.setManaged(true);
-        }
+public void mostrarInicio() {
+    ocultarTodosLosPaneles();
+    if (paneInicioHome != null) {
+        paneInicioHome.setVisible(true);
+        paneInicioHome.setManaged(true);
     }
+    cargarProductos();            
+    cargarProductosSecundarios(); 
+}
     
     @FXML
     public void mostrarPerfil() {
@@ -656,14 +647,152 @@ public class HomeControladora {
         }
     }
     
-    @FXML
+     @FXML
     public void mostrarFavoritosPerfil() {
         ocultarSubPanesPerfil();
         if (paneFavoritosPerfilHome != null) {
             paneFavoritosPerfilHome.setVisible(true);
             paneFavoritosPerfilHome.setManaged(true);
+            cargarTarjetasFavoritos();
         }
         if (tbtnFavoritosPerfilHome != null) tbtnFavoritosPerfilHome.setSelected(true);
+    }
+
+    private void cargarTarjetasFavoritos() {
+        if (paneFavoritosPerfilHome == null) return;
+
+        paneFavoritosPerfilHome.getChildren().clear();
+
+        ArrayList<Producto> favoritos = favoritosService.obtenerFavoritos();
+
+        if (favoritos.isEmpty()) {
+            Label vacio = new Label("No tienes productos en favoritos aún.");
+            vacio.setStyle("-fx-font-size: 16px; -fx-text-fill: #aaaaaa; -fx-padding: 40px;");
+            paneFavoritosPerfilHome.getChildren().add(vacio);
+            return;
+        }
+
+        Text titulo = new Text("Mis Favoritos (" + favoritos.size() + ")");
+        titulo.setFont(Font.font("Poppins Regular", 20));
+        titulo.setStrokeType(StrokeType.OUTSIDE);
+        titulo.setStrokeWidth(0);
+        VBox.setMargin(titulo, new Insets(20, 0, 10, 20));
+        paneFavoritosPerfilHome.getChildren().add(titulo);
+
+        FlowPane flow = new FlowPane();
+        flow.setHgap(20);
+        flow.setVgap(40);
+        flow.setPadding(new Insets(10, 20, 20, 20));
+        VBox.setVgrow(flow, Priority.ALWAYS);
+
+        for (Producto p : favoritos) {
+            flow.getChildren().add(crearTarjetaFavorito(p, flow));
+        }
+
+        paneFavoritosPerfilHome.getChildren().add(flow);
+    }
+
+   
+    private VBox crearTarjetaFavorito(Producto producto, FlowPane contenedor) {
+        final String CARRITO_SVG =
+            "M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 " +
+            "50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 " +
+            "23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.9" +
+            "-58.5L74 58.5H24C10.7 58.5 0 47.8 0 34.5V24zM128 464a48 48 0 1 1 96 0 48 48 0 " +
+            "1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z";
+
+        ImageView imageView = new ImageView();
+        imageView.setFitWidth(246); imageView.setFitHeight(278);
+        imageView.setPickOnBounds(true); imageView.setPreserveRatio(true);
+        String ruta = producto.getImagenProducto();
+        if (ruta != null && !ruta.isEmpty()) {
+            try { imageView.setImage(new Image(ruta, true)); }
+            catch (Exception e) { System.err.println("[Favorito] " + ruta); }
+        }
+        DropShadow sombra = new DropShadow();
+        sombra.setHeight(5); sombra.setWidth(5); sombra.setOffsetX(1); sombra.setOffsetY(1);
+        sombra.setRadius(2); sombra.setColor(Color.rgb(151,151,151));
+        imageView.setEffect(sombra);
+
+        // Creamos el ícono aquí para tener referencia directa sin cast
+        Region iconoFav = new Region();
+        iconoFav.getStyleClass().add("icon-corazonf");
+        iconoFav.setMaxWidth(Region.USE_PREF_SIZE);
+        iconoFav.setMaxHeight(Region.USE_PREF_SIZE);
+        iconoFav.setMinWidth(Region.USE_PREF_SIZE);
+        iconoFav.setMinHeight(Region.USE_PREF_SIZE);
+        aplicarColorCorazon(iconoFav, true); // siempre marcado al entrar a favoritos
+
+        Button btnFavorito = new Button();
+        btnFavorito.setMnemonicParsing(false);
+        btnFavorito.setPrefWidth(40);
+        btnFavorito.setPrefHeight(40);
+        btnFavorito.getStyleClass().add("boton-favorito");
+        btnFavorito.setGraphic(iconoFav);
+
+        VBox[] ref = new VBox[1];
+
+        btnFavorito.setOnAction(e -> {
+            favoritosService.toggleFavorito(producto);
+            boolean ahora = favoritosService.esFavorito(producto.getIdProducto());
+            aplicarColorCorazon(iconoFav, ahora);
+            if (!ahora && contenedor != null && ref[0] != null) {
+                contenedor.getChildren().remove(ref[0]);
+            }
+        });
+        StackPane.setAlignment(btnFavorito, Pos.TOP_LEFT);
+        StackPane.setAlignment(btnFavorito, Pos.TOP_LEFT);
+        StackPane.setMargin(btnFavorito, new Insets(10, 0, 0, 10));
+
+        StackPane stack = new StackPane(imageView, btnFavorito);
+        stack.setMaxWidth(Double.MAX_VALUE); stack.setMaxHeight(Double.MAX_VALUE);
+        stack.setMinHeight(Region.USE_PREF_SIZE); stack.setPrefHeight(280);
+
+        Text txtNombre = new Text(producto.getNombreProducto());
+        txtNombre.setStrokeType(StrokeType.OUTSIDE); txtNombre.setStrokeWidth(0);
+        txtNombre.setWrappingWidth(239.286);
+        txtNombre.setFont(Font.font("Poppins Regular", 14));
+        VBox.setMargin(txtNombre, new Insets(10, 0, 0, 0));
+
+        Text txtPrecio = new Text(producto.getPrecioFormateado());
+        txtPrecio.setStrokeType(StrokeType.OUTSIDE); txtPrecio.setStrokeWidth(0);
+        txtPrecio.setFont(Font.font("Poppins ExtraBold", 20));
+
+        Region iconoCarrito = new Region();
+        iconoCarrito.setPrefWidth(18); iconoCarrito.setPrefHeight(18);
+        iconoCarrito.setMaxWidth(Region.USE_PREF_SIZE); iconoCarrito.setMaxHeight(Region.USE_PREF_SIZE);
+        iconoCarrito.setStyle("-fx-shape: \"" + CARRITO_SVG + "\"; -fx-background-color: #111111;");
+        iconoCarrito.getStyleClass().add("boton");
+        iconoCarrito.setPadding(new Insets(0, 10, 0, 5));
+        Button btnCarrito = new Button();
+        btnCarrito.setMnemonicParsing(false);
+        btnCarrito.setPrefWidth(60); btnCarrito.setPrefHeight(26);
+        btnCarrito.setMaxWidth(Region.USE_PREF_SIZE); btnCarrito.setMinWidth(Region.USE_PREF_SIZE);
+        btnCarrito.setAlignment(Pos.CENTER); btnCarrito.setContentDisplay(ContentDisplay.CENTER);
+        btnCarrito.setStyle("-fx-background-color: #F7CD83; -fx-border-color: transparent; -fx-cursor: hand;");
+        btnCarrito.setGraphic(iconoCarrito);
+        HBox.setHgrow(btnCarrito, Priority.NEVER);
+        btnCarrito.setOnAction(e -> {
+            boolean ok = carritoService.agregarProducto(producto, 1);
+            if (ok) AlertaUtil.mostrarInformacion("Carrito", "\"" + producto.getNombreProducto() + "\" agregado.");
+            else    AlertaUtil.mostrarAdvertencia("Carrito", "No se pudo agregar. Verifica el stock.");
+        });
+
+        Pane espaciador = new Pane();
+        espaciador.setPrefWidth(63); espaciador.setPrefHeight(40);
+        HBox.setHgrow(espaciador, Priority.ALWAYS);
+
+        HBox hbox = new HBox(txtPrecio, espaciador, btnCarrito);
+        hbox.setAlignment(Pos.CENTER_LEFT);
+        hbox.setPrefWidth(240); hbox.setPrefHeight(42);
+
+        VBox tarjeta = new VBox(stack, txtNombre, hbox);
+        tarjeta.setMaxWidth(Double.MAX_VALUE); tarjeta.setMaxHeight(Double.MAX_VALUE);
+        tarjeta.setMinWidth(Region.USE_PREF_SIZE); tarjeta.setMinHeight(Region.USE_PREF_SIZE);
+        FlowPane.setMargin(tarjeta, new Insets(0));
+
+        ref[0] = tarjeta;
+        return tarjeta;
     }
     
     @FXML

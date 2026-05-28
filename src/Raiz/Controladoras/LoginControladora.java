@@ -6,6 +6,7 @@
 package Raiz.Controladoras;
 
 import Raiz.Modelos.Usuario;
+import Raiz.Servicios.FavoritosServicio;
 import Raiz.Servicios.SesionServicio;
 import Raiz.Servicios.UsuarioServicio;
 import Raiz.Utilidades.Validaciones;
@@ -37,7 +38,8 @@ public class LoginControladora {
     // Servicios compartidos de unica instancia paa evitar sobrecarga
     
     private final UsuarioServicio usuarioServicio = UsuarioServicio.getInstancia();
-    private final SesionServicio sesionServicio = SesionServicio.getInstancia();
+    private final SesionServicio    sesionServicio    = SesionServicio.getInstancia();
+    private final FavoritosServicio favoritosServicio = FavoritosServicio.getInstancia();
     
     // ----- Atributos de elementos FXML para su uso
     
@@ -134,6 +136,8 @@ public class LoginControladora {
             // Uso del servicio de usuarios
             
             sesionServicio.iniciarSesion(usuario);
+            favoritosServicio.cargarFavoritosUsuario(usuario.getId());
+            
             
             // Redirigir segun rol
             

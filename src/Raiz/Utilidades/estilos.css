@@ -44,18 +44,21 @@
 
 .icon-corazon {
     -fx-shape: "M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z";
-    -fx-pref-width: 30px;
-    -fx-pref-height: 30px;
+    -fx-pref-width: 22px;
+    -fx-pref-height: 20px;
+    -fx-background-color: transparent;
+    -fx-border-color: #111111;
+    -fx-border-width: 1.5px;
+    -fx-border-radius: 0;
+    -fx-scale-x: 1.0;
+    -fx-scale-y: 1.0;
 }
 
 .icon-corazonf {
     -fx-shape: "M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z";
-    -fx-border-color: black;
-    -fx-border-width: 1.5px;
-    -fx-pref-width: 20px;
-    -fx-pref-height: 18px;
-    -fx-scale-x: 1;
-    -fx-scale-y: 1;
+    -fx-pref-width: 22px;
+    -fx-pref-height: 20px;
+    -fx-background-color: #FF3B5C;
 }
 
 .icon-carrito {

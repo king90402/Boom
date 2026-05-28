@@ -57,11 +57,11 @@ public class ProductoServicio {
      * Crea un producto nuevo. Solo el admin llega aquí.
      */
 
-    public boolean agregarProducto(String nombre, int cantidad, double precio,
+     public boolean agregarProducto(String nombre, int cantidad, double precio,
                                    String estado, String marca, String categoria,
-                                   String imagen, String idAdmin) {
+                                   String imagen, String detalles, String idAdmin) {
         String id = listaProductos.obtenerSiguienteId();
-        Producto p = new Producto(id, nombre, cantidad, precio, estado, marca, categoria, imagen);
+        Producto p = new Producto(id, nombre, cantidad, precio, estado, marca, categoria, imagen, detalles);
         listaProductos.insertarAlFinal(p);
         appendAlArchivo(p);
 
@@ -73,12 +73,12 @@ public class ProductoServicio {
         return true;
     }
 
-    /** Sobrecarga sin idAdmin (compatibilidad interna). */
+    // Sobrecarga sin idAdmin (compatibilidad interna)
 
     public boolean agregarProducto(String nombre, int cantidad, double precio,
                                    String estado, String marca, String categoria,
-                                   String imagen) {
-        return agregarProducto(nombre, cantidad, precio, estado, marca, categoria, imagen, "sistema");
+                                   String imagen, String detalles) {
+        return agregarProducto(nombre, cantidad, precio, estado, marca, categoria, imagen, detalles, "sistema");
     }
 
 
@@ -89,9 +89,8 @@ public class ProductoServicio {
         return true;
     }
 
-    /**
-     * Elimina un producto. Registra en historial.
-     */
+    // Elimina un producto. Registra en historial.
+     
 
     public boolean eliminarProducto(String id, String idAdmin) {
         Producto p = listaProductos.buscarPorId(id);
@@ -114,9 +113,8 @@ public class ProductoServicio {
         return eliminarProducto(id, "admin");
     }
 
-    /**
-     * Actualiza los datos de un producto. Registra en historial.
-     */
+    // Actualiza los datos de un producto. Registra en historial.
+
 
     public boolean actualizarProducto(String id, Producto nuevosDatos, String idAdmin) {
         boolean ok = listaProductos.modificarProducto(id, nuevosDatos);
@@ -136,14 +134,10 @@ public class ProductoServicio {
         return actualizarProducto(id, nuevosDatos, "admin");
     }
 
-    // ----------------------------------------------------------------
     //  GESTIÓN DE STOCK (sincronizada)
-    // ----------------------------------------------------------------
 
-    /**
-     * Reduce el stock de un producto tras una compra.
-     * Llamado por PedidoServicio.realizarCompra().
-     */
+    // Reduce el stock de un producto tras una compra. Llamado por PedidoServicio.realizarCompra().
+
 
     public synchronized boolean reducirStock(String id, int cantidad) {
         boolean ok = listaProductos.reducirStock(id, cantidad);
@@ -151,9 +145,8 @@ public class ProductoServicio {
         return ok;
     }
 
-    /**
-     * Aumenta el stock (ingreso de mercancía por parte del admin).
-     */
+    // Aumenta el stock (ingreso de mercancía por parte del admin).
+
 
     public synchronized boolean aumentarStock(String id, int cantidad) {
         boolean ok = listaProductos.aumentarStock(id, cantidad);
@@ -168,13 +161,12 @@ public class ProductoServicio {
         return ok;
     }
 
-    /**
-     * Gestiona el ingreso: si el producto ya existe, suma stock; si no, lo crea.
-     */
+    // Gestiona el ingreso: si el producto ya existe, suma stock; si no, lo crea.
+     
 
     public boolean gestionarIngreso(String nombre, int cantidad, double precio,
                                     String estado, String marca, String categoria,
-                                    String imagen, String idAdmin) {
+                                    String imagen, String detalles, String idAdmin) {
         for (Producto p : listaProductos.obtenerTodos()) {
             if (p.getNombreProducto().equalsIgnoreCase(nombre)) {
                 p.setCantidadProducto(p.getCantidadProducto() + cantidad);
@@ -188,13 +180,10 @@ public class ProductoServicio {
                 return true;
             }
         }
-        return agregarProducto(nombre, cantidad, precio, estado, marca, categoria, imagen, idAdmin);
+        return agregarProducto(nombre, cantidad, precio, estado, marca, categoria, imagen, detalles, idAdmin);
     }
-
-    // ----------------------------------------------------------------
+    
     //  BÚSQUEDA Y FILTROS
-    // ----------------------------------------------------------------
-
 
     public Producto buscarPorId(String id) {
         return listaProductos.buscarPorId(id);
@@ -224,10 +213,7 @@ public class ProductoServicio {
         return listaProductos.obtenerTodos();
     }
 
-    // ----------------------------------------------------------------
     //  ORDENAMIENTO
-    // ----------------------------------------------------------------
-
 
     public ArrayList<Producto> obtenerOrdenadosPorNombre() {
         ArrayList<Producto> lista = listaProductos.obtenerTodos();
@@ -261,10 +247,7 @@ public class ProductoServicio {
         return filtrados;
     }
 
-    // ----------------------------------------------------------------
     //  ESTADÍSTICAS
-    // ----------------------------------------------------------------
-
 
     public int getCantidadProductos() {
         return listaProductos.getTamaño();
@@ -282,10 +265,7 @@ public class ProductoServicio {
         return buscarPorCategoria(categoria).size();
     }
 
-    // ----------------------------------------------------------------
     //  PERSISTENCIA
-    // ----------------------------------------------------------------
-
 
     private void appendAlArchivo(Producto p) {
         try (BufferedWriter w = new BufferedWriter(new FileWriter(ARCHIVO_PRODUCTOS, true))) {

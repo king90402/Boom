@@ -478,7 +478,7 @@ public class AdminControladora {
         
         if (txtnombreproductO != null) txtnombreproductO.setText(productoEditando.getNombreProducto());
         if (txtmarca != null) txtmarca.setText(productoEditando.getMarcaProducto());
-        if (txtDetalles != null) txtDetalles.setText(productoEditando.getCategoriaProducto());
+        if (txtDetalles != null) txtDetalles.setText(productoEditando.getDetallesProducto());
         if (comboCategoriaProducto != null) comboCategoriaProducto.setValue(productoEditando.getCategoriaProducto());
         if (txtprecio != null) txtprecio.setText(String.valueOf(productoEditando.getPrecioProducto()));
         if (txtStock != null) txtStock.setText(String.valueOf(productoEditando.getCantidadProducto()));
@@ -636,7 +636,7 @@ public class AdminControladora {
             // Actualizar producto existente
             Producto actualizado = new Producto(
                 productoEditando.getIdProducto(),
-                nombre, stock, precio, estado, marca, categoria, rutaImagenSeleccionada
+                nombre, stock, precio, estado, marca, categoria, rutaImagenSeleccionada, detalles
             );
             
             if (productoServicio.actualizarProducto(productoEditando.getIdProducto(), actualizado, idAdmin)) {
@@ -646,7 +646,7 @@ public class AdminControladora {
             }
         } else {
             // Crear nuevo producto
-              if (productoServicio.agregarProducto(nombre, stock, precio, estado, marca, categoria, rutaImagenSeleccionada, idAdmin)) {
+                if (productoServicio.agregarProducto(nombre, stock, precio, estado, marca, categoria, rutaImagenSeleccionada, detalles, idAdmin)) {
                 AlertaUtil.mostrarInformacion("Producto agregado", "El producto ha sido agregado al inventario.");
             } else {
                 AlertaUtil.mostrarError("Error", "No se pudo agregar el producto.");

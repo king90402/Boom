@@ -20,10 +20,9 @@ public class Producto {
     private int cantidadProducto;
     private double precioProducto;
     private String estadoProducto;      
-
     private String marcaProducto;
-    private String categoriaProducto;   
-
+    private String categoriaProducto;
+    private String detallesProducto;
     private String imagenProducto;      
     
     // Constructor vacio
@@ -36,13 +35,15 @@ public class Producto {
         this.estadoProducto = "";
         this.marcaProducto = "";
         this.categoriaProducto = "";
+        this.detallesProducto = "";
         this.imagenProducto = "";
     }
     
     // Constructor completo
 
     public Producto(String idProducto, String nombreProducto, int cantidadProducto, double precioProducto, 
-                    String estadoProducto, String marcaProducto, String categoriaProducto, String imagenProducto) {
+                    String estadoProducto, String marcaProducto, String categoriaProducto, 
+                    String imagenProducto, String detallesProducto) {
         this.idProducto = idProducto;
         this.nombreProducto = nombreProducto;
         this.cantidadProducto = cantidadProducto;
@@ -51,6 +52,7 @@ public class Producto {
         this.marcaProducto = marcaProducto;
         this.categoriaProducto = categoriaProducto;
         this.imagenProducto = imagenProducto;
+        this.detallesProducto = detallesProducto != null ? detallesProducto : "";
     }
     
     // Getters
@@ -86,6 +88,12 @@ public class Producto {
     public String getImagenProducto() {
         return imagenProducto;
     }
+
+    public String getDetallesProducto() {
+        return detallesProducto;
+    }
+    
+    
     
     // Setters
 
@@ -120,6 +128,11 @@ public class Producto {
     public void setImagenProducto(String imagenProducto) {
         this.imagenProducto = imagenProducto;
     }
+
+    public void setDetallesProducto(String detallesProducto) {
+        this.detallesProducto = detallesProducto;
+    }
+    
     
     // ----- Metodos auxiliares -----
     
@@ -166,7 +179,8 @@ public class Producto {
             estadoProducto != null ? estadoProducto : "",
             marcaProducto != null ? marcaProducto : "",
             categoriaProducto != null ? categoriaProducto : "",
-            imagenProducto != null ? imagenProducto : ""
+            imagenProducto != null ? imagenProducto : "",
+            detallesProducto != null ? detallesProducto : ""
         );
     }
     
@@ -178,8 +192,9 @@ public class Producto {
         
         String[] datos = linea.split(";");
         
-        if (datos.length >= 8) {
+       if (datos.length >= 8) {
             try {
+                String detalles = datos.length >= 9 ? datos[8].trim() : "";
                 return new Producto(
                     datos[0].trim(),
                     datos[1].trim(),
@@ -188,7 +203,8 @@ public class Producto {
                     datos[4].trim(),
                     datos[5].trim(),
                     datos[6].trim(),
-                    datos[7].trim()
+                    datos[7].trim(),
+                    detalles
                 );
             } catch (NumberFormatException e) {
                 return null;

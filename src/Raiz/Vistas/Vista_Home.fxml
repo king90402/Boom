@@ -143,7 +143,7 @@
                                     </Text>
                                  </children>
                               </VBox>
-                              <ToggleButton fx:id="tbtnOfertasHome" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#filtrarPorCategoria" style="-fx-background-color: transparent; -fx-cursor: hand;" styleClass="menu-btn-home" text="Ofertas" HBox.hgrow="ALWAYS">
+                              <ToggleButton fx:id="tbtnOfertasHome" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#filtrarPorCategoria" style="-fx-background-color: transparent; -fx-cursor: hand;" styleClass="menu-btn-home" text="Ofertas" toggleGroup="$MenuHome" HBox.hgrow="ALWAYS">
                                  <font>
                                     <Font name="Poppins Light" size="16.0" />
                                  </font>
@@ -1059,7 +1059,7 @@
                                           <Insets top="20.0" />
                                        </VBox.margin>
                                        <children>
-                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="500 resultados" wrappingWidth="133.13671875">
+                                            <Text fx:id="lblResultadosTodos" strokeType="OUTSIDE" strokeWidth="0.0" text="0 resultados" wrappingWidth="133.13671875">
                                              <font>
                                                 <Font name="Poppins Regular" size="16.0" />
                                              </font>
@@ -1076,7 +1076,7 @@
                                                 <Font name="Poppins Regular" size="16.0" />
                                              </font>
                                           </Text>
-                                          <ComboBox prefHeight="35.0" prefWidth="150.0">
+                                           <ComboBox fx:id="comboOrdenTodos" prefHeight="35.0" prefWidth="150.0" onAction="#aplicarFiltrosTodos">
                                              <HBox.margin>
                                                 <Insets right="20.0" />
                                              </HBox.margin>
@@ -1107,20 +1107,20 @@
                                                       </Text>
                                                    </children>
                                                 </HBox>
-                                                <ComboBox maxWidth="1.7976931348623157E308" prefHeight="40.0" />
+                                                <ComboBox fx:id="comboCategoriaTodos" maxWidth="1.7976931348623157E308" prefHeight="40.0" onAction="#aplicarFiltrosTodos" promptText="Todas" />
                                                 <HBox alignment="CENTER_LEFT" prefHeight="36.0" prefWidth="198.0">
                                                    <children>
-                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Estado" wrappingWidth="133.13671875">
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Estado">
                                                          <font>
                                                             <Font name="Poppins Regular" size="16.0" />
                                                          </font>
                                                       </Text>
                                                    </children>
                                                 </HBox>
-                                                <ComboBox maxWidth="1.7976931348623157E308" prefHeight="40.0" />
+                                                 <ComboBox fx:id="comboEstadoTodos" maxWidth="1.7976931348623157E308" prefHeight="40.0" onAction="#aplicarFiltrosTodos" promptText="Todos" />
                                              </children>
                                           </VBox>
-                                          <FlowPane hgap="20.0" prefHeight="1405.0" prefWidth="1280.0" vgap="60.0">
+                                          <FlowPane fx:id="contenedorTodosProductos" hgap="20.0" prefHeight="1405.0" prefWidth="1280.0" vgap="60.0">
                                              <children>
                                                 <VBox maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
                                                    <children>

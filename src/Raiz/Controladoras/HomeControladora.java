@@ -12,6 +12,7 @@ import Raiz.Servicios.FavoritosServicio;
 import Raiz.Servicios.ProductoServicio;
 import Raiz.Servicios.SesionServicio;
 import Raiz.Utilidades.AlertaUtil;
+import Raiz.Utilidades.Ordenamiento;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -89,6 +90,13 @@ public class HomeControladora {
     @FXML private Button btnTecnologiaImg;
     @FXML private Button btnHogarImg;
     @FXML private Button btnDeportesImg;
+
+    // Panel "Todos los productos" — contenedor y filtros
+    @FXML private FlowPane contenedorTodosProductos;
+    @FXML private ComboBox<String> comboOrdenTodos;
+    @FXML private ComboBox<String> comboCategoriaTodos;
+    @FXML private ComboBox<String> comboEstadoTodos;
+    @FXML private Text lblResultadosTodos;
     
     // Labels
     
@@ -111,6 +119,7 @@ public class HomeControladora {
     @FXML
     public void initialize() {
         inicializarToggleGroups();
+        inicializarComboBoxesTodos();
         cargarDatosUsuario();
         mostrarInicio();
         cargarProductos();
@@ -347,6 +356,187 @@ public class HomeControladora {
         return lbl;
     }
     
+    private void inicializarComboBoxesTodos() {
+        if (comboOrdenTodos != null) {
+            comboOrdenTodos.getItems().addAll(
+                "Nombre A→Z", "Nombre Z→A", "Precio: menor a mayor", "Precio: mayor a menor"
+            );
+            comboOrdenTodos.setPromptText("Ordenar por");
+        }
+        if (comboCategoriaTodos != null) {
+            comboCategoriaTodos.getItems().add("Todas");
+            comboCategoriaTodos.getItems().addAll(ProductoServicio.CATEGORIAS);
+            comboCategoriaTodos.setValue("Todas");
+        }
+        if (comboEstadoTodos != null) {
+            comboEstadoTodos.getItems().addAll("Todos", "Nuevo", "Usado");
+            comboEstadoTodos.setValue("Todos");
+        }
+    }
+
+    // ── Rellena el FlowPane de "Todos los Productos" aplicando los 3 filtros ──
+    @FXML
+    private void aplicarFiltrosTodos(ActionEvent event) {
+        if (contenedorTodosProductos == null) return;
+
+        // 1. Obtener valores seleccionados
+        String categoriaSeleccionada = (comboCategoriaTodos != null) ? comboCategoriaTodos.getValue() : "Todas";
+        String estadoSeleccionado    = (comboEstadoTodos   != null) ? comboEstadoTodos.getValue()    : "Todos";
+        String ordenSeleccionado     = (comboOrdenTodos    != null) ? comboOrdenTodos.getValue()      : null;
+
+        // 2. Obtener lista base según categoría
+        ArrayList<Producto> lista;
+        if (categoriaSeleccionada == null || categoriaSeleccionada.equals("Todas")) {
+            lista = productoService.obtenerTodos();
+        } else {
+            lista = productoService.buscarPorCategoria(categoriaSeleccionada);
+        }
+
+        // 3. Filtrar por estado
+        if (estadoSeleccionado != null && !estadoSeleccionado.equals("Todos")) {
+            ArrayList<Producto> filtradoEstado = new ArrayList<>();
+            for (Producto p : lista) {
+                if (estadoSeleccionado.equalsIgnoreCase(p.getEstadoProducto())) {
+                    filtradoEstado.add(p);
+                }
+            }
+            lista = filtradoEstado;
+        }
+
+        // 4. Ordenar
+        if (ordenSeleccionado != null) {
+            switch (ordenSeleccionado) {
+                case "Nombre A→Z":
+                    Ordenamiento.quickSort(lista, Ordenamiento.COMPARAR_POR_NOMBRE);
+                    break;
+                case "Nombre Z→A":
+                    Ordenamiento.quickSort(lista, Ordenamiento.COMPARAR_POR_NOMBRE);
+                    java.util.Collections.reverse(lista);
+                    break;
+                case "Precio: menor a mayor":
+                    Ordenamiento.quickSort(lista, Ordenamiento.COMPARAR_POR_PRECIO_ASC);
+                    break;
+                case "Precio: mayor a menor":
+                    Ordenamiento.quickSort(lista, Ordenamiento.COMPARAR_POR_PRECIO_DESC);
+                    break;
+            }
+        }
+
+        // 5. Renderizar
+        contenedorTodosProductos.getChildren().clear();
+        if (lblResultadosTodos != null) {
+            lblResultadosTodos.setText(lista.size() + " resultado" + (lista.size() == 1 ? "" : "s"));
+        }
+        if (lista.isEmpty()) {
+            contenedorTodosProductos.getChildren().add(mensajeVacio("No hay productos con esos filtros."));
+        } else {
+            for (Producto p : lista) {
+                contenedorTodosProductos.getChildren().add(crearTarjetaTodos(p));
+            }
+        }
+    }
+
+    // ── Tarjeta adaptada para el panel "Todos" (246×278 imagen, precio size 20) ─
+    private VBox crearTarjetaTodos(Producto producto) {
+        final String CARRITO_SVG =
+            "M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 " +
+            "50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 " +
+            "23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.9" +
+            "-58.5L74 58.5H24C10.7 58.5 0 47.8 0 34.5V24zM128 464a48 48 0 1 1 96 0 48 48 0 " +
+            "1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z";
+
+        // Imagen — 246×278 igual al ejemplo del FXML de todos
+        ImageView imageView = new ImageView();
+        imageView.setFitWidth(246);
+        imageView.setFitHeight(278);
+        imageView.setPickOnBounds(true);
+        imageView.setPreserveRatio(true);
+        String ruta = producto.getImagenProducto();
+        if (ruta != null && !ruta.isEmpty()) {
+            try { imageView.setImage(new Image(ruta, true)); }
+            catch (Exception e) { System.err.println("[Todos] Imagen: " + ruta); }
+        }
+        DropShadow sombra = new DropShadow();
+        sombra.setHeight(5); sombra.setWidth(5);
+        sombra.setOffsetX(1); sombra.setOffsetY(1); sombra.setRadius(2);
+        sombra.setColor(Color.rgb(151, 151, 151));
+        imageView.setEffect(sombra);
+
+        // Botón favorito
+        Region iconoCorazon = new Region();
+        iconoCorazon.getStyleClass().add("icon-corazonf");
+        iconoCorazon.setMaxWidth(Region.USE_PREF_SIZE);
+        iconoCorazon.setMaxHeight(Region.USE_PREF_SIZE);
+        iconoCorazon.setMinWidth(Region.USE_PREF_SIZE);
+        iconoCorazon.setMinHeight(Region.USE_PREF_SIZE);
+        ToggleButton btnFavorito = new ToggleButton();
+        btnFavorito.setMnemonicParsing(false);
+        btnFavorito.setPrefWidth(40); btnFavorito.setPrefHeight(40);
+        btnFavorito.getStyleClass().add("boton-favorito");
+        btnFavorito.setGraphic(iconoCorazon);
+        btnFavorito.setSelected(favoritosService.esFavorito(producto.getIdProducto()));
+        btnFavorito.setOnAction(e -> favoritosService.toggleFavorito(producto));
+        StackPane.setAlignment(btnFavorito, Pos.TOP_LEFT);
+        StackPane.setMargin(btnFavorito, new Insets(10, 0, 0, 10));
+
+        StackPane stack = new StackPane(imageView, btnFavorito);
+        stack.setMaxWidth(Double.MAX_VALUE);
+        stack.setMaxHeight(Double.MAX_VALUE);
+        stack.setMinHeight(Region.USE_PREF_SIZE);
+        stack.setPrefHeight(280);
+        HBox.setHgrow(stack, Priority.ALWAYS);
+        VBox.setVgrow(stack, Priority.ALWAYS);
+
+        // Nombre — wrappingWidth 239 igual al FXML
+        Text txtNombre = new Text(producto.getNombreProducto());
+        txtNombre.setStrokeType(StrokeType.OUTSIDE); txtNombre.setStrokeWidth(0);
+        txtNombre.setWrappingWidth(239.286);
+        txtNombre.setFont(Font.font("Poppins Regular", 14));
+        VBox.setMargin(txtNombre, new Insets(10, 0, 0, 0));
+
+        // Precio — size 20 igual al FXML de todos
+        Text txtPrecio = new Text(producto.getPrecioFormateado());
+        txtPrecio.setStrokeType(StrokeType.OUTSIDE); txtPrecio.setStrokeWidth(0);
+        txtPrecio.setFont(Font.font("Poppins ExtraBold", 20));
+
+        // Botón carrito — 60px ancho igual al FXML de todos
+        Region iconoCarrito = new Region();
+        iconoCarrito.setPrefWidth(18); iconoCarrito.setPrefHeight(18);
+        iconoCarrito.setMaxWidth(Region.USE_PREF_SIZE); iconoCarrito.setMaxHeight(Region.USE_PREF_SIZE);
+        iconoCarrito.setStyle("-fx-shape: \"" + CARRITO_SVG + "\"; -fx-background-color: #111111;");
+        iconoCarrito.getStyleClass().add("boton");
+        iconoCarrito.setPadding(new Insets(0, 10, 0, 5));
+        Button btnCarrito = new Button();
+        btnCarrito.setMnemonicParsing(false);
+        btnCarrito.setPrefWidth(60); btnCarrito.setPrefHeight(26);
+        btnCarrito.setMaxWidth(Region.USE_PREF_SIZE); btnCarrito.setMinWidth(Region.USE_PREF_SIZE);
+        btnCarrito.setAlignment(Pos.CENTER); btnCarrito.setContentDisplay(ContentDisplay.CENTER);
+        btnCarrito.setStyle("-fx-background-color: #F7CD83; -fx-border-color: transparent; -fx-cursor: hand;");
+        btnCarrito.setGraphic(iconoCarrito);
+        HBox.setHgrow(btnCarrito, Priority.NEVER);
+        btnCarrito.setOnAction(e -> {
+            boolean ok = carritoService.agregarProducto(producto, 1);
+            if (ok) AlertaUtil.mostrarInformacion("Carrito", "\"" + producto.getNombreProducto() + "\" agregado.");
+            else    AlertaUtil.mostrarAdvertencia("Carrito", "No se pudo agregar. Verifica el stock.");
+        });
+
+        Pane espaciador = new Pane();
+        espaciador.setPrefWidth(63); espaciador.setPrefHeight(40);
+        HBox.setHgrow(espaciador, Priority.ALWAYS);
+
+        HBox hbox = new HBox(txtPrecio, espaciador, btnCarrito);
+        hbox.setAlignment(Pos.CENTER_LEFT);
+        hbox.setPrefWidth(240); hbox.setPrefHeight(42);
+
+        VBox tarjeta = new VBox(stack, txtNombre, hbox);
+        tarjeta.setMaxWidth(Double.MAX_VALUE);
+        tarjeta.setMaxHeight(Double.MAX_VALUE);
+        tarjeta.setMinWidth(Region.USE_PREF_SIZE);
+        tarjeta.setMinHeight(Region.USE_PREF_SIZE);
+        FlowPane.setMargin(tarjeta, new Insets(0));
+        return tarjeta;
+    }
+    
     // Filtro de productos por categoria
     
     @FXML
@@ -434,7 +624,7 @@ public class HomeControladora {
             paneTodosProductosHome.setVisible(true);
             paneTodosProductosHome.setManaged(true);
         }
-        mostrarMiCuentaPerfil();
+        aplicarFiltrosTodos(null);
     }
     
     @FXML

@@ -510,7 +510,7 @@
                                           <Font name="Poppins Regular" size="14.0" />
                                        </font>
                                     </Text>
-                                    <ComboBox layoutX="39.0" layoutY="316.0" prefHeight="39.0" prefWidth="208.0" />
+                                    <ComboBox fx:id="comboCategoriaProducto" layoutX="39.0" layoutY="316.0" prefHeight="39.0" prefWidth="208.0" promptText="Selecciona una categoria" />
                                  </children>
                                  <effect><DropShadow height="5.0" offsetX="0.8" offsetY="1.0" radius="2.0" spread="0.1" width="5.0" /></effect>
                               </Pane>

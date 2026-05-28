@@ -96,6 +96,7 @@ public class AdminControladora {
     @FXML private CheckBox checkviejo;
     @FXML private ImageView previsualizacion;
     @FXML private Button btnGuardarProducto;
+    @FXML private ComboBox<String> comboCategoriaProducto;
     
     private String rutaImagenSeleccionada = "";
     private Producto productoEditando = null;
@@ -201,6 +202,10 @@ public class AdminControladora {
     
     // ---------- Inicializacion de ComboBoxes
     private void inicializarComboBoxes() {
+        if (comboCategoriaProducto != null) {
+            comboCategoriaProducto.getItems().addAll(ProductoServicio.CATEGORIAS);
+            comboCategoriaProducto.setValue(ProductoServicio.CATEGORIAS[0]);
+        }
         if (comboDepartamentoEditarUsuario != null) {
             comboDepartamentoEditarUsuario.getItems().addAll(DepartamentosColombia.getDepartamentos());
             comboDepartamentoEditarUsuario.setOnAction(e -> {
@@ -474,6 +479,7 @@ public class AdminControladora {
         if (txtnombreproductO != null) txtnombreproductO.setText(productoEditando.getNombreProducto());
         if (txtmarca != null) txtmarca.setText(productoEditando.getMarcaProducto());
         if (txtDetalles != null) txtDetalles.setText(productoEditando.getCategoriaProducto());
+        if (comboCategoriaProducto != null) comboCategoriaProducto.setValue(productoEditando.getCategoriaProducto());
         if (txtprecio != null) txtprecio.setText(String.valueOf(productoEditando.getPrecioProducto()));
         if (txtStock != null) txtStock.setText(String.valueOf(productoEditando.getCantidadProducto()));
         
@@ -596,6 +602,9 @@ public class AdminControladora {
         String nombre = txtnombreproductO.getText().trim();
         String marca = txtmarca != null ? txtmarca.getText().trim() : "";
         String detalles = txtDetalles != null ? txtDetalles.getText().trim() : "";
+        String categoria = (comboCategoriaProducto != null && comboCategoriaProducto.getValue() != null)
+            ? comboCategoriaProducto.getValue()
+            : "";
         
         double precio;
         try {
@@ -627,7 +636,7 @@ public class AdminControladora {
             // Actualizar producto existente
             Producto actualizado = new Producto(
                 productoEditando.getIdProducto(),
-                nombre, stock, precio, estado, marca, detalles, rutaImagenSeleccionada
+                nombre, stock, precio, estado, marca, categoria, rutaImagenSeleccionada
             );
             
             if (productoServicio.actualizarProducto(productoEditando.getIdProducto(), actualizado, idAdmin)) {
@@ -637,7 +646,7 @@ public class AdminControladora {
             }
         } else {
             // Crear nuevo producto
-            if (productoServicio.agregarProducto(nombre, stock, precio, estado, marca, detalles, rutaImagenSeleccionada, idAdmin)) {
+              if (productoServicio.agregarProducto(nombre, stock, precio, estado, marca, categoria, rutaImagenSeleccionada, idAdmin)) {
                 AlertaUtil.mostrarInformacion("Producto agregado", "El producto ha sido agregado al inventario.");
             } else {
                 AlertaUtil.mostrarError("Error", "No se pudo agregar el producto.");
@@ -660,6 +669,7 @@ public class AdminControladora {
         if (checknuevo != null) checknuevo.setSelected(true);
         if (checkviejo != null) checkviejo.setSelected(false);
         if (previsualizacion != null) previsualizacion.setImage(null);
+        if (comboCategoriaProducto != null) comboCategoriaProducto.setValue(ProductoServicio.CATEGORIAS[0]);
         rutaImagenSeleccionada = "";
     }
     

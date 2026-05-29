@@ -1193,7 +1193,7 @@
                                  <children>
                                     <HBox prefHeight="478.0" prefWidth="1240.0">
                                        <children>
-                                          <ImageView fitHeight="491.0" fitWidth="412.0" pickOnBounds="true" preserveRatio="true" smooth="false">
+                                          <ImageView fx:id="imgDetalleProducto" fitHeight="491.0" fitWidth="412.0" pickOnBounds="true" preserveRatio="true" smooth="false">
                                              <effect>
                                                 <DropShadow height="5.0" offsetX="1.0" offsetY="1.0" radius="2.0" width="5.0">
                                                    <color>
@@ -1209,37 +1209,37 @@
                                              <children>
                                                 <HBox alignment="CENTER_RIGHT" prefHeight="49.0" prefWidth="411.0">
                                                    <children>
-                                                      <ToggleButton mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" styleClass="boton-favorito">
-                                                         <graphic>
-                                                            <Region maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="icon-corazonf" />
-                                                         </graphic>
-                                                      </ToggleButton>
+                                                      <Button fx:id="btnFavoritoDetalle" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" styleClass="boton-favorito" onAction="#accionFavoritoDetalle">
+                                                       <graphic>
+                                                        <Region fx:id="iconoFavDetalleRegion" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="icon-corazon" />
+                                                       </graphic>
+                                                      </Button>
                                                    </children>
                                                    <VBox.margin>
                                                       <Insets top="10.0" />
                                                    </VBox.margin>
                                                 </HBox>
-                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Nuevo" wrappingWidth="407.2859992980957">
+                                               <Text fx:id="lblEstadoDetalleProducto" strokeType="OUTSIDE" strokeWidth="0.0" text="Nuevo" wrappingWidth="407.2859992980957">
                                                    <font>
                                                       <Font name="Poppins Regular" size="20.0" />
                                                    </font>
                                                 </Text>
-                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="iPhone 14 Pro Max" wrappingWidth="404.2859992980957">
+                                                <Text fx:id="lblNombreDetalleProducto" strokeType="OUTSIDE" strokeWidth="0.0" text="iPhone 14 Pro Max" wrappingWidth="404.2859992980957">
                                                    <font>
                                                       <Font name="Poppins Bold" size="35.0" />
                                                    </font>
                                                 </Text>
-                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="\$3.500.000" wrappingWidth="407.97998809814453">
+                                                <Text fx:id="lblPrecioDetalleProducto" strokeType="OUTSIDE" strokeWidth="0.0" text="\$3.500.000" wrappingWidth="407.97998809814453">
                                                    <font>
                                                       <Font name="Poppins Regular" size="30.0" />
                                                    </font>
                                                 </Text>
-                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Stock Disponible:" wrappingWidth="409.1800003051758">
+                                                <Text fx:id="lblStockDetalleProducto" strokeType="OUTSIDE" strokeWidth="0.0" text="Stock Disponible:" wrappingWidth="409.1800003051758">
                                                    <font>
                                                       <Font name="Poppins Regular" size="20.0" />
                                                    </font>
                                                 </Text>
-                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Descripción: ..." wrappingWidth="410.90999603271484">
+                                                <Text fx:id="lblDescripcionDetalleProducto" strokeType="OUTSIDE" strokeWidth="0.0" text="Descripción: ..." wrappingWidth="410.90999603271484">
                                                    <font>
                                                       <Font name="Poppins Regular" size="20.0" />
                                                    </font>
@@ -1259,13 +1259,13 @@
                                                       <Font name="Poppins Regular" size="15.0" />
                                                    </font>
                                                 </Text>
-                                                <Spinner prefHeight="30.0" prefWidth="190.0" />
+                                                <Spinner fx:id="spinnerCantidadDetalle" prefHeight="30.0" prefWidth="190.0" editable="true" />
                                                 <Button alignment="CENTER" contentDisplay="CENTER" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="50.0" prefWidth="190.0" style="-fx-background-color: #F7CD83; -fx-border-color: transparent; -fx-cursor: hand;" text="Comprar ahora" textAlignment="CENTER">
                                                    <font>
                                                       <Font name="Poppins Regular" size="14.0" />
                                                    </font>
                                                 </Button>
-                                                <Button alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="50.0" prefWidth="190.0" style="-fx-background-color: #eeeeee; -fx-border-color: transparent; -fx-cursor: hand;" text="Agregar al carrito" textAlignment="RIGHT">
+                                                <Button fx:id="btnAgregarCarritoDetalle" onAction="#accionAgregarCarritoDetalle" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="50.0" prefWidth="190.0" style="-fx-background-color: #eeeeee; -fx-border-color: transparent; -fx-cursor: hand;" text="Agregar al carrito" textAlignment="RIGHT">
                                                    <graphic>
                                                       <Region maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="18.0" prefWidth="18.0" style="-fx-shape: &quot;M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.9-58.5L74 58.5H24C10.7 58.5 0 47.8 0 34.5V24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z&quot;; -fx-background-color: #111111;" styleClass="boton">
                                                          <padding>

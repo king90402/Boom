@@ -32,7 +32,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import java.util.ArrayList;
-
+import javafx.scene.control.Spinner;
+import javafx.scene.control.SpinnerValueFactory;
 /**
  * @author alejo
  */
@@ -56,7 +57,7 @@ public class HomeControladora {
     @FXML private Pane panePerfilHome;
     @FXML private Pane paneCarritoHome;
     @FXML private Pane paneTodosProductosHome;
-    @FXML private Pane paneInfoProductosHome;
+    @FXML private VBox paneInfoProductosHome;
     
     // Subpaneles perfil (pueden ser VBox en el FXML)
     
@@ -114,6 +115,18 @@ public class HomeControladora {
     @FXML private Text lblFechaPerfilHome;
     @FXML private Text lblDireccionPerfilHome;
     
+    @FXML private ImageView imgDetalleProducto;
+    @FXML private Text lblNombreDetalleProducto;
+    @FXML private Text lblDescripcionDetalleProducto;
+    @FXML private Text lblPrecioDetalleProducto;
+    @FXML private Text lblEstadoDetalleProducto;
+    @FXML private Text lblStockDetalleProducto;
+    @FXML private Spinner<Integer> spinnerCantidadDetalle;
+    @FXML private Button btnAgregarCarritoDetalle;
+    @FXML private Button btnFavoritoDetalle;
+    @FXML private Region iconoFavDetalleRegion;
+
+    private Producto productoActualDetalle;
     // ----- Inicializacion
     
     @FXML
@@ -257,9 +270,6 @@ public class HomeControladora {
         txtPrecio.setStrokeWidth(0.0);
         txtPrecio.setFont(Font.font("Poppins ExtraBold", 30.0));
 
-        // ── BOTÓN CARRITO (Region con SVG path, igual al FXML) ────────────────
-        // El FXML usa una Region con el path SVG del ícono de carrito como graphic
-        // y el style "-fx-background-color: #111111" sobre la Region
         final String CARRITO_SVG =
             "M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 " +
             "50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 " +
@@ -291,16 +301,7 @@ public class HomeControladora {
         btnCarrito.setGraphic(iconoCarrito);
         HBox.setHgrow(btnCarrito, Priority.NEVER);
 
-        btnCarrito.setOnAction(e -> {
-            boolean ok = carritoService.agregarProducto(producto, 1);
-            if (ok) {
-                AlertaUtil.mostrarInformacion("Carrito",
-                    "\"" + producto.getNombreProducto() + "\" agregado al carrito.");
-            } else {
-                AlertaUtil.mostrarAdvertencia("Carrito",
-                    "No se pudo agregar. Verifica el stock.");
-            }
-        });
+        btnCarrito.setOnAction(e -> mostrarDetalleProducto(producto));
 
         // ── SPACER entre precio y botón ───────────────────────────────────────
         Pane espaciador = new Pane();
@@ -461,7 +462,6 @@ public class HomeControladora {
         }
     }
 
-    // ── Tarjeta adaptada para el panel "Todos" (246×278 imagen, precio size 20) ─
     private VBox crearTarjetaTodos(Producto producto) {
         final String CARRITO_SVG =
             "M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 " +
@@ -523,11 +523,8 @@ public class HomeControladora {
         btnCarrito.setStyle("-fx-background-color: #F7CD83; -fx-border-color: transparent; -fx-cursor: hand;");
         btnCarrito.setGraphic(iconoCarrito);
         HBox.setHgrow(btnCarrito, Priority.NEVER);
-        btnCarrito.setOnAction(e -> {
-            boolean ok = carritoService.agregarProducto(producto, 1);
-            if (ok) AlertaUtil.mostrarInformacion("Carrito", "\"" + producto.getNombreProducto() + "\" agregado.");
-            else    AlertaUtil.mostrarAdvertencia("Carrito", "No se pudo agregar. Verifica el stock.");
-        });
+        
+        btnCarrito.setOnAction(e -> mostrarDetalleProducto(producto));
 
         Pane espaciador = new Pane();
         espaciador.setPrefWidth(63); espaciador.setPrefHeight(40);
@@ -578,14 +575,17 @@ public class HomeControladora {
     // ----- Navegacion
     
     private void ocultarTodosLosPaneles() {
-        Pane[] panes = {paneInicioHome, panePerfilHome, paneCarritoHome, paneTodosProductosHome, paneInfoProductosHome};
-        for (Pane p : panes) {
-            if (p != null) {
-                p.setVisible(false);
-                p.setManaged(false);
-            }
+    javafx.scene.layout.Region[] panes = {
+        paneInicioHome, panePerfilHome, paneCarritoHome,
+        paneTodosProductosHome, paneInfoProductosHome
+    };
+    for (javafx.scene.layout.Region p : panes) {
+        if (p != null) {
+            p.setVisible(false);
+            p.setManaged(false);
         }
     }
+}
 
     @FXML
 public void mostrarInicio() {
@@ -619,14 +619,53 @@ public void mostrarInicio() {
     }
     
     @FXML
-    public void mostrarInfoProductos() {
-        ocultarTodosLosPaneles();
-        if (paneInfoProductosHome != null) {
-            paneInfoProductosHome.setVisible(true);
-            paneInfoProductosHome.setManaged(true);
-        }
-        mostrarMiCuentaPerfil();
+public void mostrarInfoProductos() {
+    ocultarTodosLosPaneles();
+    if (paneInfoProductosHome != null) {
+        paneInfoProductosHome.setVisible(true);
+        paneInfoProductosHome.setManaged(true);
     }
+}
+
+public void mostrarDetalleProducto(Producto producto) {
+    productoActualDetalle = producto;
+
+    ocultarTodosLosPaneles();
+    if (paneInfoProductosHome != null) {
+        paneInfoProductosHome.setVisible(true);
+        paneInfoProductosHome.setManaged(true);
+    }
+
+    if (imgDetalleProducto != null) {
+        String ruta = producto.getImagenProducto();
+        if (ruta != null && !ruta.isEmpty()) {
+            try { imgDetalleProducto.setImage(new Image(ruta, true)); }
+            catch (Exception e) { System.err.println("[Detalle] Imagen: " + ruta); }
+        }
+    }
+
+    if (lblNombreDetalleProducto    != null) lblNombreDetalleProducto.setText(producto.getNombreProducto());
+    if (lblDescripcionDetalleProducto != null) lblDescripcionDetalleProducto.setText(
+        producto.getDetallesProducto() != null && !producto.getDetallesProducto().isEmpty()
+            ? producto.getDetallesProducto() : "Sin descripción.");
+    if (lblPrecioDetalleProducto    != null) lblPrecioDetalleProducto.setText(producto.getPrecioFormateado());
+    if (lblEstadoDetalleProducto    != null) lblEstadoDetalleProducto.setText(producto.getEstadoProducto());
+    if (lblStockDetalleProducto     != null) lblStockDetalleProducto.setText(
+        "Stock disponible: " + producto.getCantidadProducto());
+
+    if (spinnerCantidadDetalle != null) {
+        int stock = Math.max(1, producto.getCantidadProducto());
+        SpinnerValueFactory<Integer> factory =
+            new SpinnerValueFactory.IntegerSpinnerValueFactory(1, stock, 1);
+        spinnerCantidadDetalle.setValueFactory(factory);
+        spinnerCantidadDetalle.setEditable(true);
+    }
+
+    if (iconoFavDetalleRegion != null) {
+        boolean esFav = favoritosService.esFavorito(producto.getIdProducto());
+        aplicarColorCorazon(iconoFavDetalleRegion, esFav);
+    }
+}
     
     @FXML
     public void mostrarCarrito() {
@@ -772,11 +811,7 @@ public void mostrarInicio() {
         btnCarrito.setStyle("-fx-background-color: #F7CD83; -fx-border-color: transparent; -fx-cursor: hand;");
         btnCarrito.setGraphic(iconoCarrito);
         HBox.setHgrow(btnCarrito, Priority.NEVER);
-        btnCarrito.setOnAction(e -> {
-            boolean ok = carritoService.agregarProducto(producto, 1);
-            if (ok) AlertaUtil.mostrarInformacion("Carrito", "\"" + producto.getNombreProducto() + "\" agregado.");
-            else    AlertaUtil.mostrarAdvertencia("Carrito", "No se pudo agregar. Verifica el stock.");
-        });
+        btnCarrito.setOnAction(e -> mostrarDetalleProducto(producto));
 
         Pane espaciador = new Pane();
         espaciador.setPrefWidth(63); espaciador.setPrefHeight(40);
@@ -854,4 +889,40 @@ public void mostrarInicio() {
             e.printStackTrace();
         }
     }
+    @FXML
+private void accionAgregarCarritoDetalle(ActionEvent event) {
+    if (productoActualDetalle == null) return;
+    int cantidad = spinnerCantidadDetalle != null ? spinnerCantidadDetalle.getValue() : 1;
+    boolean ok = carritoService.agregarProducto(productoActualDetalle, cantidad);
+    if (ok) {
+        AlertaUtil.mostrarInformacion("Carrito",
+            "\"" + productoActualDetalle.getNombreProducto() + "\" agregado al carrito.");
+    } else {
+        AlertaUtil.mostrarAdvertencia("Carrito",
+            "No se pudo agregar. Verifica el stock disponible.");
+    }
+}
+
+@FXML
+private void accionComprarAhoraDetalle(ActionEvent event) {
+    if (productoActualDetalle == null) return;
+    int cantidad = spinnerCantidadDetalle != null ? spinnerCantidadDetalle.getValue() : 1;
+    boolean ok = carritoService.agregarProducto(productoActualDetalle, cantidad);
+    if (ok) {
+        AlertaUtil.mostrarInformacion("Compra",
+            "\"" + productoActualDetalle.getNombreProducto() + "\" listo. Ve al carrito para finalizar.");
+        mostrarCarrito();
+    } else {
+        AlertaUtil.mostrarAdvertencia("Compra",
+            "No se pudo procesar. Verifica el stock disponible.");
+    }
+}
+
+@FXML
+private void accionFavoritoDetalle(ActionEvent event) {
+    if (productoActualDetalle == null) return;
+    favoritosService.toggleFavorito(productoActualDetalle);
+    boolean ahora = favoritosService.esFavorito(productoActualDetalle.getIdProducto());
+    if (iconoFavDetalleRegion != null) aplicarColorCorazon(iconoFavDetalleRegion, ahora);
+}
 }

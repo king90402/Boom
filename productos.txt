@@ -1,1 +1,2 @@
 1;Pintura de paisaje morado;5;100.0;Nuevo;Generico;Pintura especial enmarcada de imagen con tonos morados;file:/C:/Users/EQUIPO/Downloads/Imagenes/lighting-in-scenery_3840x2160_xtrafondos.com.jpg
+2;Samsung A05s;1;475000.0;Usado;Samsung;Tecnologia;file:/C:/Users/EQUIPO/Downloads/Imagenes/paisaje-nevado-en-el-bosque-arte-digital-9759.jpg;Celular usado de leira

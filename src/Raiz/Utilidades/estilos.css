@@ -320,3 +320,7 @@
 .table-view .table-column {
     -fx-alignment: CENTER;
 }
+
+.gradiente-home {
+    -fx-background-color: linear-gradient(to top, #f6f6f6 0%, transparent 100%);
+}

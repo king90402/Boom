@@ -452,7 +452,7 @@
                   </Pane>
                   
 
-                  <Pane fx:id="paneRestaNuevo_Producto" prefHeight="450.0" prefWidth="804.0" style="-fx-background-color: #ffffff;">
+                  <Pane fx:id="paneRestaNuevo_Producto" prefHeight="450.0" prefWidth="804.0" style="-fx-background-color: #ffffff;" visible="false">
                      <children>
                         <StackPane layoutX="50.0" layoutY="20.0" prefHeight="410.0" prefWidth="704.0">
                            <children>
@@ -777,7 +777,7 @@
                   </Pane>
                   
 
-                  <Pane fx:id="paneHistorialAdmin" prefHeight="450.0" prefWidth="804.0" style="-fx-background-color: #f0f0f0;" visible="false">
+                  <Pane fx:id="paneHistorialAdmin" prefHeight="450.0" prefWidth="804.0" style="-fx-background-color: #f0f0f0;">
                      <effect>
                         <DropShadow height="5.0" offsetX="0.8" offsetY="1.0" radius="2.0" spread="0.1" width="5.0" />
                      </effect>
@@ -797,6 +797,7 @@
                               <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                            </columnResizePolicy>
                         </TableView>
+                        <ComboBox fx:id="comboFiltroHistorial1" layoutX="235.0" layoutY="55.0" prefHeight="30.0" prefWidth="200.0" promptText="Usuarios..." />
                      </children>
                   </Pane>
                   

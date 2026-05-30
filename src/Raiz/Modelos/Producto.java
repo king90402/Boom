@@ -148,7 +148,7 @@ public class Producto {
     
 
     public String getPrecioFormateado() {
-        return String.format("$%,.2f", precioProducto);
+        return String.format("$%,.0f", precioProducto);
     }
     
 

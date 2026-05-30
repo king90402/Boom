@@ -20,31 +20,40 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
     
+    private void loadFont(String path) {
+        var stream = getClass().getResourceAsStream(path);
+        if (stream == null) {
+            System.err.println("⚠ Fuente no encontrada: " + path);
+            return;
+        }
+        Font.loadFont(stream, 12);
+    }
+    
     @Override
     public void start(Stage primaryStage) throws Exception {
         
         // Carga de fuentes
         
-        Font.loadFont(getClass().getResourceAsStream("Raiz/Fuente/Inter_18pt-Black.ttf"), 12);
-        Font.loadFont(getClass().getResourceAsStream("Raiz/Fuente/Inter_18pt-Bold.ttf"), 12);
-        Font.loadFont(getClass().getResourceAsStream("Raiz/Fuente/Inter_18pt-ExtraBold.ttf"), 12);
-        Font.loadFont(getClass().getResourceAsStream("Raiz/Fuente/Inter_18pt-ExtraLight.ttf"), 12);
-        Font.loadFont(getClass().getResourceAsStream("Raiz/Fuente/Inter_18pt-Italic.ttf"), 12);
-        Font.loadFont(getClass().getResourceAsStream("Raiz/Fuente/Inter_18pt-Light.ttf"), 12);
-        Font.loadFont(getClass().getResourceAsStream("Raiz/Fuente/Inter_18pt-Medium.ttf"), 12);
-        Font.loadFont(getClass().getResourceAsStream("Raiz/Fuente/Inter_18pt-Regular.ttf"), 12);
-        Font.loadFont(getClass().getResourceAsStream("Raiz/Fuente/Inter_18pt-SemiBold.ttf"), 12);
-        Font.loadFont(getClass().getResourceAsStream("Raiz/Fuente/Inter_18pt-Thin.ttf"), 12);
-
-        Font.loadFont(getClass().getResourceAsStream("Raiz/Fuente/Poppins-Black.ttf"), 12);
-        Font.loadFont(getClass().getResourceAsStream("Raiz/Fuente/Poppins-Bold.ttf"), 12);
-        Font.loadFont(getClass().getResourceAsStream("Raiz/Fuente/Poppins-ExtraBold.ttf"), 12);
-        Font.loadFont(getClass().getResourceAsStream("Raiz/Fuente/Poppins-ExtraLight.ttf"), 12);
-        Font.loadFont(getClass().getResourceAsStream("Raiz/Fuente/Poppins-Light.ttf"), 12);
-        Font.loadFont(getClass().getResourceAsStream("Raiz/Fuente/Poppins-Medium.ttf"), 12);
-        Font.loadFont(getClass().getResourceAsStream("Raiz/Fuente/Poppins-Regular.ttf"), 12);
-        Font.loadFont(getClass().getResourceAsStream("Raiz/Fuente/Poppins-SemiBold.ttf"), 12);
-        Font.loadFont(getClass().getResourceAsStream("Raiz/Fuente/Poppins-Thin.ttf"), 12);
+        loadFont("/Raiz/Fuente/Inter_18pt-Black.ttf");
+        loadFont("/Raiz/Fuente/Inter_18pt-Bold.ttf");
+        loadFont("/Raiz/Fuente/Inter_18pt-ExtraBold.ttf");
+        loadFont("/Raiz/Fuente/Inter_18pt-ExtraLight.ttf");
+        loadFont("/Raiz/Fuente/Inter_18pt-Italic.ttf");
+        loadFont("/Raiz/Fuente/Inter_18pt-Light.ttf");
+        loadFont("/Raiz/Fuente/Inter_18pt-Medium.ttf");
+        loadFont("/Raiz/Fuente/Inter_18pt-Regular.ttf");
+        loadFont("/Raiz/Fuente/Inter_18pt-SemiBold.ttf");
+        loadFont("/Raiz/Fuente/Inter_18pt-Thin.ttf");
+ 
+        loadFont("/Raiz/Fuente/Poppins-Black.ttf");
+        loadFont("/Raiz/Fuente/Poppins-Bold.ttf");
+        loadFont("/Raiz/Fuente/Poppins-ExtraBold.ttf");
+        loadFont("/Raiz/Fuente/Poppins-ExtraLight.ttf");
+        loadFont("/Raiz/Fuente/Poppins-Light.ttf");
+        loadFont("/Raiz/Fuente/Poppins-Medium.ttf");
+        loadFont("/Raiz/Fuente/Poppins-Regular.ttf");
+        loadFont("/Raiz/Fuente/Poppins-SemiBold.ttf");
+        loadFont("/Raiz/Fuente/Poppins-Thin.ttf");
         
         // Carga de la Ventana de Registro e Inicio de Sesion
         

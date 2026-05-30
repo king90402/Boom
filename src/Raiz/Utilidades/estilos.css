@@ -1,6 +1,6 @@
-/* ============================================================
- *  1. TOOLBAR
- * ============================================================ */
+/* -------------------
+ *  1. Toolbar
+ * ------------------*/
 
 .dark-toolbar {
     -fx-background-color: #101010;
@@ -9,9 +9,9 @@
     -fx-alignment: CENTER;
 }
 
-/* ============================================================
- *  2. BOTONES DE ÍCONO
- * ============================================================ */
+/* ----------------------
+ *  2. Botones de Icono
+ * ---------------------- */
 
 .icon-button {
     -fx-background-color: transparent;
@@ -32,9 +32,9 @@
     -fx-background-color: #ffffff;
 }
 
-/* ============================================================
- *  3. ÍCONOS SVG
- * ============================================================ */
+/* -------------------
+ *  3. Iconos SVG
+ * -------------------- */
 
 .icon-lupa {
     -fx-shape: "M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z";
@@ -85,9 +85,9 @@
     -fx-pref-height: 15px;
 }
 
-/* ============================================================
- *  4. BOTÓN FAVORITO
- * ============================================================ */
+/* -------------------------
+ *  4. Boton Favorito
+ * ---------------------------*/
 
 .boton-favorito {
     -fx-background-color: #F5F5F5;
@@ -123,9 +123,9 @@
     -fx-scale-y: 1.05;
 }
 
-/* ============================================================
- *  5. MENÚS — TEMA CLARO
- * ============================================================ */
+/* ----------------------------
+ *  5. Menus Claros
+ * ------------------------- */
 
 .menu-container {
     -fx-border-color: #E0E0E0;
@@ -173,9 +173,9 @@
     -fx-padding: 0;
 }
 
-/* ============================================================
- *  6. MENÚS — TEMA OSCURO
- * ============================================================ */
+/* ------------------------------
+ *  6. Menus Oscuros
+ * --------------------------------- */
 
 .menu-containerC {
     -fx-background-color: #111111;
@@ -196,9 +196,9 @@
     -fx-border-color: transparent;
 }
 
-/* ============================================================
- *  7. CAMPOS DE TEXTO
- * ============================================================ */
+/* -----------------------
+ *  7. Campos de texto
+ * ------------------------ */
 
 .text-field {
     -fx-background-color: white;
@@ -215,9 +215,9 @@
     -fx-border-width: 1.5px;
 }
 
-/* ============================================================
- *  8. COMBOBOX
- * ============================================================ */
+/* --------------------
+ *  8. ComboBox
+ * ------------------------ */
 
 .combo-box {
     -fx-background-color: white;
@@ -257,9 +257,9 @@
     -fx-text-fill: white;
 }
 
-/* ============================================================
- *  9. CHECKBOX
- * ============================================================ */
+/* ---------------------
+ *  9. CheckBox
+ * ---------------------- */
 
 .check-box > .box {
     -fx-background-color: white;
@@ -279,9 +279,9 @@
     -fx-shape: "M1.73,12.91L8.1,19.28L22.79,4.59L20.66,2.47L8.1,15.03L3.85,10.78L1.73,12.91Z";
 }
 
-/* ============================================================
- *  10. TABLA
- * ============================================================ */
+/* --------------
+ *  10. Tabla
+ * ---------------- */
 
 .table-view {
     -fx-background-color: transparent;
@@ -325,41 +325,15 @@
     -fx-background-color: linear-gradient(to top, #f6f6f6 0%, transparent 100%);
 }
 
-/* ============================================================
- *  11. SPINNER
- * ============================================================ */
+/* ----------------
+ *  11. Tablas
+ * ------------------ */
 
-.spinner {
-    -fx-background-color: transparent;
-    -fx-border-color: #e0e0e0;
-    -fx-border-radius: 25px;
-    -fx-background-radius: 25px;
-    -fx-padding: 0;
-    -fx-pref-height: 40px;
-    -fx-pref-width: 150px;
+.table-row-cell:selected {
+    -fx-background-color: #f6cd85;
+    -fx-background-insets: 0;
 }
 
-.spinner .text-field {
-    -fx-background-color: transparent;
-    -fx-alignment: center;
-    -fx-font-family: "Poppins SemiBold";
-    -fx-font-size: 16px;
-}
-
-.spinner .increment-arrow-button, 
-.spinner .decrement-arrow-button {
-    -fx-background-color: transparent;
-    -fx-cursor: hand;
-}
-
-.spinner .increment-arrow-button .increment-arrow,
-.spinner .decrement-arrow-button .decrement-arrow {
-    -fx-shape: null; 
-    -fx-padding: 0;
-}
-
-.spinner .increment-arrow-button {
-    -fx-background-color: transparent;
-    -fx-text-fill: #999999;
-    -fx-font-size: 20px;
+.table-row-cell:selected .table-cell {
+    -fx-text-fill: #333333; 
 }

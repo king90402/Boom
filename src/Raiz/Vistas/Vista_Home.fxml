@@ -8,7 +8,6 @@
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.ScrollPane?>
-<?import javafx.scene.control.Spinner?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToggleButton?>
 <?import javafx.scene.control.ToggleGroup?>
@@ -371,7 +370,7 @@
                                           </Text>
                                        </children>
                                     </HBox>
-                                    <FlowPane id="contenedorProductosHome" fx:id="contenedorProductosHome" hgap="33.0" prefHeight="1405.0" prefWidth="1280.0" vgap="60.0">
+                                    <FlowPane id="contenedorProductosHome" fx:id="contenedorProductosHome" columnHalignment="CENTER" hgap="20.0" prefHeight="1405.0" prefWidth="1280.0" vgap="60.0">
                                        <padding>
                                           <Insets left="30.0" right="30.0" top="30.0" />
                                        </padding>
@@ -455,7 +454,7 @@
                                                  <ComboBox fx:id="comboEstadoTodos" maxWidth="1.7976931348623157E308" onAction="#aplicarFiltrosTodos" prefHeight="40.0" promptText="Todos" />
                                              </children>
                                           </VBox>
-                                          <FlowPane fx:id="contenedorTodosProductos" hgap="20.0" prefHeight="1405.0" prefWidth="1280.0" vgap="60.0">
+                                          <FlowPane fx:id="contenedorTodosProductos" columnHalignment="CENTER" hgap="15.0" prefHeight="1405.0" prefWidth="1280.0" vgap="60.0">
                                              <padding>
                                                 <Insets left="20.0" right="20.0" top="10.0" />
                                              </padding>
@@ -466,9 +465,9 @@
                               </VBox>
                               <VBox fx:id="paneInfoProductosHome" prefHeight="200.0" prefWidth="100.0" visible="false">
                                  <children>
-                                    <HBox prefHeight="478.0" prefWidth="1240.0">
+                                    <HBox prefHeight="490.0">
                                        <children>
-                                          <ImageView fitHeight="491.0" fitWidth="412.0" pickOnBounds="true" preserveRatio="true" smooth="false">
+                                          <ImageView fx:id="imgDetalleProducto" fitHeight="490.0" fitWidth="412.0" pickOnBounds="true" preserveRatio="true" smooth="false">
                                              <effect>
                                                 <DropShadow height="5.0" offsetX="1.0" offsetY="1.0" radius="2.0" width="5.0">
                                                    <color>
@@ -477,76 +476,105 @@
                                                 </DropShadow>
                                              </effect>
                                           </ImageView>
-                                          <VBox prefHeight="480.0" prefWidth="440.0" spacing="15.0" HBox.hgrow="ALWAYS">
+                                          <VBox prefHeight="490.0" prefWidth="769.0" spacing="15.0" HBox.hgrow="ALWAYS">
                                              <children>
                                                 <HBox alignment="CENTER_RIGHT" prefHeight="49.0" prefWidth="411.0">
-                                                   <children>
-                                                      <ToggleButton mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" styleClass="boton-favorito">
-                                                         <graphic>
-                                                            <Region maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="icon-corazonf" />
-                                                         </graphic>
-                                                      </ToggleButton>
-                                                   </children>
                                                    <VBox.margin>
                                                       <Insets top="10.0" />
                                                    </VBox.margin>
                                                 </HBox>
-                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Nuevo" wrappingWidth="407.2859992980957">
+                                                <Text fx:id="lblNombreDetalleProducto" strokeType="OUTSIDE" strokeWidth="0.0" text="iPhone 14 Pro Max" wrappingWidth="778.2859992980957">
+                                                   <font>
+                                                      <Font name="Poppins Bold" size="42.0" />
+                                                   </font>
+                                                </Text>
+                                                <Text fx:id="lblDescripcionDetalleProducto" strokeType="OUTSIDE" strokeWidth="0.0" text="Descripción: ..." wrappingWidth="787.9099960327148">
                                                    <font>
                                                       <Font name="Poppins Regular" size="20.0" />
                                                    </font>
                                                 </Text>
-                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="iPhone 14 Pro Max" wrappingWidth="404.2859992980957">
-                                                   <font>
-                                                      <Font name="Poppins Bold" size="35.0" />
-                                                   </font>
-                                                </Text>
-                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="\$3.500.000" wrappingWidth="407.97998809814453">
-                                                   <font>
-                                                      <Font name="Poppins Regular" size="30.0" />
-                                                   </font>
-                                                </Text>
-                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Stock Disponible:" wrappingWidth="409.1800003051758">
+                                                <Text fx:id="lblEstadoDetalleProducto" strokeType="OUTSIDE" strokeWidth="0.0" text="Nuevo" wrappingWidth="792.2859992980957">
                                                    <font>
                                                       <Font name="Poppins Regular" size="20.0" />
                                                    </font>
                                                 </Text>
-                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Descripción: ..." wrappingWidth="410.90999603271484">
+                                                <Pane prefHeight="122.0" prefWidth="644.0" VBox.vgrow="ALWAYS" />
+                                                <Text fx:id="lblPrecioDetalleProducto" strokeType="OUTSIDE" strokeWidth="0.0" text="\$3.500.000" wrappingWidth="785.9799880981445">
+                                                   <font>
+                                                      <Font name="Poppins SemiBold" size="30.0" />
+                                                   </font>
+                                                </Text>
+                                                <HBox alignment="CENTER_LEFT" prefHeight="47.0" prefWidth="590.0" spacing="10.0">
+                                                   <children>
+                                                      <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Cantidad: ">
+                                                         <font>
+                                                            <Font name="Poppins Regular" size="20.0" />
+                                                         </font>
+                                                      </Text>
+                                                      <HBox fx:id="hBoxSpinner" alignment="CENTER" prefHeight="45.0" prefWidth="200.0" spacing="5.0" style="-fx-background-color: #f9f9f9; -fx-border-color: #e0e0e0; -fx-border-radius: 25px; -fx-background-radius: 25px;">
+                                                         <children>
+                                                            <Button fx:id="btnMenos" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-cursor: hand; -fx-background-radius: 50%;" text="-" textFill="#555555">
+                                                               <font>
+                                                                  <Font name="Poppins Bold" size="16.0" />
+                                                               </font>
+                                                            </Button>
+                                                            <TextField fx:id="txtCantidad" alignment="CENTER" prefHeight="19.0" prefWidth="103.0" style="-fx-background-color: transparent;">
+                                                               <font>
+                                                                  <Font name="Poppins SemiBold" size="16.0" />
+                                                               </font>
+                                                            </TextField>
+                                                            <Button fx:id="btnMas" mnemonicParsing="false" style="-fx-background-color: transparent; -fx-cursor: hand; -fx-background-radius: 50%;" text="+" textFill="#555555">
+                                                               <font>
+                                                                  <Font name="Poppins Bold" size="16.0" />
+                                                               </font>
+                                                            </Button>
+                                                         </children>
+                                                         <padding>
+                                                            <Insets bottom="5.0" left="10.0" right="10.0" top="5.0" />
+                                                         </padding>
+                                                         <effect>
+                                                            <DropShadow blurType="GAUSSIAN" height="1.0" offsetX="0.5" radius="0.0" spread="1.0" width="1.0">
+                                                               <color>
+                                                                  <Color opacity="0.05000000074505806" />
+                                                               </color>
+                                                            </DropShadow>
+                                                         </effect>
+                                                      </HBox>
+                                                   </children>
+                                                </HBox>
+                                                <Text fx:id="lblStockDetalleProducto" strokeType="OUTSIDE" strokeWidth="0.0" text="Stock Disponible:" wrappingWidth="785.1800003051758">
                                                    <font>
                                                       <Font name="Poppins Regular" size="20.0" />
                                                    </font>
                                                 </Text>
+                                                <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="658.0" spacing="20.0">
+                                                   <children>
+                                                      <Button alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="50.0" prefWidth="441.0" style="-fx-background-color: #eeeeee; -fx-border-color: transparent; -fx-cursor: hand;" text="Agregar al carrito" textAlignment="RIGHT">
+                                                         <graphic>
+                                                            <Region maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="18.0" prefWidth="18.0" style="-fx-shape: &quot;M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.9-58.5L74 58.5H24C10.7 58.5 0 47.8 0 34.5V24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z&quot;; -fx-background-color: #111111;" styleClass="boton">
+                                                               <padding>
+                                                                  <Insets left="5.0" right="10.0" />
+                                                               </padding>
+                                                            </Region>
+                                                         </graphic>
+                                                         <font>
+                                                            <Font name="Poppins Regular" size="14.0" />
+                                                         </font>
+                                                      </Button>
+                                                      <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
+                                                      <Button fx:id="btnFavoritoDetalle" mnemonicParsing="false" prefHeight="40.0" prefWidth="40.0" styleClass="boton-favorito">
+                                                         <graphic>
+                                                            <Region fx:id="iconoFavDetalleRegion" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" styleClass="icon-corazonf" />
+                                                         </graphic>
+                                                      </Button>
+                                                   </children>
+                                                </HBox>
                                              </children>
                                              <HBox.margin>
                                                 <Insets left="20.0" />
                                              </HBox.margin>
                                              <padding>
                                                 <Insets right="10.0" />
-                                             </padding>
-                                          </VBox>
-                                          <VBox alignment="CENTER" prefHeight="480.0" prefWidth="260.0" spacing="14.0" style="-fx-background-color: #ffffff; -fx-background-radius: 10px; -fx-border-color: #eeeeee; -fx-border-radius: 10px;" HBox.hgrow="ALWAYS">
-                                             <children>
-                                                <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Cantidad: ">
-                                                   <font>
-                                                      <Font name="Poppins Regular" size="15.0" />
-                                                   </font>
-                                                </Text>
-                                                <Spinner prefHeight="30.0" prefWidth="190.0" />
-                                                <Button alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="50.0" prefWidth="190.0" style="-fx-background-color: #eeeeee; -fx-border-color: transparent; -fx-cursor: hand;" text="Agregar al carrito" textAlignment="RIGHT">
-                                                   <graphic>
-                                                      <Region maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="18.0" prefWidth="18.0" style="-fx-shape: &quot;M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.9-58.5L74 58.5H24C10.7 58.5 0 47.8 0 34.5V24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z&quot;; -fx-background-color: #111111;" styleClass="boton">
-                                                         <padding>
-                                                            <Insets left="5.0" right="10.0" />
-                                                         </padding>
-                                                      </Region>
-                                                   </graphic>
-                                                   <font>
-                                                      <Font name="Poppins Regular" size="14.0" />
-                                                   </font>
-                                                </Button>
-                                             </children>
-                                             <padding>
-                                                <Insets bottom="20.0" left="20.0" right="20.0" />
                                              </padding>
                                           </VBox>
                                        </children>
@@ -566,7 +594,7 @@
                                           </Text>
                                        </children>
                                     </HBox>
-                                    <FlowPane id="contenedorProductosHome" fx:id="contenedorProductosHome1" hgap="33.0" prefHeight="1405.0" prefWidth="1280.0" vgap="60.0" VBox.vgrow="ALWAYS">
+                                    <FlowPane id="contenedorProductosHome" fx:id="contenedorProductosHome1" columnHalignment="CENTER" hgap="20.0" prefHeight="1405.0" prefWidth="1280.0" vgap="60.0" VBox.vgrow="ALWAYS">
                                        <padding>
                                           <Insets left="30.0" right="30.0" top="30.0" />
                                        </padding>

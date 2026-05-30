@@ -92,7 +92,7 @@ public class AdminControladora {
     // ---------- Campos nuevo/editar producto
     @FXML private TextField txtnombreproductO;
     @FXML private TextField txtmarca;
-    @FXML private TextField txtDetalles;
+    @FXML private TextArea txtDetalles;
     @FXML private TextField txtprecio;
     @FXML private TextField txtStock;
     @FXML private TextField txtruta;

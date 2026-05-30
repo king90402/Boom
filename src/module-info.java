@@ -5,9 +5,11 @@
 
 module boomCopia {
     requires javafx.base;
+    requires java.desktop;
     requires javafx.controls;
     requires javafx.fxml;
     requires javafx.graphics;
+    requires javafx.swing;
 
     opens Raiz to javafx.fxml;
     opens Raiz.Controladoras to javafx.fxml;  

@@ -13,6 +13,7 @@ import Raiz.Servicios.ProductoServicio;
 import Raiz.Servicios.SesionServicio;
 import Raiz.Utilidades.AlertaUtil;
 import Raiz.Utilidades.Ordenamiento;
+import java.io.File;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -224,18 +225,40 @@ public class HomeControladora {
         // ── IMAGEN ────────────────────────────────────────────────────────────
         ImageView imageView = new ImageView();
         imageView.setFitWidth(280);
-        imageView.setFitHeight(330);
+        imageView.setFitHeight(326);
         imageView.setPickOnBounds(true);
         imageView.setPreserveRatio(true);
+        String RUTA_IMAGEN_DEFECTO = "/Raiz/Media/Error.png";
 
         String ruta = producto.getImagenProducto();
+        boolean imagenCargada = false;
+        
         if (ruta != null && !ruta.isEmpty()) {
-            try {
-                imageView.setImage(new Image(ruta, true));
-            } catch (Exception e) {
-                System.err.println("[Tarjeta] Imagen no cargada: " + ruta);
+            
+        try {
+                
+            java.net.URL urlRecurso = getClass().getResource(ruta);
+        
+            if (urlRecurso != null) {
+                imageView.setImage(new Image(urlRecurso.toExternalForm(), true));
+                imagenCargada = true;
+            } else {
+
+                String rutaFisicaProyecto = System.getProperty("user.dir");
+                File archivoFisico = new File(rutaFisicaProyecto + "/src" + ruta);
+            
+                if (archivoFisico.exists()) {
+                imageView.setImage(new Image(archivoFisico.toURI().toString(), true));
+                imagenCargada = true;
+                }   else {
+                    System.err.println("[Tarjeta] Archivo no encontrado:" + ruta);
+                }
             }
+        } catch (Exception e) {
+            System.err.println("[Tarjeta] Excepción crítica al intentar cargar: " + ruta);
+            e.printStackTrace(); 
         }
+    }
 
         // Sombra idéntica al FXML original
         DropShadow sombra = new DropShadow();
@@ -475,11 +498,37 @@ public class HomeControladora {
         imageView.setFitHeight(278);
         imageView.setPickOnBounds(true);
         imageView.setPreserveRatio(true);
+        
         String ruta = producto.getImagenProducto();
+        boolean imagenCargada = false;
+        
         if (ruta != null && !ruta.isEmpty()) {
-            try { imageView.setImage(new Image(ruta, true)); }
-            catch (Exception e) { System.err.println("[Todos] Imagen: " + ruta); }
+            
+        try {
+                
+            java.net.URL urlRecurso = getClass().getResource(ruta);
+        
+            if (urlRecurso != null) {
+                imageView.setImage(new Image(urlRecurso.toExternalForm(), true));
+                imagenCargada = true;
+            } else {
+
+                String rutaFisicaProyecto = System.getProperty("user.dir");
+                File archivoFisico = new File(rutaFisicaProyecto + "/src" + ruta);
+            
+                if (archivoFisico.exists()) {
+                imageView.setImage(new Image(archivoFisico.toURI().toString(), true));
+                imagenCargada = true;
+                }   else {
+                    System.err.println("[Tarjeta] Archivo no encontrado:" + ruta);
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("[Tarjeta] Excepción crítica al intentar cargar: " + ruta);
+            e.printStackTrace(); 
         }
+    }
+        
         DropShadow sombra = new DropShadow();
         sombra.setHeight(5); sombra.setWidth(5);
         sombra.setOffsetX(1); sombra.setOffsetY(1); sombra.setRadius(2);
@@ -743,11 +792,37 @@ public void mostrarDetalleProducto(Producto producto) {
         ImageView imageView = new ImageView();
         imageView.setFitWidth(246); imageView.setFitHeight(278);
         imageView.setPickOnBounds(true); imageView.setPreserveRatio(true);
+        
         String ruta = producto.getImagenProducto();
+        boolean imagenCargada = false;
+        
         if (ruta != null && !ruta.isEmpty()) {
-            try { imageView.setImage(new Image(ruta, true)); }
-            catch (Exception e) { System.err.println("[Favorito] " + ruta); }
+            
+        try {
+                
+            java.net.URL urlRecurso = getClass().getResource(ruta);
+        
+            if (urlRecurso != null) {
+                imageView.setImage(new Image(urlRecurso.toExternalForm(), true));
+                imagenCargada = true;
+            } else {
+
+                String rutaFisicaProyecto = System.getProperty("user.dir");
+                File archivoFisico = new File(rutaFisicaProyecto + "/src" + ruta);
+            
+                if (archivoFisico.exists()) {
+                imageView.setImage(new Image(archivoFisico.toURI().toString(), true));
+                imagenCargada = true;
+                }   else {
+                    System.err.println("[Tarjeta] Archivo no encontrado:" + ruta);
+                }
+            }
+        } catch (Exception e) {
+            System.err.println("[Tarjeta] Excepción crítica al intentar cargar: " + ruta);
+            e.printStackTrace(); 
         }
+    }
+        
         DropShadow sombra = new DropShadow();
         sombra.setHeight(5); sombra.setWidth(5); sombra.setOffsetX(1); sombra.setOffsetY(1);
         sombra.setRadius(2); sombra.setColor(Color.rgb(151,151,151));

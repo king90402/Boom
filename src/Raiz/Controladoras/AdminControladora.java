@@ -41,8 +41,12 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import java.io.File;
+import javax.imageio.ImageIO;
 import java.util.ArrayList;
 import java.util.Optional;
+import javafx.scene.image.PixelReader;
+import javafx.scene.image.WritableImage;
+import javafx.embed.swing.SwingFXUtils;
 
 /**
  * @author alejo
@@ -447,6 +451,20 @@ public class AdminControladora {
         tablaProductos.setItems(listaObservable);
     }
     
+    @FXML
+    private void controlarSeleccion(ActionEvent event) {
+
+        if (event.getSource() == checknuevo) {
+            if (checknuevo.isSelected()) {
+                checkviejo.setSelected(false);
+            }
+        } else if (event.getSource() == checkviejo) {
+            if (checkviejo.isSelected()) {
+                checknuevo  .setSelected(false);
+            }
+        }
+    }
+    
     // ---------- Agregar nuevo producto
     @FXML
     private void agregarNuevoProducto(ActionEvent event) {
@@ -490,6 +508,32 @@ public class AdminControladora {
         
         rutaImagenSeleccionada = productoEditando.getImagenProducto();
         if (txtruta != null) txtruta.setText(rutaImagenSeleccionada);
+        
+        String rutaString = productoEditando.getImagenProducto();
+
+        if (rutaString != null && !rutaString.isEmpty()) {
+            
+            try {
+ 
+                java.net.URL urlRecurso = getClass().getResource(rutaString);
+        
+                if (urlRecurso != null) {
+                    previsualizacion.setImage(new Image(urlRecurso.toExternalForm(), true));
+                } else {
+
+                    String rutaFisicaProyecto = System.getProperty("user.dir");
+                    File archivoFisico = new File(rutaFisicaProyecto + "/src" + rutaString);
+            
+                    if (archivoFisico.exists()) {
+                        previsualizacion.setImage(new Image(archivoFisico.toURI().toString(), true));
+                    }
+                }
+            } catch (Exception e) {
+                System.err.println("Error al cargar la imagen en edición: " + e.getMessage());
+            }
+        } else {
+
+        }
     }
     
     // ---------- Visualizar informacion completa del producto
@@ -565,25 +609,71 @@ public class AdminControladora {
     // ---------- Seleccionar imagen del producto
     @FXML
     private void seleccionarImagen(ActionEvent event) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Seleccionar Imagen del Producto");
-        fileChooser.getExtensionFilters().addAll(
-            new FileChooser.ExtensionFilter("Imagenes", "*.png", "*.jpg", "*.jpeg", "*.gif")
-        );
-        
-        File archivo = fileChooser.showOpenDialog(((Node)event.getSource()).getScene().getWindow());
-        if (archivo != null) {
-            rutaImagenSeleccionada = archivo.toURI().toString();
-            if (txtruta != null) txtruta.setText(archivo.getName());
-            if (previsualizacion != null) {
-                try {
-                    previsualizacion.setImage(new Image(rutaImagenSeleccionada));
-                } catch (Exception e) {
-                    System.err.println("Error cargando imagen: " + e.getMessage());
-                }
+    FileChooser fileChooser = new FileChooser();
+    fileChooser.setTitle("Seleccionar Imagen del Producto");
+    fileChooser.getExtensionFilters().addAll(
+        new FileChooser.ExtensionFilter("Imágenes", "*.png", "*.jpg", "*.jpeg", "*.gif")
+    );
+    
+    File archivo = fileChooser.showOpenDialog(((Node)event.getSource()).getScene().getWindow());
+    
+    if (archivo != null) {
+        try {
+            // ---Cargamos la imagen original en memoria
+            Image imagenOriginal = new Image(archivo.toURI().toString());
+            
+            // ---Definimos relacion aspecto
+            double targetRatio = 6.0 / 7.0;
+            double imageRatio = imagenOriginal.getWidth() / imagenOriginal.getHeight();
+            
+            int cropX = 0, cropY = 0;
+            int cropW = (int) imagenOriginal.getWidth();
+            int cropH = (int) imagenOriginal.getHeight();
+
+            if (imageRatio > targetRatio) {
+                cropW = (int) (imagenOriginal.getHeight() * targetRatio);
+                cropX = (int) ((imagenOriginal.getWidth() - cropW) / 2);
+            } else {
+                cropH = (int) (imagenOriginal.getWidth() / targetRatio);
+                cropY = (int) ((imagenOriginal.getHeight() - cropH) / 2);
             }
+
+            PixelReader lector = imagenOriginal.getPixelReader();
+            WritableImage imagenRecortada = new WritableImage(lector, cropX, cropY, cropW, cropH);
+
+            // ---Guardamos la imagen en el proyecto
+            String rutaProyecto = System.getProperty("user.dir");
+            File directorioDestino = new File(rutaProyecto + "/src/Raiz/Media/Productos");
+            
+            if (!directorioDestino.exists()) {
+                directorioDestino.mkdirs();
+            }
+            
+            String nombreArchivoFinal = "prod_" + System.currentTimeMillis() + ".png"; 
+            File archivoDestino = new File(directorioDestino, nombreArchivoFinal);
+            
+            ImageIO.write(SwingFXUtils.fromFXImage(imagenRecortada, null), "png", archivoDestino);
+            
+            if (txtruta != null) {
+                txtruta.setText(nombreArchivoFinal); 
+            }
+            
+            // ---Guardamos la ruta absoluta 
+            rutaImagenSeleccionada ="/Raiz/Media/Productos/" + nombreArchivoFinal; 
+            
+            if (previsualizacion != null) {
+                previsualizacion.setFitWidth(240);
+                previsualizacion.setFitHeight(280);
+                previsualizacion.setPreserveRatio(false); 
+                previsualizacion.setImage(imagenRecortada);
+            }
+            
+        } catch (Exception e) {
+            System.err.println("Error procesando o guardando la imagen: " + e.getMessage());
+            e.printStackTrace();
         }
     }
+}
     
     // ---------- Guardar producto (nuevo o editado)
     @FXML

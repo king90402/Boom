@@ -477,10 +477,10 @@
                                     <Text layoutX="40.0" layoutY="230.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Estado del producto:">
                                        <font><Font name="Poppins Regular" size="14.0" /></font>
                                     </Text>
-                                    <CheckBox fx:id="checknuevo" layoutX="40.0" layoutY="245.0" mnemonicParsing="false" text="Nuevo">
+                                    <CheckBox fx:id="checknuevo" layoutX="40.0" layoutY="245.0" mnemonicParsing="false" onAction="#controlarSeleccion" text="Nuevo">
                                        <font><Font name="Poppins Regular" size="12.0" /></font>
                                     </CheckBox>
-                                    <CheckBox fx:id="checkviejo" layoutX="40.0" layoutY="275.0" mnemonicParsing="false" text="Usado">
+                                    <CheckBox fx:id="checkviejo" layoutX="40.0" layoutY="275.0" mnemonicParsing="false" onAction="#controlarSeleccion" text="Usado">
                                        <font><Font name="Poppins Regular" size="12.0" /></font>
                                     </CheckBox>
                                     <Button layoutX="552.0" layoutY="340.0" mnemonicParsing="false" onAction="#irPaso2NuevoProducto" prefHeight="30.0" prefWidth="98.0" style="-fx-background-color: #f6cd85; -fx-background-radius: 20; -fx-cursor: hand;" text="Siguiente">
@@ -491,7 +491,7 @@
                               </Pane>
                               
               
-                              <Pane fx:id="paneRestaNuevo_ProductoPaso2" prefHeight="400.0" prefWidth="690.0" style="-fx-background-color: #f0f0f0; -fx-background-radius: 8;">
+                              <Pane fx:id="paneRestaNuevo_ProductoPaso2" prefHeight="400.0" prefWidth="690.0" style="-fx-background-color: #f0f0f0; -fx-background-radius: 8;" visible="false">
                                  <children>
                                     <Button alignment="BOTTOM_LEFT" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#irPaso1NuevoProducto" prefHeight="27.0" prefWidth="70.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="&lt; Volver">
                                        <font><Font name="Poppins Light Italic" size="12.0" /></font>
@@ -521,7 +521,7 @@
                                     <Button alignment="BOTTOM_LEFT" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#irPaso2NuevoProducto" prefHeight="27.0" prefWidth="70.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="&lt; Volver">
                                        <font><Font name="Poppins Light Italic" size="12.0" /></font>
                                     </Button>
-                                    <ImageView fx:id="previsualizacion" fitHeight="250.0" fitWidth="200.0" layoutX="40.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true" />
+                                    <ImageView fx:id="previsualizacion" fitHeight="280.0" fitWidth="240.0" layoutX="29.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true" />
                                     <Text layoutX="280.0" layoutY="80.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Precio:">
                                        <font><Font name="Poppins Regular" size="14.0" /></font>
                                     </Text>

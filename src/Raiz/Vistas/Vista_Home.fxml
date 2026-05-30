@@ -38,7 +38,7 @@
                      <children>
                         <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="110.0" style="-fx-background-color: #111111;">
                            <children>
-                              <Button id="btnInicio" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#mostrarInicio" prefHeight="110.0" prefWidth="169.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="B O O M" textFill="WHITE" HBox.hgrow="ALWAYS">
+                              <Button id="btnInicio" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#mostrarInicio" prefHeight="110.0" prefWidth="204.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="B O O M" textFill="WHITE" HBox.hgrow="ALWAYS">
                                  <font>
                                     <Font name="Poppins Bold" size="40.0" />
                                  </font>
@@ -46,7 +46,7 @@
                                     <Insets right="20.0" />
                                  </HBox.margin>
                               </Button>
-                              <HBox alignment="CENTER" maxHeight="-Infinity" prefHeight="51.0" prefWidth="547.0" style="-fx-background-color: #F6F6F6; -fx-background-radius: 10px;" HBox.hgrow="ALWAYS">
+                              <HBox alignment="CENTER" maxHeight="-Infinity" prefHeight="30.0" prefWidth="596.0" style="-fx-background-color: #F6F6F6; -fx-background-radius: 10px;" HBox.hgrow="ALWAYS">
                                  <children>
                                     <TextField id="txtBuscar" maxWidth="1.7976931348623157E308" prefHeight="45.0" promptText="Laptop Vivabook 15" style="-fx-background-color: #F6F6F6; -fx-border-color: transparent;" HBox.hgrow="ALWAYS">
                                        <font>
@@ -59,19 +59,19 @@
                                           <Insets right="4.0" />
                                        </HBox.margin>
                                     </TextField>
-                                    <Line endX="640.0" endY="40.0" startX="640.0" startY="5.0" stroke="#2f2f2f" strokeWidth="2.0" />
-                                    <Button id="btnBuscar" mnemonicParsing="false" prefHeight="51.0" prefWidth="54.0" style="-fx-background-color: transparent;" styleClass="icon-button" text="🔍">
+                                    <Line endX="640.0" endY="38.0" startX="640.0" startY="7.0" stroke="#2f2f2f" strokeWidth="2.0" />
+                                    <Button id="btnBuscar" maxHeight="-Infinity" mnemonicParsing="false" prefHeight="43.0" prefWidth="46.0" style="-fx-background-color: transparent;" styleClass="icon-button" text="🔍">
                                        <font>
                                           <Font size="24.0" />
                                        </font>
                                     </Button>
                                  </children>
                               </HBox>
-                              <VBox alignment="CENTER" prefHeight="110.0" prefWidth="144.0" HBox.hgrow="ALWAYS">
+                              <VBox alignment="CENTER" prefHeight="110.0" prefWidth="155.0" HBox.hgrow="ALWAYS">
                                  <children>
                                     <Text fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="Bienvenido">
                                        <font>
-                                          <Font name="Poppins Regular" size="12.0" />
+                                          <Font name="Poppins Regular" size="16.0" />
                                        </font>
                                        <VBox.margin>
                                           <Insets bottom="2.0" />
@@ -79,7 +79,7 @@
                                     </Text>
                                     <Text id="lblRolPerfil" fx:id="lblUsuarioHome" fill="#ffb800" strokeType="OUTSIDE" strokeWidth="0.0" text="Admin" textAlignment="CENTER">
                                        <font>
-                                          <Font name="Inter 18pt SemiBold" size="15.0" />
+                                          <Font name="Inter 18pt SemiBold" size="20.0" />
                                        </font>
                                        <VBox.margin>
                                           <Insets top="2.0" />

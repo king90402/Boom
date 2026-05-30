@@ -141,7 +141,7 @@ public class Producto {
         return cantidadProducto > 0;
     }
     
-
+    
     public boolean esNuevo() {
         return "Nuevo".equalsIgnoreCase(estadoProducto);
     }

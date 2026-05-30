@@ -26,6 +26,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.application.Platform;
+import javafx.scene.layout.Region;
 
 /**
  * @author alejo
@@ -53,6 +54,10 @@ public class LoginControladora {
     
     @FXML private TextField txtCorreoLogin;
     @FXML private PasswordField txtPasswordLogin;
+    @FXML private TextField txtPasswordLoginVisible;
+    @FXML private Region regionIconoOjo;
+     
+    private boolean PasswordLoginVisible = false;
     
     // Textfields registro paso 1
     
@@ -69,6 +74,10 @@ public class LoginControladora {
     @FXML private ComboBox<String> comboCiudad;
     @FXML private TextField txtDireccionRegistro;
     @FXML private PasswordField txtPasswordRegistro;
+    @FXML private TextField txtPasswordRegistroVisible;
+    @FXML private Region regionIconoOjoRegistro;
+    
+    private boolean PasswordRegistroVisible = false;
     
     // ----- Inicializacion
     
@@ -76,6 +85,12 @@ public class LoginControladora {
     public void initialize() {
  
         mostrarPane(paneLogin, paneRegistro, paneRegistroFinal);
+        
+        txtPasswordLogin.textProperty().bindBidirectional(txtPasswordLoginVisible.textProperty());
+        regionIconoOjo.getStyleClass().add("icono-ojo-cerrado");
+        
+        txtPasswordRegistro.textProperty().bindBidirectional(txtPasswordRegistroVisible.textProperty());
+        regionIconoOjoRegistro.getStyleClass().add("icono-ojo-cerrado");
         
         // Inicializar ComboBoxes de departamentos y respectivas ciudades
         
@@ -112,11 +127,60 @@ public class LoginControladora {
             });
         }
     }
+    // ----- Metodo para Mostrar/Ocultar Campos Contraseñas
+    
+    @FXML
+    private void alternarVisibilidadContraseña(ActionEvent event) {
+        
+        PasswordLoginVisible = !PasswordLoginVisible;
+
+        if (PasswordLoginVisible) {
+            txtPasswordLoginVisible.setVisible(true);
+            txtPasswordLogin.setVisible(false);
+
+            regionIconoOjo.getStyleClass().remove("icono-ojo-cerrado");
+            regionIconoOjo.getStyleClass().add("icono-ojo-abierto");
+            
+        } else {
+            txtPasswordLogin.setVisible(true);
+            txtPasswordLoginVisible.setVisible(false);
+
+            regionIconoOjo.getStyleClass().remove("icono-ojo-abierto");
+            regionIconoOjo.getStyleClass().add("icono-ojo-cerrado");
+        }
+    }
+    
+    @FXML
+    private void alternarVisibilidadContraseñaRegistro(ActionEvent event) {
+        
+        PasswordRegistroVisible = !PasswordRegistroVisible;
+
+        if (PasswordRegistroVisible) {
+            txtPasswordRegistroVisible.setVisible(true);
+            txtPasswordRegistro.setVisible(false);
+
+            regionIconoOjoRegistro.getStyleClass().remove("icono-ojo-cerrado");
+            regionIconoOjoRegistro.getStyleClass().add("icono-ojo-abierto");
+            
+        } else {
+            txtPasswordRegistro.setVisible(true);
+            txtPasswordRegistroVisible.setVisible(false);
+
+            regionIconoOjoRegistro.getStyleClass().remove("icono-ojo-abierto");
+            regionIconoOjoRegistro.getStyleClass().add("icono-ojo-cerrado");
+        }
+    }
     
     // ----- Autenticacion
     
     @FXML
     private void iniciarSesion(ActionEvent event) {
+        
+        txtPasswordLogin.setVisible(true);
+        txtPasswordLoginVisible.setVisible(false);
+        regionIconoOjo.getStyleClass().remove("icono-ojo-abierto");
+        regionIconoOjo.getStyleClass().add("icono-ojo-cerrado");
+            
         String identificador = txtCorreoLogin.getText().trim();
         String contraseña = txtPasswordLogin.getText();
         
@@ -163,6 +227,7 @@ public class LoginControladora {
             Stage stage = new Stage();
             stage.setScene(scene);
             stage.setTitle("Panel de Administracion - Boom");
+            stage.setResizable(false);
             stage.show();
             
             cerrarVentanaActual(event);
@@ -271,6 +336,11 @@ public class LoginControladora {
     
     @FXML
     private void registrarCliente(ActionEvent event) {
+        
+        txtPasswordRegistro.setVisible(true);
+        txtPasswordRegistroVisible.setVisible(false);
+        regionIconoOjoRegistro.getStyleClass().remove("icono-ojo-abierto");
+        regionIconoOjoRegistro.getStyleClass().add("icono-ojo-cerrado");
 
         String correo = txtCorreoRegistro.getText().trim();
         String nombre = txtNombreRegistro.getText().trim();
@@ -342,6 +412,12 @@ public class LoginControladora {
     
     @FXML
     private void irARegistro(MouseEvent event) {
+        
+        txtPasswordLogin.setVisible(true);
+        txtPasswordLoginVisible.setVisible(false);
+        regionIconoOjo.getStyleClass().remove("icono-ojo-abierto");
+        regionIconoOjo.getStyleClass().add("icono-ojo-cerrado");
+        
         limpiarCamposRegistro();
         mostrarPane(paneRegistro, paneLogin, paneRegistroFinal);
     }
@@ -354,6 +430,12 @@ public class LoginControladora {
     
     @FXML
     private void irAPaso1(MouseEvent event) {
+        
+        txtPasswordRegistro.setVisible(true);
+        txtPasswordRegistroVisible.setVisible(false);
+        regionIconoOjoRegistro.getStyleClass().remove("icono-ojo-abierto");
+        regionIconoOjoRegistro.getStyleClass().add("icono-ojo-cerrado");
+        
         mostrarPane(paneRegistro, paneRegistroFinal, paneLogin);
         if (txtCorreoRegistro != null) {
             txtCorreoRegistro.requestFocus();

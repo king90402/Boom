@@ -23,7 +23,7 @@ public class Main extends Application {
     private void loadFont(String path) {
         var stream = getClass().getResourceAsStream(path);
         if (stream == null) {
-            System.err.println("⚠ Fuente no encontrada: " + path);
+            System.err.println("Fuente no encontrada: " + path);
             return;
         }
         Font.loadFont(stream, 12);
@@ -55,6 +55,16 @@ public class Main extends Application {
         loadFont("/Raiz/Fuente/Poppins-SemiBold.ttf");
         loadFont("/Raiz/Fuente/Poppins-Thin.ttf");
         
+        loadFont("/Raiz/Fuente/Roboto-Regular.ttf");
+        loadFont("/Raiz/Fuente/Roboto-Black.ttf");
+        loadFont("/Raiz/Fuente/Roboto-Bold.ttf");
+        loadFont("/Raiz/Fuente/Roboto-BoldCondensed.ttf");
+        loadFont("/Raiz/Fuente/Roboto-Condensed.ttf");
+        loadFont("/Raiz/Fuente/Roboto-Thin.ttf");
+        loadFont("/Raiz/Fuente/Roboto-Light.ttf");
+        loadFont("/Raiz/Fuente/Roboto-Medium.ttf");
+        
+        
         // Carga de la Ventana de Registro e Inicio de Sesion
         
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/Raiz/Vistas/Vista_Login-Registro.fxml"));
@@ -68,7 +78,7 @@ public class Main extends Application {
         primaryStage.setScene(scene);
         primaryStage.setMinWidth(800);
         primaryStage.setMinHeight(450);
-        primaryStage.setResizable(true);
+        primaryStage.setResizable(false);
         primaryStage.centerOnScreen();
         
         primaryStage.show();

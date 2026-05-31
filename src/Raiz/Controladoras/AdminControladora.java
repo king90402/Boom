@@ -101,6 +101,7 @@ public class AdminControladora {
     @FXML private ImageView previsualizacion;
     @FXML private Button btnGuardarProducto;
     @FXML private ComboBox<String> comboCategoriaProducto;
+    @FXML private CheckBox checkEnOferta;
     
     private String rutaImagenSeleccionada = "";
     private Producto productoEditando = null;
@@ -505,6 +506,9 @@ public class AdminControladora {
             checknuevo.setSelected("Nuevo".equalsIgnoreCase(productoEditando.getEstadoProducto()));
             checkviejo.setSelected("Usado".equalsIgnoreCase(productoEditando.getEstadoProducto()));
         }
+        if (checkEnOferta != null) {
+        checkEnOferta.setSelected(productoEditando.isEnOferta());
+        }
         
         rutaImagenSeleccionada = productoEditando.getImagenProducto();
         if (txtruta != null) txtruta.setText(rutaImagenSeleccionada);
@@ -720,14 +724,14 @@ public class AdminControladora {
             estado = "Usado";
         }
         
+        boolean enOferta = checkEnOferta != null && checkEnOferta.isSelected();
         String idAdmin = sesionServicio.getIdUsuarioActual();
-        
+
         if (productoEditando != null) {
-            // Actualizar producto existente
             Producto actualizado = new Producto(
-                productoEditando.getIdProducto(),
-                nombre, stock, precio, estado, marca, categoria, rutaImagenSeleccionada, detalles
-            );
+            productoEditando.getIdProducto(),
+            nombre, stock, precio, estado, marca, categoria, rutaImagenSeleccionada, detalles, enOferta
+        );
             
             if (productoServicio.actualizarProducto(productoEditando.getIdProducto(), actualizado, idAdmin)) {
                 AlertaUtil.mostrarInformacion("Producto actualizado", "El producto ha sido actualizado correctamente.");
@@ -735,8 +739,8 @@ public class AdminControladora {
                 AlertaUtil.mostrarError("Error", "No se pudo actualizar el producto.");
             }
         } else {
-            // Crear nuevo producto
-                if (productoServicio.agregarProducto(nombre, stock, precio, estado, marca, categoria, rutaImagenSeleccionada, detalles, idAdmin)) {
+
+        if (productoServicio.agregarProducto(nombre, stock, precio, estado, marca, categoria, rutaImagenSeleccionada, detalles, enOferta, idAdmin)) {
                 AlertaUtil.mostrarInformacion("Producto agregado", "El producto ha sido agregado al inventario.");
             } else {
                 AlertaUtil.mostrarError("Error", "No se pudo agregar el producto.");
@@ -758,6 +762,7 @@ public class AdminControladora {
         if (txtruta != null) txtruta.clear();
         if (checknuevo != null) checknuevo.setSelected(true);
         if (checkviejo != null) checkviejo.setSelected(false);
+        if (checkEnOferta != null) checkEnOferta.setSelected(false);
         if (previsualizacion != null) previsualizacion.setImage(null);
         if (comboCategoriaProducto != null) comboCategoriaProducto.setValue(ProductoServicio.CATEGORIAS[0]);
         rutaImagenSeleccionada = "";

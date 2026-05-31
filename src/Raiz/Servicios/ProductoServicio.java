@@ -35,8 +35,8 @@ public class ProductoServicio {
 
     private static final String ARCHIVO_PRODUCTOS = "productos.txt";
     public static final String[] CATEGORIAS = {
-        "Tecnologia", "Hogar", "Deportes", "Moda y Belleza", "Ofertas"
-    };
+    "Tecnologia", "Hogar", "Deportes", "Moda y Belleza"
+};
 
     public static final String[] ESTADOS = {"Nuevo", "Usado"};
 
@@ -53,25 +53,27 @@ public class ProductoServicio {
     //  CRUD (con historial)
     // ----------------------------------------------------------------
 
-    /**
-     * Crea un producto nuevo. Solo el admin llega aquí.
-     */
-
      public boolean agregarProducto(String nombre, int cantidad, double precio,
-                                   String estado, String marca, String categoria,
-                                   String imagen, String detalles, String idAdmin) {
-        String id = listaProductos.obtenerSiguienteId();
-        Producto p = new Producto(id, nombre, cantidad, precio, estado, marca, categoria, imagen, detalles);
-        listaProductos.insertarAlFinal(p);
-        appendAlArchivo(p);
+                               String estado, String marca, String categoria,
+                               String imagen, String detalles, String idAdmin) {
+    return agregarProducto(nombre, cantidad, precio, estado, marca, categoria, imagen, detalles, false, idAdmin);
+}
 
-        HistorialServicio.getInstancia().registrar(
-            Historial.TipoAccion.PRODUCTO_CREADO,
-            "Producto creado: " + nombre + " (stock: " + cantidad + ", $" + precio + ")",
-            idAdmin, id, precio
-        );
-        return true;
-    }
+    public boolean agregarProducto(String nombre, int cantidad, double precio,
+                               String estado, String marca, String categoria,
+                               String imagen, String detalles, boolean enOferta, String idAdmin) {
+    String id = listaProductos.obtenerSiguienteId();
+    Producto p = new Producto(id, nombre, cantidad, precio, estado, marca, categoria, imagen, detalles, enOferta);
+    listaProductos.insertarAlFinal(p);
+    appendAlArchivo(p);
+
+    HistorialServicio.getInstancia().registrar(
+        Historial.TipoAccion.PRODUCTO_CREADO,
+        "Producto creado: " + nombre + " (stock: " + cantidad + ", $" + precio + ")",
+        idAdmin, id, precio
+    );
+    return true;
+}
 
     // Sobrecarga sin idAdmin (compatibilidad interna)
 
@@ -204,6 +206,15 @@ public class ProductoServicio {
     public ArrayList<Producto> obtenerConStock() {
         return listaProductos.buscarConStock();
     }
+    
+    public ArrayList<Producto> obtenerEnOferta() {
+    ArrayList<Producto> todos = listaProductos.obtenerTodos();
+    ArrayList<Producto> ofertas = new ArrayList<>();
+    for (Producto p : todos) {
+        if (p.isEnOferta()) ofertas.add(p);
+    }
+    return ofertas;
+}
 
     public ArrayList<Producto> buscarPorRangoPrecio(double min, double max) {
         return listaProductos.buscarPorRangoPrecio(min, max);

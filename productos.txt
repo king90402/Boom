@@ -1,5 +1,5 @@
-1;Máquina de Afeitar S3000;250;210000.0;Nuevo;Philips;Tecnologia;/Raiz/Media/Productos/prod_1780102620837.png;Tres helices, cuatro niveles, 5000 w
-2;Humidificador Ultrasónico;400;65000.0;Nuevo;On;Hogar;/Raiz/Media/Productos/prod_1780119210148.png;
-3;Suero Ácido Hialurónico;2000;55000.0;Nuevo;L´OREAL;Moda y Belleza;/Raiz/Media/Productos/prod_1780119299912.png;
-4;G510 Gaming Teclado - (teclado Alemán,Qwertz) 196;10;300000.0;Nuevo;Logitech;Ofertas;/Raiz/Media/Productos/prod_1780123172114.png;Teclado gamer de alto nivel con pantalla LCD GamePanel para estadísticas en vivo y 18 teclas G programables (54 macros). Incluye retroiluminación RGB personalizable, controles multimedia con rodillo de volumen y entradas de audio 3.5mm integradas.
-5;Paleta de Pádel Carbono;23;450000.0;Nuevo;Babolar;Deportes;/Raiz/Media/Productos/prod_1780124571315.png;
+1;Máquina de Afeitar S3000;244;210000.0;Nuevo;Philips;Tecnologia;/Raiz/Media/Productos/prod_1780102620837.png;Tres helices, cuatro niveles, 5000 w;false
+2;Humidificador Ultrasónico;399;65000.0;Nuevo;On;Hogar;/Raiz/Media/Productos/prod_1780119210148.png;;false
+3;Suero Ácido Hialurónico;1998;55000.0;Nuevo;L´OREAL;Moda y Belleza;/Raiz/Media/Productos/prod_1780119299912.png;;false
+4;G510 Gaming Teclado - (teclado Alemán,Qwertz) 196;9;300000.0;Nuevo;Logitech;Tecnologia;/Raiz/Media/Productos/prod_1780123172114.png;Teclado gamer de alto nivel con pantalla LCD GamePanel para estadísticas en vivo y 18 teclas G programables (54 macros). Incluye retroiluminación RGB personalizable, controles multimedia con rodillo de volumen y entradas de audio 3.5mm integradas.;true
+5;Paleta de Pádel Carbono;21;450000.0;Nuevo;Babolar;Deportes;/Raiz/Media/Productos/prod_1780124571315.png;;false

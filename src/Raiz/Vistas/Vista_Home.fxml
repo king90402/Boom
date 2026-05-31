@@ -30,7 +30,7 @@
 
 <StackPane minHeight="600.0" minWidth="800.0" stylesheets="@../Utilidades/estilos.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Raiz.Controladoras.HomeControladora">
    <children>
-      <ScrollPane fitToWidth="true" hbarPolicy="NEVER" pannable="true">
+      <ScrollPane fx:id="scrollPaneHome" fitToWidth="true" hbarPolicy="NEVER" pannable="true">
          <content>
             <AnchorPane maxWidth="1.7976931348623157E308" minHeight="0.0" minWidth="0.0" prefHeight="2450.0">
                <children>
@@ -549,7 +549,7 @@
                                                 </Text>
                                                 <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="658.0" spacing="20.0">
                                                    <children>
-                                                      <Button alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="50.0" prefWidth="441.0" style="-fx-background-color: #eeeeee; -fx-border-color: transparent; -fx-cursor: hand;" text="Agregar al carrito" textAlignment="RIGHT">
+                                                      <Button fx:id="btnAgregarCarritoDetalle" alignment="CENTER" maxWidth="-Infinity" minWidth="-Infinity" mnemonicParsing="false" onAction="#accionAgregarCarritoDetalle" prefHeight="50.0" prefWidth="441.0" style="-fx-background-color: #eeeeee; -fx-border-color: transparent; -fx-cursor: hand;" text="Agregar al carrito" textAlignment="RIGHT">
                                                          <graphic>
                                                             <Region maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="18.0" prefWidth="18.0" style="-fx-shape: &quot;M0 24C0 10.7 10.7 0 24 0H69.5c22 0 41.5 12.8 50.6 32h411c26.3 0 45.5 25 38.6 50.4l-41 152.3c-8.5 31.4-37 53.3-69.5 53.3H170.7l5.4 28.5c2.2 11.3 12.1 19.5 23.6 19.5H488c13.3 0 24 10.7 24 24s-10.7 24-24 24H199.7c-34.6 0-64.3-24.6-70.9-58.5L74 58.5H24C10.7 58.5 0 47.8 0 34.5V24zM128 464a48 48 0 1 1 96 0 48 48 0 1 1 -96 0zm336-48a48 48 0 1 1 0 96 48 48 0 1 1 0-96z&quot;; -fx-background-color: #111111;" styleClass="boton">
                                                                <padding>

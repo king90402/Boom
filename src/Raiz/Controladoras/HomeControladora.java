@@ -7,6 +7,7 @@ package Raiz.Controladoras;
 
 import Raiz.Modelos.Producto;
 import Raiz.Modelos.Usuario;
+import Raiz.Modelos.ItemCarrito;
 import Raiz.Servicios.CarritoServicio;
 import Raiz.Servicios.FavoritosServicio;
 import Raiz.Servicios.ProductoServicio;
@@ -49,7 +50,7 @@ public class HomeControladora {
     private final ProductoServicio  productoService  = ProductoServicio.getInstancia();
     private final CarritoServicio   carritoService   = CarritoServicio.getInstancia();
     private final FavoritosServicio favoritosService = FavoritosServicio.getInstancia();
-    
+    private final ProductoServicio productoServicio = ProductoServicio.getInstancia();
     // ----- Atributos de elementos FXML para su uso
     
     // Paneles principales
@@ -59,6 +60,8 @@ public class HomeControladora {
     @FXML private Pane paneCarritoHome;
     @FXML private Pane paneTodosProductosHome;
     @FXML private VBox paneInfoProductosHome;
+    @FXML private ScrollPane scrollPaneHome;
+
     
     // Subpaneles perfil (pueden ser VBox en el FXML)
     
@@ -272,9 +275,7 @@ public class HomeControladora {
             System.err.println("[Tarjeta] Excepción crítica al intentar cargar: " + ruta);
             e.printStackTrace(); 
         }
-    }
-
-        // Sombra idéntica al FXML original
+        }
         DropShadow sombra = new DropShadow();
         sombra.setHeight(5.0);
         sombra.setWidth(5.0);
@@ -338,23 +339,30 @@ public class HomeControladora {
         btnCarrito.setGraphic(iconoCarrito);
         HBox.setHgrow(btnCarrito, Priority.NEVER);
 
-        btnCarrito.setOnAction(e -> mostrarDetalleProducto(producto));
+        stackImagen.setOnMouseClicked(e -> mostrarDetalleProducto(producto));
+        stackImagen.setStyle("-fx-cursor: hand;");
 
-        // ── SPACER entre precio y botón ───────────────────────────────────────
+        btnCarrito.setOnAction(e -> {
+        boolean ok = carritoService.agregarProducto(producto, 1);
+        if (ok) {
+        AlertaUtil.mostrarInformacion("Carrito", "\"" + producto.getNombreProducto() + "\" agregado al carrito.");
+        } else {
+        AlertaUtil.mostrarAdvertencia("Sin stock", "No hay stock suficiente para este producto.");
+        }
+        });
+
         Pane espaciador = new Pane();
         espaciador.setPrefWidth(72);
         espaciador.setPrefHeight(40);
         HBox.setHgrow(espaciador, Priority.ALWAYS);
 
-        // ── HBOX precio + espacio + carrito ───────────────────────────────────
         HBox hboxPrecio = new HBox(txtPrecio, espaciador, btnCarrito);
         hboxPrecio.setAlignment(Pos.CENTER_LEFT);
-        hboxPrecio.setPrefWidth(200); // valor del FXML
+        hboxPrecio.setPrefWidth(200); 
         hboxPrecio.setPrefHeight(100);
 
-        // ── VBOX tarjeta final ────────────────────────────────────────────────
         VBox tarjeta = new VBox(stackImagen, txtNombre, hboxPrecio);
-        tarjeta.setMaxWidth(Region.USE_PREF_SIZE);   // maxWidth="-Infinity" en FXML
+        tarjeta.setMaxWidth(Region.USE_PREF_SIZE);  
         tarjeta.setMaxHeight(Region.USE_PREF_SIZE);
         tarjeta.setMinWidth(Region.USE_PREF_SIZE);
         tarjeta.setMinHeight(Region.USE_PREF_SIZE);
@@ -588,7 +596,16 @@ public class HomeControladora {
         btnCarrito.setGraphic(iconoCarrito);
         HBox.setHgrow(btnCarrito, Priority.NEVER);
         
-        btnCarrito.setOnAction(e -> mostrarDetalleProducto(producto));
+        stack.setOnMouseClicked(e -> mostrarDetalleProducto(producto));
+        stack.setStyle("-fx-cursor: hand;");
+        btnCarrito.setOnAction(e -> {
+        boolean ok = carritoService.agregarProducto(producto, 1);
+        if (ok) {
+        AlertaUtil.mostrarInformacion("Carrito", "\"" + producto.getNombreProducto() + "\" agregado al carrito.");
+        } else {
+        AlertaUtil.mostrarAdvertencia("Sin stock", "No hay stock suficiente para este producto.");
+        }
+        });
 
         Pane espaciador = new Pane();
         espaciador.setPrefWidth(63); espaciador.setPrefHeight(40);
@@ -622,7 +639,28 @@ public class HomeControladora {
 
     // Los 5 métodos siguientes los usan los botones imagen de categoría del FXML
     @FXML private void filtrarModaBelleza(ActionEvent event) { irATodosConCategoria("Moda y Belleza"); }
-    @FXML private void filtrarOfertas(ActionEvent event)     { irATodosConCategoria("Ofertas"); }
+    @FXML private void filtrarOfertas(ActionEvent event) {
+   
+    ocultarTodosLosPaneles();
+    if (paneTodosProductosHome != null) {
+        paneTodosProductosHome.setVisible(true);
+        paneTodosProductosHome.setManaged(true);
+    }
+
+    if (comboCategoriaTodos != null) comboCategoriaTodos.setValue("Todas");
+    if (comboEstadoTodos != null)    comboEstadoTodos.setValue("Todos");
+    if (comboOrdenTodos  != null)    comboOrdenTodos.setValue(null);
+
+    if (contenedorTodosProductos == null) return;
+    java.util.ArrayList<Producto> enOferta = productoService.obtenerEnOferta();
+    contenedorTodosProductos.getChildren().clear();
+    if (lblResultadosTodos != null) {
+        lblResultadosTodos.setText("Ofertas (" + enOferta.size() + ")");
+    }
+    for (Producto p : enOferta) {
+        contenedorTodosProductos.getChildren().add(crearTarjetaProducto(p));
+    }
+    }
     @FXML private void filtrarTecnologia(ActionEvent event)  { irATodosConCategoria("Tecnologia"); }
     @FXML private void filtrarHogar(ActionEvent event)       { irATodosConCategoria("Hogar"); }
     @FXML private void filtrarDeportes(ActionEvent event)    { irATodosConCategoria("Deportes"); }
@@ -695,9 +733,13 @@ public void mostrarDetalleProducto(Producto producto) {
 
     ocultarTodosLosPaneles();
     if (paneInfoProductosHome != null) {
-        paneInfoProductosHome.setVisible(true);
-        paneInfoProductosHome.setManaged(true);
+    paneInfoProductosHome.setVisible(true);
+    paneInfoProductosHome.setManaged(true);
     }
+    
+    if (scrollPaneHome != null) {
+    scrollPaneHome.setVvalue(0);
+    }       
     
     if (imgDetalleProducto != null) {
     imgDetalleProducto.setFitWidth(412);
@@ -782,13 +824,228 @@ public void mostrarDetalleProducto(Producto producto) {
 }
     
     @FXML
-    public void mostrarCarrito() {
-        ocultarTodosLosPaneles();
-        if (paneCarritoHome != null) {
-            paneCarritoHome.setVisible(true);
-            paneCarritoHome.setManaged(true);
-        }
+public void mostrarCarrito() {
+    ocultarTodosLosPaneles();
+    if (paneCarritoHome != null) {
+        paneCarritoHome.setVisible(true);
+        paneCarritoHome.setManaged(true);
     }
+    renderizarCarrito();
+}
+
+private void renderizarCarrito() {
+    javafx.scene.Node nodoVbox = paneCarritoHome.lookup("#vboxCarrito");
+    javafx.scene.Node nodoResumen = paneCarritoHome.lookup("#vboxCarritoSelecciondados");
+    javafx.scene.Node nodoPagar = paneCarritoHome.lookup("#btnPagarCarrito");
+    javafx.scene.Node nodoCheck = paneCarritoHome.lookup("#checkTodosCarrito");
+
+    if (!(nodoVbox instanceof VBox)) return;
+    VBox vboxCarrito = (VBox) nodoVbox;
+    vboxCarrito.getChildren().clear();
+    vboxCarrito.setSpacing(12);
+
+    ArrayList<ItemCarrito> items = carritoService.obtenerItems();
+
+    if (items.isEmpty()) {
+        Label vacio = new Label("Tu carrito está vacío.");
+        vacio.setStyle("-fx-font-size: 16px; -fx-text-fill: #aaaaaa; -fx-padding: 40px;");
+        vboxCarrito.getChildren().add(vacio);
+        actualizarResumenCarrito(nodoResumen, nodoPagar);
+        return;
+    }
+
+    for (ItemCarrito item : items) {
+        vboxCarrito.getChildren().add(crearFilaCarrito(item, vboxCarrito, nodoResumen, nodoPagar));
+    }
+
+    actualizarResumenCarrito(nodoResumen, nodoPagar);
+
+    if (nodoCheck instanceof CheckBox) {
+        CheckBox checkTodos = (CheckBox) nodoCheck;
+        checkTodos.setSelected(true);
+    
+    }
+
+    if (nodoPagar instanceof Button) {
+        ((Button) nodoPagar).setOnAction(e -> procesarPago());
+    }
+}
+
+private VBox crearFilaCarrito(ItemCarrito item, VBox contenedor,
+                               javafx.scene.Node nodoResumen, javafx.scene.Node nodoPagar) {
+    Producto p = item.getProducto();
+
+    CheckBox check = new CheckBox();
+    check.setSelected(true);
+    check.setStyle("-fx-padding: 0 10 0 0;");
+
+    ImageView img = new ImageView();
+    img.setFitWidth(80);
+    img.setFitHeight(80);
+    img.setPreserveRatio(true);
+    img.setPickOnBounds(true);
+    String ruta = p.getImagenProducto();
+    if (ruta != null && !ruta.isEmpty()) {
+        try {
+            java.net.URL url = getClass().getResource(ruta);
+            if (url != null) {
+                img.setImage(new Image(url.toExternalForm(), true));
+            } else {
+                File f = new File(System.getProperty("user.dir") + "/src" + ruta);
+                if (f.exists()) img.setImage(new Image(f.toURI().toString(), true));
+            }
+        } catch (Exception ex) {}
+    }
+
+    Label lblMarca = new Label(p.getMarcaProducto());
+    lblMarca.setStyle("-fx-font-size: 11px; -fx-text-fill: #999999;");
+
+    Label lblNombre = new Label(p.getNombreProducto());
+    lblNombre.setWrapText(true);
+    lblNombre.setMaxWidth(320);
+    lblNombre.setStyle("-fx-font-size: 13px; -fx-text-fill: #222222;");
+
+    VBox infoCol = new VBox(2, lblMarca, lblNombre);
+    infoCol.setAlignment(Pos.CENTER_LEFT);
+    HBox.setHgrow(infoCol, Priority.ALWAYS);
+
+    Label lblPrecio = new Label(p.getPrecioFormateado());
+    lblPrecio.setStyle("-fx-font-size: 15px; -fx-font-weight: bold; -fx-text-fill: " +
+                       (p.isEnOferta() ? "#e8a020;" : "#111111;"));
+
+    Button btnMenos = new Button("−");
+    btnMenos.setStyle("-fx-background-color: #eeeeee; -fx-cursor: hand; " +
+                      "-fx-font-size: 16px; -fx-min-width: 30px; -fx-min-height: 30px;");
+
+    Label lblCant = new Label(String.valueOf(item.getCantidad()));
+    lblCant.setStyle("-fx-font-size: 14px; -fx-min-width: 30px; -fx-alignment: center;");
+    lblCant.setAlignment(Pos.CENTER);
+
+    Button btnMas = new Button("+");
+    btnMas.setStyle("-fx-background-color: #eeeeee; -fx-cursor: hand; " +
+                    "-fx-font-size: 16px; -fx-min-width: 30px; -fx-min-height: 30px;");
+
+    btnMenos.setOnAction(e -> {
+        carritoService.decrementarCantidad(p.getIdProducto());
+        ItemCarrito actualizado = carritoService.obtenerItem(p.getIdProducto());
+        if (actualizado != null) {
+            lblCant.setText(String.valueOf(actualizado.getCantidad()));
+        } else {
+            contenedor.getChildren().removeIf(n -> n.getUserData() != null &&
+                n.getUserData().equals(p.getIdProducto()));
+        }
+        actualizarResumenCarrito(nodoResumen, nodoPagar);
+    });
+
+    btnMas.setOnAction(e -> {
+        boolean ok = carritoService.incrementarCantidad(p.getIdProducto());
+        if (ok) {
+            ItemCarrito actualizado = carritoService.obtenerItem(p.getIdProducto());
+            if (actualizado != null) lblCant.setText(String.valueOf(actualizado.getCantidad()));
+        } else {
+            AlertaUtil.mostrarAdvertencia("Stock", "No hay más unidades disponibles.");
+        }
+        actualizarResumenCarrito(nodoResumen, nodoPagar);
+    });
+
+    HBox cantidadBox = new HBox(6, btnMenos, lblCant, btnMas);
+    cantidadBox.setAlignment(Pos.CENTER);
+
+    Button btnEliminar = new Button("🗑");
+    btnEliminar.setStyle("-fx-background-color: transparent; -fx-cursor: hand; -fx-font-size: 16px;");
+    btnEliminar.setOnAction(e -> {
+        carritoService.eliminarProducto(p.getIdProducto());
+        contenedor.getChildren().removeIf(n -> p.getIdProducto().equals(n.getUserData()));
+        actualizarResumenCarrito(nodoResumen, nodoPagar);
+    });
+
+    VBox derechaCol = new VBox(6, lblPrecio, cantidadBox, btnEliminar);
+    derechaCol.setAlignment(Pos.CENTER_RIGHT);
+
+    HBox fila = new HBox(12, check, img, infoCol, derechaCol);
+    fila.setAlignment(Pos.CENTER_LEFT);
+    fila.setPadding(new Insets(12, 16, 12, 16));
+    fila.setStyle("-fx-background-color: #ffffff; -fx-background-radius: 8px;");
+    fila.setUserData(p.getIdProducto());
+
+    DropShadow sombra = new DropShadow();
+    sombra.setRadius(3); sombra.setOffsetY(1); sombra.setColor(Color.rgb(0, 0, 0, 0.08));
+    fila.setEffect(sombra);
+
+    VBox wrapper = new VBox(fila);
+    wrapper.setUserData(p.getIdProducto());
+    return wrapper;
+}
+
+private void actualizarResumenCarrito(javafx.scene.Node nodoResumen, javafx.scene.Node nodoPagar) {
+    if (!(nodoResumen instanceof VBox)) return;
+    VBox resumen = (VBox) nodoResumen;
+    resumen.getChildren().clear();
+    resumen.setSpacing(6);
+
+    ArrayList<ItemCarrito> items = carritoService.obtenerItems();
+    double total = 0;
+
+    for (ItemCarrito item : items) {
+        Producto p = item.getProducto();
+        String nombreCorto = p.getNombreProducto().length() > 22
+            ? p.getNombreProducto().substring(0, 22) + "…"
+            : p.getNombreProducto();
+
+        Label fila = new Label("• " + nombreCorto);
+        fila.setStyle("-fx-font-size: 12px;");
+
+        Label precio = new Label(String.format("$%,.0f", item.getSubtotal()));
+        precio.setStyle("-fx-font-size: 12px; -fx-font-weight: bold;");
+
+        Region espaciador = new Region();
+        HBox.setHgrow(espaciador, Priority.ALWAYS);
+
+        HBox row = new HBox(fila, espaciador, precio);
+        row.setAlignment(Pos.CENTER_LEFT);
+        resumen.getChildren().add(row);
+
+        total += item.getSubtotal();
+    }
+
+    javafx.scene.control.Separator sep = new javafx.scene.control.Separator();
+    sep.setPadding(new Insets(4, 0, 4, 0));
+    resumen.getChildren().add(sep);
+
+    Label lblTotalTxt = new Label("Precio aproximado:");
+    lblTotalTxt.setStyle("-fx-font-size: 13px;");
+    Label lblTotalVal = new Label(String.format("$%,.0f", total));
+    lblTotalVal.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
+    Region sp2 = new Region();
+    HBox.setHgrow(sp2, Priority.ALWAYS);
+    HBox rowTotal = new HBox(lblTotalTxt, sp2, lblTotalVal);
+    rowTotal.setAlignment(Pos.CENTER_LEFT);
+    resumen.getChildren().add(rowTotal);
+    }
+
+    private void procesarPago() {
+    Usuario usuario = sesionService.getUsuarioActual();
+    ArrayList<ItemCarrito> items = carritoService.obtenerItems();
+
+    if (items.isEmpty()) {
+        AlertaUtil.mostrarAdvertencia("Carrito vacío", "Agrega productos antes de pagar.");
+        return;
+    }
+
+    Raiz.Modelos.Pedido pedido = Raiz.Servicios.PedidoServicio.getInstancia()
+            .realizarCompra(usuario, items);
+
+    if (pedido != null) {
+        carritoService.vaciarCarrito();
+        AlertaUtil.mostrarInformacion("¡Compra exitosa!",
+            "Tu pedido " + pedido.getIdPedido() + " fue registrado.\nTotal: " +
+            pedido.getTotalFormateado());
+        mostrarCarrito();
+    } else {
+        AlertaUtil.mostrarError("Error al pagar",
+            "No se pudo procesar la compra. Verifica el stock de los productos.");
+    }
+}
     
     private void ocultarSubPanesPerfil() {
         VBox[] panes = {paneFavoritosPerfilHome, panePedidosPerfilHome, paneMiCuentaPerfilHome};
@@ -951,7 +1208,17 @@ public void mostrarDetalleProducto(Producto producto) {
         btnCarrito.setStyle("-fx-background-color: #F7CD83; -fx-border-color: transparent; -fx-cursor: hand;");
         btnCarrito.setGraphic(iconoCarrito);
         HBox.setHgrow(btnCarrito, Priority.NEVER);
-        btnCarrito.setOnAction(e -> mostrarDetalleProducto(producto));
+        stack.setOnMouseClicked(e -> mostrarDetalleProducto(producto));
+        stack.setStyle("-fx-cursor: hand;");
+
+        btnCarrito.setOnAction(e -> {
+        boolean ok = carritoService.agregarProducto(producto, 1);
+        if (ok) {
+        AlertaUtil.mostrarInformacion("Carrito", "\"" + producto.getNombreProducto() + "\" agregado al carrito.");
+        } else {
+        AlertaUtil.mostrarAdvertencia("Sin stock", "No hay stock suficiente para este producto.");
+        }
+        });
 
         Pane espaciador = new Pane();
         espaciador.setPrefWidth(63); espaciador.setPrefHeight(40);

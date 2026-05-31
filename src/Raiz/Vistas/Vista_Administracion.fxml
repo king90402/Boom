@@ -511,17 +511,20 @@
                                     <Button layoutX="552.0" layoutY="340.0" mnemonicParsing="false" onAction="#irPaso3NuevoProducto" prefHeight="30.0" prefWidth="98.0" style="-fx-background-color: #f6cd85; -fx-background-radius: 20; -fx-cursor: hand;" text="Siguiente">
                                        <font><Font name="Poppins SemiBold" size="12.0" /></font>
                                     </Button>
-                                    <Text layoutX="40.0" layoutY="308.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Categoria:">
+                                    <Text layoutX="40.0" layoutY="295.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Categoria:">
                                        <font>
                                           <Font name="Poppins Regular" size="14.0" />
                                        </font>
                                     </Text>
-                                    <ComboBox fx:id="comboCategoriaProducto" layoutX="39.0" layoutY="316.0" prefHeight="39.0" prefWidth="208.0" promptText="Selecciona una categoria" />
+                                    <ComboBox fx:id="comboCategoriaProducto" layoutX="39.0" layoutY="305.0" prefHeight="35.0" prefWidth="208.0" promptText="Selecciona una categoria" />
+                                    <CheckBox fx:id="checkEnOferta" layoutX="39.0" layoutY="350.0" mnemonicParsing="false" text="Producto en Oferta">
+                                         <font>
+                                             <Font name="Poppins Regular" size="12.0" />
+                                         </font>
+                                    </CheckBox>     
                                  </children>
                                  <effect><DropShadow height="5.0" offsetX="0.8" offsetY="1.0" radius="2.0" spread="0.1" width="5.0" /></effect>
                               </Pane>
-                              
-             
                               <Pane fx:id="paneRestaNuevo_ProductoPaso3" prefHeight="400.0" prefWidth="690.0" style="-fx-background-color: #f6f6f6; -fx-background-radius: 8;" visible="false">
                                  <children>
                                     <Button alignment="BOTTOM_LEFT" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#irPaso2NuevoProducto" prefHeight="27.0" prefWidth="70.0" style="-fx-background-color: transparent; -fx-cursor: hand;" text="&lt; Volver">

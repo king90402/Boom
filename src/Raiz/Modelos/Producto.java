@@ -12,21 +12,19 @@ package Raiz.Modelos;
 // --------- Clase tipo POJO de producto con todos sus atributos
 
 public class Producto {
-    
-    // Atributos
 
     private String idProducto;
     private String nombreProducto;
     private int cantidadProducto;
     private double precioProducto;
-    private String estadoProducto;      
+    private String estadoProducto;
     private String marcaProducto;
     private String categoriaProducto;
     private String detallesProducto;
-    private String imagenProducto;      
-    
-    // Constructor vacio
+    private String imagenProducto;
+    private boolean enOferta;          // <-- NUEVO CAMPO
 
+    // Constructor vacio
     public Producto() {
         this.idProducto = "";
         this.nombreProducto = "";
@@ -37,12 +35,10 @@ public class Producto {
         this.categoriaProducto = "";
         this.detallesProducto = "";
         this.imagenProducto = "";
+        this.enOferta = false;
     }
-    
-    // Constructor completo
-
-    public Producto(String idProducto, String nombreProducto, int cantidadProducto, double precioProducto, 
-                    String estadoProducto, String marcaProducto, String categoriaProducto, 
+    public Producto(String idProducto, String nombreProducto, int cantidadProducto, double precioProducto,
+                    String estadoProducto, String marcaProducto, String categoriaProducto,
                     String imagenProducto, String detallesProducto) {
         this.idProducto = idProducto;
         this.nombreProducto = nombreProducto;
@@ -53,104 +49,42 @@ public class Producto {
         this.categoriaProducto = categoriaProducto;
         this.imagenProducto = imagenProducto;
         this.detallesProducto = detallesProducto != null ? detallesProducto : "";
-    }
-    
-    // Getters
-
-    public String getIdProducto() {
-        return idProducto;
+        this.enOferta = false;
     }
 
-    public String getNombreProducto() {
-        return nombreProducto;
+    public Producto(String idProducto, String nombreProducto, int cantidadProducto, double precioProducto,
+                    String estadoProducto, String marcaProducto, String categoriaProducto,
+                    String imagenProducto, String detallesProducto, boolean enOferta) {
+        this(idProducto, nombreProducto, cantidadProducto, precioProducto,
+             estadoProducto, marcaProducto, categoriaProducto, imagenProducto, detallesProducto);
+        this.enOferta = enOferta;
     }
 
-    public int getCantidadProducto() {
-        return cantidadProducto;
-    }
+    public String getIdProducto()         { return idProducto; }
+    public String getNombreProducto()     { return nombreProducto; }
+    public int getCantidadProducto()      { return cantidadProducto; }
+    public double getPrecioProducto()     { return precioProducto; }
+    public String getEstadoProducto()     { return estadoProducto; }
+    public String getMarcaProducto()      { return marcaProducto; }
+    public String getCategoriaProducto()  { return categoriaProducto; }
+    public String getImagenProducto()     { return imagenProducto; }
+    public String getDetallesProducto()   { return detallesProducto; }
+    public boolean isEnOferta()           { return enOferta; }
 
-    public double getPrecioProducto() {
-        return precioProducto;
-    }
+    public void setIdProducto(String idProducto)             { this.idProducto = idProducto; }
+    public void setNombreProducto(String nombreProducto)     { this.nombreProducto = nombreProducto; }
+    public void setCantidadProducto(int cantidadProducto)    { this.cantidadProducto = cantidadProducto; }
+    public void setPrecioProducto(double precioProducto)     { this.precioProducto = precioProducto; }
+    public void setEstadoProducto(String estadoProducto)     { this.estadoProducto = estadoProducto; }
+    public void setMarcaProducto(String marcaProducto)       { this.marcaProducto = marcaProducto; }
+    public void setCategoriaProducto(String categoriaProducto){ this.categoriaProducto = categoriaProducto; }
+    public void setImagenProducto(String imagenProducto)     { this.imagenProducto = imagenProducto; }
+    public void setDetallesProducto(String detallesProducto) { this.detallesProducto = detallesProducto; }
+    public void setEnOferta(boolean enOferta)                { this.enOferta = enOferta; }
 
-    public String getEstadoProducto() {
-        return estadoProducto;
-    }
-
-    public String getMarcaProducto() {
-        return marcaProducto;
-    }
-
-    public String getCategoriaProducto() {
-        return categoriaProducto;
-    }
-
-    public String getImagenProducto() {
-        return imagenProducto;
-    }
-
-    public String getDetallesProducto() {
-        return detallesProducto;
-    }
-    
-    
-    
-    // Setters
-
-    public void setIdProducto(String idProducto) {
-        this.idProducto = idProducto;
-    }
-
-    public void setNombreProducto(String nombreProducto) {
-        this.nombreProducto = nombreProducto;
-    }
-
-    public void setCantidadProducto(int cantidadProducto) {
-        this.cantidadProducto = cantidadProducto;
-    }
-
-    public void setPrecioProducto(double precioProducto) {
-        this.precioProducto = precioProducto;
-    }
-
-    public void setEstadoProducto(String estadoProducto) {
-        this.estadoProducto = estadoProducto;
-    }
-
-    public void setMarcaProducto(String marcaProducto) {
-        this.marcaProducto = marcaProducto;
-    }
-
-    public void setCategoriaProducto(String categoriaProducto) {
-        this.categoriaProducto = categoriaProducto;
-    }
-
-    public void setImagenProducto(String imagenProducto) {
-        this.imagenProducto = imagenProducto;
-    }
-
-    public void setDetallesProducto(String detallesProducto) {
-        this.detallesProducto = detallesProducto;
-    }
-    
-    
-    // ----- Metodos auxiliares -----
-    
-
-    public boolean tieneStock() {
-        return cantidadProducto > 0;
-    }
-    
-    
-    public boolean esNuevo() {
-        return "Nuevo".equalsIgnoreCase(estadoProducto);
-    }
-    
-
-    public String getPrecioFormateado() {
-        return String.format("$%,.0f", precioProducto);
-    }
-    
+    public boolean tieneStock()       { return cantidadProducto > 0; }
+    public boolean esNuevo()          { return "Nuevo".equalsIgnoreCase(estadoProducto); }
+    public String getPrecioFormateado() { return String.format("$%,.0f", precioProducto); }
 
     public boolean reducirStock(int cantidad) {
         if (cantidadProducto >= cantidad) {
@@ -159,42 +93,45 @@ public class Producto {
         }
         return false;
     }
-    
 
     public void aumentarStock(int cantidad) {
-        if (cantidad > 0) {
-            cantidadProducto += cantidad;
-        }
+        if (cantidad > 0) cantidadProducto += cantidad;
     }
-    
-    // ----- Serializacion -----
-    
 
     public String toArchivoLinea() {
         return String.join(";",
-            idProducto != null ? idProducto : "",
-            nombreProducto != null ? nombreProducto : "",
+            idProducto        != null ? idProducto        : "",
+            nombreProducto    != null ? nombreProducto    : "",
             String.valueOf(cantidadProducto),
             String.valueOf(precioProducto),
-            estadoProducto != null ? estadoProducto : "",
-            marcaProducto != null ? marcaProducto : "",
+            estadoProducto    != null ? estadoProducto    : "",
+            marcaProducto     != null ? marcaProducto     : "",
             categoriaProducto != null ? categoriaProducto : "",
-            imagenProducto != null ? imagenProducto : "",
-            detallesProducto != null ? detallesProducto : ""
+            imagenProducto    != null ? imagenProducto    : "",
+            detallesProducto  != null ? detallesProducto  : "",
+            String.valueOf(enOferta) 
         );
     }
-    
 
     public static Producto fromArchivoLinea(String linea) {
-        if (linea == null || linea.trim().isEmpty()) {
-            return null;
-        }
-        
+        if (linea == null || linea.trim().isEmpty()) return null;
+
         String[] datos = linea.split(";");
-        
-       if (datos.length >= 8) {
+
+        if (datos.length >= 8) {
             try {
-                String detalles = datos.length >= 9 ? datos[8].trim() : "";
+                String detalles  = datos.length >= 9  ? datos[8].trim()  : "";
+                
+                String categoria = datos[6].trim();
+                boolean oferta   = false;
+
+                if ("Ofertas".equalsIgnoreCase(categoria)) {
+                    categoria = "Tecnologia"; 
+                    oferta = true;
+                } else if (datos.length >= 10) {
+                    oferta = Boolean.parseBoolean(datos[9].trim());
+                }
+
                 return new Producto(
                     datos[0].trim(),
                     datos[1].trim(),
@@ -202,9 +139,10 @@ public class Producto {
                     Double.parseDouble(datos[3].trim()),
                     datos[4].trim(),
                     datos[5].trim(),
-                    datos[6].trim(),
+                    categoria,
                     datos[7].trim(),
-                    detalles
+                    detalles,
+                    oferta
                 );
             } catch (NumberFormatException e) {
                 return null;
@@ -212,25 +150,22 @@ public class Producto {
         }
         return null;
     }
-    
-    @Override
 
+    @Override
     public String toString() {
-        return "ID: " + idProducto + " | Nombre: " + nombreProducto + 
+        return "ID: " + idProducto + " | Nombre: " + nombreProducto +
                " | Precio: " + getPrecioFormateado() + " | Stock: " + cantidadProducto;
     }
-    
-    @Override
 
+    @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         Producto producto = (Producto) obj;
         return idProducto != null && idProducto.equals(producto.idProducto);
     }
-    
-    @Override
 
+    @Override
     public int hashCode() {
         return idProducto != null ? idProducto.hashCode() : 0;
     }

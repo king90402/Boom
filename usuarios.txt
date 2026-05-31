@@ -1,4 +1,2 @@
-admin@gmail.com;Diomedes;Diaz;26066628;10/06/2000;3002234567;Cesar;Valledupar;Cr 5 # 10 - 20; 123123123;ADMIN
-
-cliente@gmail.com;Fernando;Perez;1003322343;10/04/1999;3026683456;Bogotá D.C.;Bogotá;Cr 40 # 22 - 122;123123123;CLIENTE
-
+admin@gmail.com;Diomedes;Diaz;26066628;10/06/2000;3002234567;Cesar;Valledupar;Cr 5 # 10 - 20;123123123;ADMIN
+cliente@gmail.com;Fernando;Alonso;1068103707;10/04/1999;3026683456;Bogotá D.C.;Bogotá;Cr 40 # 22 - 122;123123123;CLIENTE

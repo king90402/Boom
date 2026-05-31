@@ -36,6 +36,7 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import javafx.scene.control.Spinner;
 import javafx.scene.control.SpinnerValueFactory;
+import Raiz.Servicios.UsuarioServicio;
 /**
  * @author alejo
  */
@@ -51,6 +52,7 @@ public class HomeControladora {
     private final CarritoServicio   carritoService   = CarritoServicio.getInstancia();
     private final FavoritosServicio favoritosService = FavoritosServicio.getInstancia();
     private final ProductoServicio productoServicio = ProductoServicio.getInstancia();
+     private final UsuarioServicio   usuarioService   = UsuarioServicio.getInstancia();
     // ----- Atributos de elementos FXML para su uso
     
     // Paneles principales
@@ -132,6 +134,14 @@ public class HomeControladora {
     @FXML private Button btnMenos;
     @FXML private Button btnMas;
     @FXML private TextField txtCantidad;
+    
+    @FXML private VBox      paneEditarPerfilHome;
+    @FXML private TextField txtNombreEditarPerfil;
+    @FXML private TextField txtCorreoEditarPerfil;
+    @FXML private TextField txtCelularEditarPerfil;
+    @FXML private TextField txtDocumentoEditarPerfil;
+    @FXML private TextField txtNacimientoEditarPerfil;
+    @FXML private TextField txtDireccionEditarPerfil;
 
     private Producto productoActualDetalle;
     
@@ -1342,4 +1352,104 @@ private void accionFavoritoDetalle(ActionEvent event) {
     boolean ahora = favoritosService.esFavorito(productoActualDetalle.getIdProducto());
     if (iconoFavDetalleRegion != null) aplicarColorCorazon(iconoFavDetalleRegion, ahora);
 }
+
+@FXML
+    public void abrirFormularioEditarPerfil() {
+        Usuario usuario = sesionService.getUsuarioActual();
+        if (usuario == null) return;
+
+        // Pre-rellenar campos con datos actuales
+        txtNombreEditarPerfil.setText(usuario.getNombre() + " " + usuario.getApellido());
+        txtCorreoEditarPerfil.setText(usuario.getCorreo());
+        txtCelularEditarPerfil.setText(usuario.getCelular());
+        txtDocumentoEditarPerfil.setText(usuario.getId());
+        txtNacimientoEditarPerfil.setText(usuario.getFechaNacimiento());
+        txtDireccionEditarPerfil.setText(usuario.getDireccion());
+
+        // Mostrar formulario, ocultar vista de solo lectura
+        if (paneMiCuentaPerfilHome != null) {
+            // El paneMiCuentaPerfilHome es el VBox padre que contiene
+            // tanto la vista de info como el formulario de edición
+            // Ocultamos la vista de info (primer hijo) y mostramos el formulario (segundo hijo)
+            javafx.scene.Node vistaInfo = paneMiCuentaPerfilHome.getChildren().get(0);
+            vistaInfo.setVisible(false);
+            vistaInfo.setManaged(false);
+        }
+        if (paneEditarPerfilHome != null) {
+            paneEditarPerfilHome.setVisible(true);
+            paneEditarPerfilHome.setManaged(true);
+        }
+    }
+
+    /** Cancela la edición y vuelve a la vista de solo lectura */
+    @FXML
+    public void cancelarEditarPerfil() {
+        if (paneEditarPerfilHome != null) {
+            paneEditarPerfilHome.setVisible(false);
+            paneEditarPerfilHome.setManaged(false);
+        }
+        if (paneMiCuentaPerfilHome != null) {
+            javafx.scene.Node vistaInfo = paneMiCuentaPerfilHome.getChildren().get(0);
+            vistaInfo.setVisible(true);
+            vistaInfo.setManaged(true);
+        }
+    }
+
+    // Valida y guarda los cambios del perfil 
+    @FXML
+    public void guardarCambiosPerfil() {
+        Usuario usuarioActual = sesionService.getUsuarioActual();
+        if (usuarioActual == null) return;
+
+        String nombreCompleto = txtNombreEditarPerfil.getText().trim();
+        String correo         = txtCorreoEditarPerfil.getText().trim();
+        String celular        = txtCelularEditarPerfil.getText().trim();
+        String documento      = txtDocumentoEditarPerfil.getText().trim();
+        String fechaNac       = txtNacimientoEditarPerfil.getText().trim();
+        String direccion      = txtDireccionEditarPerfil.getText().trim();
+
+        if (nombreCompleto.isEmpty() || correo.isEmpty()) {
+            AlertaUtil.mostrarError("Error", "El nombre y el correo son obligatorios.");
+            return;
+        }
+
+        String nombre   = nombreCompleto.contains(" ")
+                          ? nombreCompleto.substring(0, nombreCompleto.indexOf(' ')).trim()
+                          : nombreCompleto;
+        String apellido = nombreCompleto.contains(" ")
+                          ? nombreCompleto.substring(nombreCompleto.indexOf(' ') + 1).trim()
+                          : "";
+
+        Usuario nuevosDatos = new Usuario(
+            correo,
+            nombre,
+            apellido,
+            documento,
+            fechaNac,
+            celular,
+            usuarioActual.getDepartamento(),
+            usuarioActual.getCiudad(),
+            direccion,
+            usuarioActual.getContraseña()
+        );
+
+        boolean ok = usuarioService.actualizarPerfilPropio(usuarioActual.getId(), nuevosDatos);
+
+        if (ok) {
+            if (lblNombre2PerfilHome  != null) lblNombre2PerfilHome.setText(nombre + " " + apellido);
+            if (lblCorreo2PerfilHome  != null) lblCorreo2PerfilHome.setText(correo);
+            if (lblCelularPerfilHome  != null) lblCelularPerfilHome.setText(celular);
+            if (lblDocumentoPerfilHome!= null) lblDocumentoPerfilHome.setText(documento);
+            if (lblFechaPerfilHome    != null) lblFechaPerfilHome.setText(fechaNac);
+            if (lblDireccionPerfilHome!= null) lblDireccionPerfilHome.setText(direccion);
+
+            if (lblNombrePerfilHome   != null) lblNombrePerfilHome.setText(nombre + " " + apellido);
+            if (lblCorreoPerfilHome   != null) lblCorreoPerfilHome.setText(correo);
+
+            AlertaUtil.mostrarInformacion("Éxito", "Perfil actualizado correctamente.");
+            cancelarEditarPerfil(); 
+        } else {
+            AlertaUtil.mostrarError("Error", "No se pudo actualizar el perfil. Verifica los datos.");
+        }
+    }
 }

@@ -749,7 +749,7 @@
                                              </children>
                                           </VBox>
                                           <Pane prefHeight="200.0" prefWidth="200.0" HBox.hgrow="ALWAYS" />
-                                          <Button id="btnEditarPerfil" mnemonicParsing="false" prefHeight="36.0" prefWidth="86.0" style="-fx-background-color: #3b3527; -fx-border-color: #4a4436; -fx-border-radius: 8px; -fx-cursor: hand;" text="Button">
+                                          <Button id="btnEditarPerfil" fx:id="btnEditarPerfilHome" mnemonicParsing="false" onAction="#abrirFormularioEditarPerfil" prefHeight="36.0" prefWidth="86.0" style="-fx-background-color: #3b3527; -fx-border-color: #4a4436; -fx-border-radius: 8px; -fx-cursor: hand;" text="Button">
                                              <graphic>
                                                 <Pane prefHeight="35.0" prefWidth="75.0">
                                                    <children>
@@ -986,7 +986,7 @@
                                                 </Pane>
                                              </children>
                                           </VBox>
-                                          <VBox prefHeight="200.0" prefWidth="1220.0" visible="false">
+                                          <VBox fx:id="paneEditarPerfilHome" prefHeight="200.0" prefWidth="1220.0" visible="false">
                                              <children>
                                                 <Pane prefHeight="45.0" prefWidth="1185.0" style="-fx-border-color: #f5f4f4; -fx-background-color: #fafafa;">
                                                    <children>
@@ -1006,7 +1006,7 @@
                                                                   <Font name="Inter 18pt Regular" size="12.0" />
                                                                </font>
                                                             </Text>
-                                                            <TextField id="txtNombrePerfil" />
+                                                            <TextField id="txtNombrePerfil" fx:id="txtNombreEditarPerfil" />
                                                          </children>
                                                          <padding>
                                                             <Insets left="15.0" top="10.0" />
@@ -1023,7 +1023,7 @@
                                                                   <Font name="Inter 18pt Regular" size="12.0" />
                                                                </font>
                                                             </Text>
-                                                            <TextField id="txtCorreoPerfil" />
+                                                            <TextField id="txtCorreoPerfil" fx:id="txtCorreoEditarPerfil" />
                                                          </children>
                                                          <padding>
                                                             <Insets left="15.0" top="10.0" />
@@ -1040,7 +1040,7 @@
                                                                   <Font name="Inter 18pt Regular" size="12.0" />
                                                                </font>
                                                             </Text>
-                                                            <TextField id="txtCelularPerfil" />
+                                                            <TextField id="txtCelularPerfil" fx:id="txtCelularEditarPerfil" />
                                                          </children>
                                                          <padding>
                                                             <Insets left="15.0" top="10.0" />
@@ -1057,7 +1057,7 @@
                                                                   <Font name="Inter 18pt Regular" size="12.0" />
                                                                </font>
                                                             </Text>
-                                                            <TextField id="txtDocumentoPerfil" />
+                                                            <TextField id="txtDocumentoPerfil" fx:id="txtDocumentoEditarPerfil" />
                                                          </children>
                                                          <padding>
                                                             <Insets left="15.0" top="10.0" />
@@ -1074,7 +1074,7 @@
                                                                   <Font name="Inter 18pt Regular" size="12.0" />
                                                                </font>
                                                             </Text>
-                                                            <TextField id="txtNacimientoPerfil" />
+                                                            <TextField id="txtNacimientoPerfil" fx:id="txtNacimientoEditarPerfil" />
                                                          </children>
                                                          <padding>
                                                             <Insets left="15.0" top="10.0" />
@@ -1091,7 +1091,7 @@
                                                                   <Font name="Inter 18pt Regular" size="12.0" />
                                                                </font>
                                                             </Text>
-                                                            <TextField id="txtDireccionPerfil" />
+                                                            <TextField id="txtDireccionPerfil" fx:id="txtDireccionEditarPerfil" />
                                                          </children>
                                                          <padding>
                                                             <Insets left="15.0" top="10.0" />
@@ -1114,12 +1114,12 @@
                                                 </Button>
                                                 <HBox alignment="CENTER_RIGHT" prefHeight="40.0" prefWidth="200.0">
                                                    <children>
-                                                      <Button id="btnCancelarPerfil" maxHeight="1.7976931348623157E308" mnemonicParsing="false" prefHeight="40.0" prefWidth="78.0" style="-fx-background-color: #fefffe; -fx-border-color: #f5f4f4; -fx-background-radius: 5px; -fx-border-radius: 5px;" text="Cancelar">
+                                                      <Button id="btnCancelarPerfil" fx:id="btnCancelarEditarPerfil" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#cancelarEditarPerfil" prefHeight="40.0" prefWidth="78.0" style="-fx-background-color: #fefffe; -fx-border-color: #f5f4f4; -fx-background-radius: 5px; -fx-border-radius: 5px;" text="Cancelar">
                                                          <font>
                                                             <Font name="Poppins Bold" size="11.0" />
                                                          </font>
                                                       </Button>
-                                                      <Button id="btnGuardarPerfil" maxHeight="1.7976931348623157E308" mnemonicParsing="false" prefHeight="40.0" prefWidth="128.0" style="-fx-background-color: FFCB74; -fx-background-radius: 5px; -fx-border-color: #f5f4f4; -fx-border-radius: 5px;" text="Guardar Cambios">
+                                                      <Button id="btnGuardarPerfil" fx:id="btnGuardarEditarPerfil" maxHeight="1.7976931348623157E308" mnemonicParsing="false" onAction="#guardarCambiosPerfil" prefHeight="40.0" prefWidth="128.0" style="-fx-background-color: FFCB74; -fx-background-radius: 5px; -fx-border-color: #f5f4f4; -fx-border-radius: 5px;" text="Guardar Cambios">
                                                          <HBox.margin>
                                                             <Insets left="12.0" />
                                                          </HBox.margin>

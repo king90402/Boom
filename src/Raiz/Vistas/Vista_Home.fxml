@@ -846,7 +846,7 @@
                                     <StackPane prefHeight="1708.0" prefWidth="1220.0" VBox.vgrow="ALWAYS">
                                        <children>
                                           <VBox id="vboxPedidosPerfil" fx:id="panePedidosPerfilHome" prefHeight="200.0" prefWidth="100.0" visible="false" />
-                                          <VBox id="vboxFavoritosPerfil" fx:id="paneFavoritosPerfilHome" prefHeight="200.0" prefWidth="100.0" visible="false" />
+                                          <VBox id="vboxFavoritosPerfil" fx:id="paneFavoritosPerfilHome" prefHeight="200.0" prefWidth="100.0" />
                                           <VBox fx:id="paneMiCuentaPerfilHome" prefHeight="200.0" prefWidth="100.0" visible="false">
                                              <children>
                                                 <Pane prefHeight="45.0" prefWidth="1185.0" style="-fx-border-color: #f5f4f4; -fx-background-color: #fafafa;">
@@ -986,7 +986,7 @@
                                                 </Pane>
                                              </children>
                                           </VBox>
-                                          <VBox prefHeight="200.0" prefWidth="1220.0">
+                                          <VBox prefHeight="200.0" prefWidth="1220.0" visible="false">
                                              <children>
                                                 <Pane prefHeight="45.0" prefWidth="1185.0" style="-fx-border-color: #f5f4f4; -fx-background-color: #fafafa;">
                                                    <children>

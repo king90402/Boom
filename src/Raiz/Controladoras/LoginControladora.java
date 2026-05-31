@@ -26,6 +26,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.scene.layout.Region;
 
 /**
@@ -56,6 +58,7 @@ public class LoginControladora {
     @FXML private PasswordField txtPasswordLogin;
     @FXML private TextField txtPasswordLoginVisible;
     @FXML private Region regionIconoOjo;
+    @FXML private Label lblPasswordLogin;
      
     private boolean PasswordLoginVisible = false;
     
@@ -76,6 +79,7 @@ public class LoginControladora {
     @FXML private PasswordField txtPasswordRegistro;
     @FXML private TextField txtPasswordRegistroVisible;
     @FXML private Region regionIconoOjoRegistro;
+    @FXML private Label lblPasswordRegistro;
     
     private boolean PasswordRegistroVisible = false;
     
@@ -91,6 +95,30 @@ public class LoginControladora {
         
         txtPasswordRegistro.textProperty().bindBidirectional(txtPasswordRegistroVisible.textProperty());
         regionIconoOjoRegistro.getStyleClass().add("icono-ojo-cerrado");
+        
+        BooleanBinding mostrarPromptLogin = Bindings.createBooleanBinding(
+        () -> txtPasswordLogin.getText().isEmpty() && 
+            !txtPasswordLogin.isFocused() && 
+            !txtPasswordLoginVisible.isFocused(), 
+          
+        txtPasswordLogin.textProperty(),
+        txtPasswordLogin.focusedProperty(),
+        txtPasswordLoginVisible.focusedProperty() 
+    );
+        
+    lblPasswordLogin.visibleProperty().bind(mostrarPromptLogin);
+
+
+        BooleanBinding mostrarPromptRegistro = Bindings.createBooleanBinding(
+        () -> txtPasswordRegistro.getText().isEmpty() && 
+            !txtPasswordRegistro.isFocused() && 
+            !txtPasswordRegistroVisible.isFocused(),
+          
+        txtPasswordRegistro.textProperty(),
+        txtPasswordRegistro.focusedProperty(),
+        txtPasswordRegistroVisible.focusedProperty() 
+    );
+    lblPasswordRegistro.visibleProperty().bind(mostrarPromptRegistro);
         
         // Inicializar ComboBoxes de departamentos y respectivas ciudades
         
